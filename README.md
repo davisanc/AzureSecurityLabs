@@ -5,7 +5,7 @@ https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/n-ti
 
 ![image of 3tier](/images/n-tier-sql-server.png)
 
-###Lab Series
+### Lab Series
 
 1.	Redeem your Azure Passes and activate your credit
 2.	Configuration needed before starting the labs
