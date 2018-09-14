@@ -5,7 +5,7 @@ https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/n-ti
 
 ![image of 3tier](/images/n-tier-sql-server.png)
 
-### Lab Series
+## Lab Series
 
 1.	Redeem your Azure Passes and activate your credit
 2.	Configuration needed before starting the labs
@@ -20,3 +20,10 @@ https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/n-ti
 11.	Lab 8: Azure Active Directory Role-Based Access Control
 12.	Lab 9: Enable DDoS protection for your resources
 
+### 1.	Redeem your Azure Passes if you will use your Personal Microsoft Account
+
+Note: We recommend using an enterprise subscription with a working account that have privileges to create resources. There are some labs on this guide that require the use or 3rd party Virtual Machines that don’t allow the use of Azure pass credits. In order to minimise costs we will enable ‘auto’shutdown’ of virtual machines. 
+
+Make sure you have a working Microsoft account that you can use to redeem the Azure pass
+
+Open a browser in private/incognito mode and go to https://microsoftazurepass.com
