@@ -27,3 +27,5 @@ Note: We recommend using an enterprise subscription with a working account that 
 Make sure you have a working Microsoft account that you can use to redeem the Azure pass
 
 Open a browser in private/incognito mode and go to https://microsoftazurepass.com
+
+![image or redeem](/images/redeem your azure pass.png)
