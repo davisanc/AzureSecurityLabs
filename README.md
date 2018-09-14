@@ -29,3 +29,10 @@ Make sure you have a working Microsoft account that you can use to redeem the Az
 Open a browser in private/incognito mode and go to https://microsoftazurepass.com
 
 ![image or redeem](/images/redeem-your-azure-pass.PNG)
+
+Login with your personal account, confirm your details and click next
+
+Enter the promo code of your Azure Pass
+
+Activate your pass
+
