@@ -82,10 +82,52 @@ First make sure you have python installed in your machine. If you don’t have t
   az account set --subscription  "<subscription-ID>"
   ```
 
+### 3.  Deploy the Solution (Time to complete: 50 min)
+
+1.	Run the following command to create a resource group (use ‘uksouth’ for location)
+  ```
+  az group create --location <location> --name <resource-group-name>
+  ```
+2.	Run the following command to create a Storage account for your Cloud resources.
+  ```
+  az storage account create --location <location> \ --name <storage-account-name> \ --resource-group <resource-group-name> \ --sku Standard_LRS
+  ```
+3.	Navigate to https://github.com/davisanc/AzureSecurityLabs 
+
+4.	Open the n-tier-windows-security-labs.json file
+
+5.	In the json file, search for all instances with passwords. Replace them with your own admin users and passwords and save the file
+
+6.	Run azbb command to set up through an ARM template the basics of the lab: jumpbox web VM, app VM and SQL VM:
+    ```
+    azbb -s <Subscription-ID> -g <Resource-Group-Name> -l <Location> -p .\<name-of-your-tempalte.json> --deploy
+    ```
+Note: this environment will need about 50 minutes to deploy. Once you have run the last commands report to your proctors you have got to this point
+
+The Application and Database tier have an internal load balancer in front of them, so you can scale up the tier with more VMs if needed and the LB will distribute the traffic accordingly
+
+The Web Tier doesn’t have any LB, as we will later create an External Application Gateway in front of the web tier
+
+For now, the only Internet access to the environment is through the JumpBox as it’s the only VM with a public IP address
+
+Test: make sure you can ping from the JB to the Web, Biz and DB virtual machines (enable PING on the firewall settings)
+
+### 4.  Lab 1-  Protecting the Network Perimeter – NSG (Network security groups)
+
+Create an NSG rule to restrict traffic between tiers. For example, in the 3-tier architecture shown, the web tier does not communicate directly with the database tier. To enforce this, the database tier should block incoming traffic from the web tier subnet
+
+1.	Deny all inbound traffic from the VNet. (Use the VIRTUAL_NETWORK tag in the rule.)
+2.	Allow inbound traffic from the business tier subnet.
+3.	Allow inbound traffic from the database tier subnet itself. This rule allows communication between the database VMs, which is needed for database replication and failover.
+4.	Allow RDP traffic (port 3389) from the jumpbox subnet. This rule lets administrators connect to the database tier from the jumpbox.
+5.	Deny all inbound traffic from Internet. Use the “Internet” tag in the rule
+
+Create rules 2 – 4 with higher priority than the first rule, so they override it
+
+Apply your NSG to the JumpBox VM NIC
+
+![NSG-inbound-sql](/images/NSG-inbound-rules-for-SQL.PNG)
 
 
-
-
-
-
+    
 
