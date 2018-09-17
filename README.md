@@ -254,4 +254,21 @@ Try going to another page, this action should be blocked:
 
 ![firewall blocked](/images/Fireall-blocked-rule.PNG)
 
+### 7. Lab 4 – Protecting the Web Application - Application Gateway and WAF (Web Application Firewall)
+
+Access to the Web VMs will be through an Application Gateway, which acts as a Layer7 HTTP reverse proxy and can load balance the web traffic. The Application Gateway can be enabled with a WAF to protect our application against know vulnerabilities like the OWASP Top 10. Internet access to the Web tier should go through the AppGW and we will associate a public IP address to the gateway
+
+Run through Powershell, Azure CLI or an ARM template for the creation of the AppGW/WAF:
+
+Azure ARM template:  on https://github.com/davisanc/AzureSecurityLabs , download the app_gw-security-labs.json and deploy as an ARM template
+
+Azure CLI:
+```
+az network application-gateway create  --name myAppGateway --location uksouth --resource-group Sec-Foundation-MTC --capacity 2 --sku Standard_Medium --http-settings-cookie-based-affinity Disabled --public-ip-address myAGPublicIPAddress  --vnet-name ra-ntier-vnet --subnet appgateway   --servers 10.0.1.5
+```
+**Optional: Create a (DVWA) Damn Vulnerable Web Application from the marketplace, add the VM to the Application Gateway Pool and run a sequence of SQL injection and XSS attacks, checking the WAF can stop them**
+This DVWA is managed by a 3rd party company so the Azure pass credits cannot be used. You will need to use an enterprise subscription or a Pay-as-You-Go
+
+![DVWA](/images/dvwa-vm.PNG)
+
 
