@@ -371,6 +371,69 @@ Azure CLI
 ```
 az vm encryption enable -g Sec-Foundation-MTC --name "sql-vm1" --disk-encryption-keyvault "KeyVault-MTC-Sec" --aad-client-id "David Sanchez" --aad-client-secret "<your-secret>"--volume-type ALL
 ```
+Powershell pre-req script: you can download the 'DiskEncryption.ps' file available here
+
+Powershell
+```
+$rgName = 'MySecureRg';
+ $vmName = 'MySecureVM';
+ $KeyVaultName = 'MySecureVault';
+ $KeyVault = Get-AzureRmKeyVault -VaultName $KeyVaultName -ResourceGroupName $rgname;
+ $diskEncryptionKeyVaultUrl = $KeyVault.VaultUri;
+ $KeyVaultResourceId = $KeyVault.ResourceId;
+
+ Set-AzureRmVMDiskEncryptionExtension -ResourceGroupName $rgname -VMName $vmName -DiskEncryptionKeyVaultUrl $diskEncryptionKeyVaultUrl -DiskEncryptionKeyVaultId $KeyVaultResourceId;
+```
+*Note: you can also run disk encryption with key encryption key (out of scope of this lab)*
+
+Using the pre-req script you get the final result for the SQL VM
+
+![sql vm encrypted](/images/sql-vm-encrypted.PNG)
+
+### Lab 7.  Extending your Data Centre to Azure in a secure way – Site to Site VPN Access
+
+Note: Only run this lab if you are using an enterprise subscription or Pay-As-You-Go, BUT not the Azure pass (as the pfSense image is managed by a 3rd company there is a charge for this and cannot be covered by the pass credits)
+
+**Create a Firewall for the onpremise VPN side**
+
+We will use a Virtual Machine running pfSense Firewall (open Source) to simulate an onpremise data center. Deploy this VM within the same RG but in another location (i.e West Europe)
+
+![pfsense](/images/pfSense.PNG)
+
+Select a small VM spec (i.e B1ms or B2s) using standard HDD and managed disks, create a new VNET and use non-overlapping IP addresses (i.e 192.168.0.0/16 for the address space and 192.168.1.0.24 for the ‘default’ subnet). Assign a new public IP address to the VM, leave the pre-configured NSG (HTTP and HTTPs should be open), enable ‘auto-shutdown’
+
+![pfsenseB1](/images/pfSense-B1ms-cost.PNG)
+
+Open a browser tab and enter the public IP address assigned. Login with the username and password you specified during the creation of the VM
+
+Give a hostname and a Domain name to your pfSense virtual machine
+
+![pfsense general](/images/pfSense-general.PNG)
+
+Leave default NTP settings
+
+By default this pfSense firewall comes with a single NIC. During the installation of the settings it will ask the WAN ip address, choose DHCP. The IP address assigned to the Firewall is the same to the one you can see on the portal (192.168.1.4)
+
+**Create a VPN Gateway for the Azure VPN side**
+
+Go to your existing VNET, and click create a Gateway Subnet
+
+![vpn gw subnet](/images/VPN-GW-subnet.PNG)
+
+Next, we will create the Virtual Network Gateway. We will chose to create a new public IP address. Also, we will use BGP to exchange routes between Azure and the pfSense firewall, so we need to mark the BGP option when creating the Gateway. We will use a private BGP ASN of 65515
+
+Create a new public ip address for the VPN Gateway
+
+Remember to use location where you have all your network resources (UKsouth)
+
+*Note: it will take a few minutes to create the VPN Gateway*
+
+![create vpn gateway](/images/create-vpn-gateway.png)
+
+You will find the BGP peer address on your VPN Gateway. This is the local address that BGP will use in your Azure VPN Gateway to initiate a BGP connection to your home gateway
+
+![VPN-GW-LOCAL](/images/VPN-GW-local-addr.PNG)
+
 
 
 
