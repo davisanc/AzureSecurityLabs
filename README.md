@@ -57,25 +57,32 @@ Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
 ```
 
 **3. Install [Azure CLI 2.0](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)**
-- Open a Command Prompt and check that az produces command help output (try closing Windows Powershell and Visual Studio Code and re-open again)
-- Note: in case you face an issue when you try to run an az command it says "az : The term 'az' is not recognized as the name of a cmdlet, function, script file, or operable program." The issue is because the azure cli 2.0 is instled in location - C:\Users\<username>\AppData\Local\Programs\Python\Python37-32\Scripts\  and this path isn't added to the PATH variable. 
-First make sure you have python installed in your machine. If you don’t have the original CLI (or python) at all, you need that first. Download and install it from here: https://www.python.org/downloads/release/python-352/
-1.	Uninstall Azure CLI earlier versions with command - pip uninstall azure-cli
-2.	Re-install Azure CLI 2.0 - pip install --user azure-cli
-3.	Add the path C:\Users\<username>\AppData\Local\Programs\Python\Python37-32\Scripts\ to PATH 
-- check if the az command is working: az --help
-4.	(Optional) On Visual Studio, go to Extensions, search for Azure CLI Tools and install the package
-5.	Install the Azure building blocks npm package.
-- Install node.js
-- (you may need to close and re-open again PowerShell and VSC) 
-  ```
-  npm install -g @mspnp/azure-building-blocks
-  ```
-- Test Azure Building Blocks with the following command on PowerShell or VSC:
-  ```
-  azbb
-  ```
-6.	From a command prompt, bash prompt, or PowerShell prompt, sign into your Azure account as follows:
+    - Open a Command Prompt and check that az produces command help output (try closing Windows Powershell and Visual Studio Code and re-open again)
+    - *Note: in case you face an issue when you try to run an az command it says "az : The term 'az' is not recognized as the name of a cmdlet, function, script file, or operable program." The issue is because the azure cli 2.0 is instled in location - C:\Users\<username>\AppData\Local\Programs\Python\Python37-32\Scripts\  and this path isn't added to the PATH variable.* 
+      *First make sure you have python installed in your machine. If you don’t have the original CLI (or python) at all, you need that  first. Download and install it from here: https://www.python.org/downloads/release/python-352/*
+      
+    1.	Uninstall Azure CLI earlier versions with command - pip uninstall azure-cli
+    2.	Re-install Azure CLI 2.0 - pip install --user azure-cli
+    3.	Add the path C:\Users\<username>\AppData\Local\Programs\Python\Python37-32\Scripts\ to PATH 
+        - check if the az command is working: 
+          ```
+          az --help
+          ```
+          
+**4.	(Optional) On Visual Studio, go to Extensions, search for Azure CLI Tools and install the package**
+
+**5.	Install the [Azure building blocks] npm package (https://github.com/mspnp/template-building-blocks/wiki/Install-Azure-Building-Blocks)**
+      - Install node.js
+      - (you may need to close and re-open again PowerShell and VSC) 
+        ```
+        npm install -g @mspnp/azure-building-blocks
+        ```
+      - Test Azure Building Blocks with the following command on PowerShell or VSC:
+        ```
+        azbb
+        ```
+        
+**6.	From a command prompt, bash prompt, or PowerShell prompt, sign into your Azure account as follows:
   ```
   Az login
   ```
