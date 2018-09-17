@@ -482,4 +482,51 @@ Go to Status, System Logs, Firewall --> you can enable BGP to pass through the I
 
 ![pfsense BGP rule added](/images/pfSense-BGP-rule-added.PNG)
 
+Finally, simply check that you have connectivity from the pfSense Gateway to the Web VM
+
+![telnet port 80](/images/telnet-port-80-to-web.PNG)
+
+### 11. Lab 8: Azure Active Directory Role-Based Access Control
+
+Role-based access control (RBAC) is the way that you manage access to resources in Azure. In this lab, you will grant a user access to create and manage virtual machines in a resource group
+
+**Grant access**
+
+In RBAC, to grant access, you create a role assignment.
+1.	In the list of Resource groups, choose the RG you have worked on
+2.	Choose Access control (IAM) to see the current list of role assignments.
+
+![rbac access](/images/RBAC-access.png)
+
+3.	Choose Add to open the Add permissions pane.
+
+If you don't have permissions to assign roles, you won't see the Add option.
+
+![rbac add permissions](/images/rbac-permissions.png)
+
+4.	In the Role drop-down list, select Virtual Machine Contributor.
+5.	In the Select list, select yourself or another user.
+6.	Choose Save to create the role assignment.
+
+After a few moments, the user is assigned the Virtual Machine Contributor role at the resource group scope.
+
+![rbac final](/images/rbac-final.png)
+
+### 11 Lab 9: Enable DDoS protection for your resources
+
+*NOTE: The DDoS protection plan on the Standard Tier (Basic is Free) has a cost of ~ $3,000 a month. This means that for the use of this lab it will incur in aprox $100 which will exhaust your Azure pass credit. We recommend to use your enterprise subscription for this lab, and once you have finished revert back to DDoS protection Basic if you don’t plan to use the service anymore*
+
+Azure automatically provides a **Basic DDoS protection** as part of the platform, at no additional charge. Always-on traffic monitoring, and real-time mitigation of common network-level attacks, provide the same defenses utilized by Microsoft’s online services. The entire scale of Azure’s global network can be used to distribute and mitigate attack traffic across regions. Protection is provided for IPv4 and IPv6 Azure public IP addresses
+
+In this lab we will enable an **Standard DDoS protection plan**, which provides additional capabilities over the Basic service tier and are tuned specifically to Azure Virtual Network resources.  DDoS Protection Standard is simple to enable, and requires no application changes. Protection policies are tuned through dedicated traffic monitoring and machine learning algorithms. Policies are applied to public IP addresses associated to resources deployed in virtual networks, such as Azure Load Balancer, Azure Application Gateway, and Azure Service Fabric instances. Real-time telemetry is available through Azure Monitor views during an attack, and for history
+
+As a new feature, Azure Security Center now recommends its Standard pricing tier customers to enable the Azure DDoS Protection Standard service to protect their Virtual Networks against DDoS attacks
+
+![sec center ddos rec](/images/sec-center-ddos-rec.jpg)
+
+![sec center ddos rec2](/images/sec-center-ddos-rec2.jpg)
+
+![sec center ddos rec3](/images/sec-center-ddos-rec3.jpg)
+
+
 
