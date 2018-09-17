@@ -528,5 +528,55 @@ As a new feature, Azure Security Center now recommends its Standard pricing tier
 
 ![sec center ddos rec3](/images/sec-center-ddos-rec3.png)
 
+**Create a DDoS protection plan**
+
+A DDoS protection plan defines a set of virtual networks that have DDoS protection standard enabled, across subscriptions
+
+1.	Select Create a resource in the upper left corner of the Azure portal.
+2.	Search for DDoS. When DDos protection plan appears in the search results, select it.
+3.	Select Create.
+4.	Enter or select your own values, or enter,  and then select Create:
+
+**Enable DDoS for a existing virtual network**
+
+1.	Create a DDoS protection plan by completing the steps in Create a DDoS protection plan, if you don't have an existing DDoS protection plan.
+2.	Select Create a resource in the upper left corner of the Azure portal.
+3.	Enter the name of the virtual network that you want to enable DDoS Protection Standard for in the Search resources, services, and docs box at the top of the portal. When the name of the virtual network appears in the search results, select it.
+4.	Select DDoS protection, under SETTINGS.
+5.	Select Standard. Under DDoS protection plan, select an existing DDoS protection plan, or the plan you created in step 1, and then select Save. The plan you select can be in the same, or different subscription than the virtual network, but both subscriptions must be associated to the same Azure Active Directory tenant.
+
+**Run a simple TCP SYN Flood attack**
+
+In partnership with Breaking Point Cloud, we will run an ‘authorized’ DDoS attack from Breaking Point Cloud to our Public endpoint of your VNET resources. Given the fact there is no considerable traffic going through your environment, the smallest TCP SYN flood should trigger the attack and mitigation should start within minutes
+
+Go to https://breakingpoint.cloud/
+
+An authorize your Subscription ID as target to launch DDoS attacks
+
+![breaking point](/images/Breaking-Point-Authorize-SubID.PNG)
+
+Before launching the attack we confirm we have access to the public endpoint sitting on the Application Gateway we have used in the labs
+
+![tcp site recovered](/images/tcp-syn-flood-attack-lost-web-site-recovered.PNG)
+
+A few minutes after launching the attack, we confirm we have lost access to the endpoint
+
+![tcp site lost](/images/tcp-syn-flood-attack-lost-web-site.PNG)
+
+**Azure Monitor** is integrated with DDoS metrics and will see the TCP packets that have triggered an attack
+
+![tcp syn azure monitor](/images/tcp-syn-flood-azure-monitor.PNG)
+
+The metric **Under DDoS attack or not** is very useful
+
+![tcp under attack or not](/images/tcp-syn-flood-under-ddos-attack-or-not.PNG)
+
+In a few minutes mitigation should kick in place and we should be able to get access to the endpoint back again
+
+We can see that most of the DDoS packets have been dropped by the mitigation plan
+
+![tcp packets](/images/tcp-syn-flood-inbound-tcp-packets-ddos.PNG)
+
+![tcp attack summary](images/tcp-syn-flood-attack-summary.PNG)
 
 
