@@ -376,8 +376,10 @@ I will use the following names for the AAD App name and client secret. Running t
 aadAppName: keyvault-dasanc-app
 aadClientSecret: dasancsec 
 ```
+On the portal go to **Azure Active Directory, App Registrations**, click **New Application Registration** and create the App that will write the secret to KeyVault
 
 **Encrypt a running VM:**
+
 
 **Azure CLI**
 ```
