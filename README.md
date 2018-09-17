@@ -122,7 +122,7 @@ The Web Tier doesn’t have any LB, as we will later create an External Applicat
 
 For now, the only Internet access to the environment is through the JumpBox as it’s the only VM with a public IP address
 
-**Test:** make sure you can ping from the JB to the Web, Biz and DB virtual machines (enable PING on the firewall settings)
+**Test: make sure you can ping from the JB to the Web, Biz and DB virtual machines (enable PING on the firewall settings)**
 
 ## 4.  Lab 1 - Protecting the Network Perimeter – NSG (Network security groups)
 
