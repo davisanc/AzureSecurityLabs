@@ -74,21 +74,22 @@ Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
 **4.	(Optional) On Visual Studio, go to Extensions, search for Azure CLI Tools and install the package**
 
 **5.	Install the [Azure building blocks npm package](https://github.com/mspnp/template-building-blocks/wiki/Install-Azure-Building-Blocks)**
-     - Install node.js
-     - (you may need to close and re-open again PowerShell and VSC) 
-        ```
-        npm install -g @mspnp/azure-building-blocks
-        ```
-     - Test Azure Building Blocks with the following command on PowerShell or VSC:
-        ```
-        azbb
-        ```
+
+- Install node.js
+- (you may need to close and re-open again PowerShell and VSC) 
+   ```
+   npm install -g @mspnp/azure-building-blocks
+   ```
+- Test Azure Building Blocks with the following command on PowerShell or VSC:
+   ```
+   azbb
+   ```
         
-**6.	From a command prompt, bash prompt, or PowerShell prompt, sign into your Azure account as follows:
+**6.	From a command prompt, bash prompt, or PowerShell prompt, sign into your Azure account as follows:**
   ```
   Az login
   ```
-7.	Make sure you use the right subscription (enterprise or Azure pass)
+**7.	Make sure you use the right subscription (enterprise or Azure pass)**
   ```
   az account set --subscription  "<subscription-ID>"
   ```
