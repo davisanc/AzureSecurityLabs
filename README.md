@@ -22,7 +22,7 @@ https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/n-ti
 
 ## 1.	Redeem your Azure Passes if you will use your Personal Microsoft Account
 
-Note: We recommend using an enterprise subscription with a working account that have privileges to create resources. There are some labs on this guide that require the use or 3rd party Virtual Machines that don’t allow the use of Azure pass credits. In order to minimise costs we will enable ‘auto’shutdown’ of virtual machines. 
+*Note: We recommend using an enterprise subscription with a working account that have privileges to create resources. There are some labs on this guide that require the use or 3rd party Virtual Machines that don’t allow the use of Azure pass credits. In order to minimise costs we will enable ‘auto’shutdown’ of virtual machines.* 
 
 Make sure you have a working Microsoft account that you can use to redeem the Azure pass
 
