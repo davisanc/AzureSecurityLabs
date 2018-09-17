@@ -300,5 +300,77 @@ For the purpose of the Security Center quickstarts and tutorials you must upgrad
 
 ![oms advanced](/images/oms-advanced.png)
 
+3.	Security policy provides information on the resource groups contained in the subscription. Pricing also opens.
+4.	Under Pricing, select Standard to upgrade from Free to Standard and click Save.
+
+![oms pricing](/images/oms-pricing.png)
+
+Now that you’ve upgraded to the Standard tier, you have access to additional Security Center features, including **adaptive application controls, just in time VM access, security alerts, threat intelligence, automation playbooks**, and more. Note that security alerts will only appear when Security Center detects malicious activity.
+
+![oms global](/images/oms-global.png)
+
+**Automate data collection**
+
+Security Center collects data from your Azure VMs and non-Azure computers to monitor for security vulnerabilities and threats. Data is collected using the Microsoft Monitoring Agent, which reads various security-related configurations and event logs from the machine and copies the data to your workspace for analysis. By default, Security Center will create a new workspace for you.
+When automatic provisioning is enabled, Security Center installs the Microsoft Monitoring Agent on all supported Azure VMs and any new ones that are created. Automatic provisioning is strongly recommended.
+To enable automatic provisioning of the Microsoft Monitoring Agent:
+1.	Under the Security Center main menu, select Security Policy.
+2.	Select the subscription.
+3.	Under Security policy, select Data Collection.
+4.	Under Data Collection, select On to enable automatic provisioning.
+5.	Select Save.
+
+![oms datacollection](/images/oms-datacollection.png)
+
+With this new insight into your Azure VMs, Security Center can provide additional Recommendations related to system update status, OS security configurations, endpoint protection, as well as generate additional Security alerts.
+
+![oms recomm](/images/oms-recomm.png)
+
+### Lab 6.  Storage Security – Encryption at Rest - Apply disk encryption to a running VM
+
+Having looked at ASC we’ve seen the recommendations to apply disk encryption to our VMs
+
+Azure Disk encryption needs the Key Vault and the VMs to be co-located in the same region. Create and use a Key Vault that is in the same region as the VM to be encrypted
+
+![create keyv](/images/Create-KeyVault.PNG)
+
+You can enable encryption by using a template, PowerShell cmdlets, or CLI commands. The following sections explain in detail how to enable Azure Disk Encryption
+
+*Important: It is mandatory to snapshot and/or backup a managed disk based VM instance outside of, and prior to enabling Azure Disk Encryption. A snapshot of the managed disk can be taken from the portal, or Azure Backup can be used. Backups ensure that a recovery option is possible in the case of any unexpected failure during encryption*
+
+**Run a pre-requisities script to encrypt data disk of your/s VM**
+
+Make sure you have powershell verion 6 installed on your local machine
+
+Verify the installed versions of the AzureRM module. If needed, update the Azure PowerShell module.
+- The AzureRM module version needs to be 6.0.0 or higher.
+- Using the latest AzureRM module version is recommended.
+```
+Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
+```
+```
+Update-Module -Name AzureRM
+```
+
+**Enable encryption on existing or running VMs with Azure CLI**
+
+FYI there are some pre-req to check before enabling disk encryption: https://docs.microsoft.com/en-us/azure/security/azure-security-disk-encryption-prerequisites
+
+We will need an AAD application that will be used to write secrets to KeyVault (this is an authentication step). Also, we need a secret of the AAD application that was created on the earlier step. Recommendation is to run through the pre-req powershell script that handles this
+
+I will use the following names for the AAD App name and client secret. Running through the script, this App will be registered with AAD and will be authorized to use KeyVault. This client secret will be written in KeyVault
+
+```
+aadAppName: keyvault-dasanc-app
+aadClientSecret: dasancsec 
+```
+
+**Encrypt a running VM:**
+
+Azure CLI
+```
+az vm encryption enable -g Sec-Foundation-MTC --name "sql-vm1" --disk-encryption-keyvault "KeyVault-MTC-Sec" --aad-client-id "David Sanchez" --aad-client-secret "<your-secret>"--volume-type ALL
+```
+
 
 
