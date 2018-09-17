@@ -271,4 +271,16 @@ This DVWA is managed by a 3rd party company so the Azure pass credits cannot be 
 
 ![DVWA](/images/dvwa-vm.PNG)
 
+### 8. Lab 5 – Understand your application security posture in Azure -Azure Security Center for security recommendations
+
+First thing is to upgrade your subscription to the Standard Tier to get all features of ASC
+
+**Enable your Azure subscription**
+
+1.	Sign into the Azure portal.
+2.	On the Microsoft Azure menu, select Security Center. Security Center - Overview opens.
+
+![oms](/images/OMS.PNG)
+
+
 
