@@ -434,6 +434,28 @@ You will find the BGP peer address on your VPN Gateway. This is the local addres
 
 ![VPN-GW-LOCAL](/images/VPN-GW-local-addr.PNG)
 
+Now we are going to create the Local Network Gateway. Azure refers to the VPN device that sits in your onpremise network. You will need to indicate the BGP peer address, your local network behind the Firewall (or local VPN gateway) and a Private BGP ASN (I am using 65501 on the pfSense side). 
+
+Go to your RG, click ‘Add resource’ and look for ‘ Local Network Gateway’. Use the ‘onpremise’ public ip address (example below uses 1.2.3.4)
+
+![local nt gateway](/images/local-nt-gateway.png)
+
+Once the local gateway is created we will define a connection to our onpremise VPN Gateway. We will use a private shared key to enable the IPSEC VPN to come up. Remember to mark BGP to ‘enabled’ on your Connection. 
+
+**Configure the pfSense VPN Firewall**
+
+Now, moving to the other end we will use the Web UI on the pfSense firewall to work on the Rules and VPN settings 
+
+To configure a new tunnel, a new Phase 1 IPSEC VPN must be created. Remote Gateway will be the public IP address assigned to your Virtual Network Gateway in Azure. Leave ‘auto’ as IKE key exchange version, selecting WAN as the interface to run the VPN. For the authentication part, use the Pre-Shared Key you have defined. Use the encryption algorithm you need, in my case AES (256 bits), DH group and Hashing algorithm
+
+![ipsec tunnels](/images/ipsec-tunnels.png)
+
+We will then move to Phase 2. This phase is what builds the actual tunnel, sets the protocol to use, and sets the length of time to keep the tunnel up when there is no traffic. For remote network, use the VNET address space. Local subnet will be the address space on the LAN side of the pFsense
+
+Apply changes to take them effect
+
+![pfsense VPN2](/images/pfsense\ VPN\ P2.PNG)
+
 
 
 
