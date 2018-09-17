@@ -280,7 +280,7 @@ First thing is to upgrade your subscription to the Standard Tier to get all feat
 1.	Sign into the Azure portal.
 2.	On the Microsoft Azure menu, select Security Center. Security Center - Overview opens.
 
-![oms](/images/OMS.PNG)
+![oms](/images/OMS.png)
 
 
 
