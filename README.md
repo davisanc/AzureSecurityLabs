@@ -456,8 +456,30 @@ Apply changes to take them effect
 
 ![pfsense VPN2](/images/pfsense-VPN-P2.PNG)
 
+On pfSense, go to Status, IPSEC, Overview and click **‘Connect VPN’**
 
+*NOTE: When using BGP over a Routed IPSEC tunnel, it wouldn’t be needed the configuration and management of P2 entries. You will me managing routes in the BGP config instead of P2 entries. Routed IPSEC is a pfSense feature available in 2.4.4, my setup runs on 2.4.3 so I will create the P2 entries manually*
 
+On the local gateway connections, as we are using BGP, **don’t forget to enable BGP or the IPSEC tunnel won’t come up!**
 
+**Enable IPSEC traffic on the Virtual Machine pfSense NSG**
+
+Configure a Rule to allow UDP 4500 ((IPsec NAT-T) & 500 (ISAKMP) ports 
+
+**Enable IPSEC traffic through WAN interface of pfSense**
+
+Configure a Rule to allow UDP 4500 ((IPsec NAT-T) & 500 (ISAKMP) ports 
+
+![udp ports IPSEC](/images/UDP-ports-IPSEC-open.PNG)
+
+After we added the relevant rules on the NSG and pfSense WAN interface, the connection is up and running 
+
+![pfsense connections](/images/pfsense-connections.png)
+
+**Enable BGP traffic through IPSEC interface**
+
+Go to Status, System Logs, Firewall --> you can enable BGP to pass through the IPSEC interface using the logs
+
+![pfsense BGP rule added](/images/pfSense-BGP-rule-added.PNG)
 
 
