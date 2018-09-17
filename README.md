@@ -522,11 +522,11 @@ In this lab we will enable an **Standard DDoS protection plan**, which provides 
 
 As a new feature, Azure Security Center now recommends its Standard pricing tier customers to enable the Azure DDoS Protection Standard service to protect their Virtual Networks against DDoS attacks
 
-![sec center ddos rec](/images/sec-center-ddos-rec.jpg)
+![sec center ddos rec](/images/sec-center-ddos-rec.png)
 
-![sec center ddos rec2](/images/sec-center-ddos-rec2.jpg)
+![sec center ddos rec2](/images/sec-center-ddos-rec2.png)
 
-![sec center ddos rec3](/images/sec-center-ddos-rec3.jpg)
+![sec center ddos rec3](/images/sec-center-ddos-rec3.png)
 
 
 
