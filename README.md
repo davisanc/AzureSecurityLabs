@@ -113,7 +113,7 @@ Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
     ```
     azbb -s <Subscription-ID> -g <Resource-Group-Name> -l <Location> -p .\<name-of-your-tempalte.json> --deploy
     ```
-Note: this environment will need about 50 minutes to deploy. Once you have run the last commands report to your proctors you have got to this point
+*Note: this environment will need about 50 minutes to deploy. Once you have run the last commands report to your proctors you have got to this point*
 
 The Application and Database tier have an internal load balancer in front of them, so you can scale up the tier with more VMs if needed and the LB will distribute the traffic accordingly
 
