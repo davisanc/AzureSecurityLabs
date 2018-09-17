@@ -20,7 +20,7 @@ https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/n-ti
 11.	Lab 8: Azure Active Directory Role-Based Access Control
 12.	Lab 9: Enable DDoS protection for your resources
 
-### 1.	Redeem your Azure Passes if you will use your Personal Microsoft Account
+## 1.	Redeem your Azure Passes if you will use your Personal Microsoft Account
 
 Note: We recommend using an enterprise subscription with a working account that have privileges to create resources. There are some labs on this guide that require the use or 3rd party Virtual Machines that don’t allow the use of Azure pass credits. In order to minimise costs we will enable ‘auto’shutdown’ of virtual machines. 
 
@@ -44,7 +44,7 @@ It will take a few minutes until Azure sets up your new subscription
 
 Next when you log into https://portal.azure.com , go to Cost Management + Billing and you will be able to see your Azure pass credit
 
-### 2.  Configuration needed before starting the labs (Time to complete: 15 min)
+## 2.  Configuration needed before starting the labs (Time to complete: 15 min)
 
 **1.	[Visual Studio Code](https://azurecitadel.github.io/guides/vscode/#install-visual-studio-code)** 
 - Install vscode from https://code.visualstudio.com
@@ -94,7 +94,7 @@ Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
   az account set --subscription  "<subscription-ID>"
   ```
 
-### 3.  Deploy the Solution (Time to complete: 50 min)
+## 3.  Deploy the Solution (Time to complete: 50 min)
 
 1.	Run the following command to create a resource group (use ‘uksouth’ for location)
   ```
@@ -124,7 +124,7 @@ For now, the only Internet access to the environment is through the JumpBox as i
 
 **Test:** make sure you can ping from the JB to the Web, Biz and DB virtual machines (enable PING on the firewall settings)
 
-### 4.  Lab 1 - Protecting the Network Perimeter – NSG (Network security groups)
+## 4.  Lab 1 - Protecting the Network Perimeter – NSG (Network security groups)
 
 Create an NSG rule to restrict traffic between tiers. For example, in the 3-tier architecture shown, the web tier does not communicate directly with the database tier. To enforce this, the database tier should block incoming traffic from the web tier subnet
 
@@ -144,7 +144,7 @@ Confirm that you can RDP from the Jumpbox to the SQL server and also from the Bu
 
 ![RDP blocked](/images/RDP-blocked-from-web.PNG)
 
-### 5. Lab 2 - Azure Networking logs
+## 5. Lab 2 - Azure Networking logs
 
 Network logging and monitoring in Azure is comprehensive and covers two broad categories:
 - Network Watcher: Scenario-based network monitoring is provided with the features in Network Watcher. This service includes packet capture, next hop, IP flow verify, security group view, NSG flow logs. Scenario level monitoring provides an end to end view of network resources in contrast to individual network resource monitoring.
@@ -166,7 +166,7 @@ Click Save
 Finally, to go to Network Watcher, on the left-side of the portal select All services, then enter Monitor in the Filter box. When Monitor appears in the search results, select it. To start exploring traffic analytics and its capabilities, select Network watcher, then Traffic Analytics
 The dashboard may take up to 30 minutes to appear the first time because Traffic Analytics must first aggregate enough data for it to derive meaningful insights, before it can generate any reports.
 
-### 6.  Lab 3 – Control outbound security traffic with Azure Firewall
+## 6.  Lab 3 – Control outbound security traffic with Azure Firewall
 
 Azure Firewall is a stateful firewall as a service, built in with high availability and cloud scalability. The primary use case for the Azure Firewall is to centrally create, enforce and log application and network policies. As the first version of the product, the firewall is focused on securing outbound flows by FQDN whitelisting/blacklisting. It provides source network address translation and it’s integrated with Azure Monitor for logging and analytics
 
@@ -266,7 +266,7 @@ Try going to another page, this action should be blocked:
 
 ![firewall blocked](/images/Fireall-blocked-rule.PNG)
 
-### 7. Lab 4 – Protecting the Web Application - Application Gateway and WAF (Web Application Firewall)
+## 7. Lab 4 – Protecting the Web Application - Application Gateway and WAF (Web Application Firewall)
 
 Access to the Web VMs will be through an Application Gateway, which acts as a Layer7 HTTP reverse proxy and can load balance the web traffic. The Application Gateway can be enabled with a WAF to protect our application against know vulnerabilities like the OWASP Top 10. Internet access to the Web tier should go through the AppGW and we will associate a public IP address to the gateway
 
@@ -283,7 +283,7 @@ This DVWA is managed by a 3rd party company so the Azure pass credits cannot be 
 
 ![DVWA](/images/dvwa-vm.PNG)
 
-### 8. Lab 5 – Understand your application security posture in Azure -Azure Security Center for security recommendations
+## 8. Lab 5 – Understand your application security posture in Azure -Azure Security Center for security recommendations
 
 First thing is to upgrade your subscription to the Standard Tier to get all features of ASC
 
@@ -338,7 +338,7 @@ With this new insight into your Azure VMs, Security Center can provide additiona
 
 ![oms recomm](/images/oms-recomm.png)
 
-### 9. Lab 6 - Storage Security – Encryption at Rest - Apply disk encryption to a running VM
+## 9. Lab 6 - Storage Security – Encryption at Rest - Apply disk encryption to a running VM
 
 Having looked at ASC we’ve seen the recommendations to apply disk encryption to our VMs
 
@@ -402,7 +402,7 @@ Using the pre-req script you get the final result for the SQL VM
 
 ![sql vm encrypted](/images/sql-vm-encrypted.PNG)
 
-### 10. Lab 7 - Extending your Data Centre to Azure in a secure way – Site to Site VPN Access
+## 10. Lab 7 - Extending your Data Centre to Azure in a secure way – Site to Site VPN Access
 
 Note: Only run this lab if you are using an enterprise subscription or Pay-As-You-Go, BUT not the Azure pass (as the pfSense image is managed by a 3rd company there is a charge for this and cannot be covered by the pass credits)
 
@@ -498,7 +498,7 @@ Finally, simply check that you have connectivity from the pfSense Gateway to the
 
 ![telnet port 80](/images/telnet-port-80-to-web.PNG)
 
-### 11. Lab 8 - Azure Active Directory Role-Based Access Control
+## 11. Lab 8 - Azure Active Directory Role-Based Access Control
 
 Role-based access control (RBAC) is the way that you manage access to resources in Azure. In this lab, you will grant a user access to create and manage virtual machines in a resource group
 
@@ -524,7 +524,7 @@ After a few moments, the user is assigned the Virtual Machine Contributor role a
 
 ![rbac final](/images/rbac-final.png)
 
-### 12. Lab 9 - Enable DDoS protection for your resources
+## 12. Lab 9 - Enable DDoS protection for your resources
 
 *NOTE: The DDoS protection plan on the Standard Tier (Basic is Free) has a cost of ~ $3,000 a month. This means that for the use of this lab it will incur in aprox $100 which will exhaust your Azure pass credit. We recommend to use your enterprise subscription for this lab, and once you have finished revert back to DDoS protection Basic if you don’t plan to use the service anymore*
 
