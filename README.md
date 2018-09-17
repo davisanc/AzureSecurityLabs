@@ -71,7 +71,7 @@ Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
           
 **4.	(Optional) On Visual Studio, go to Extensions, search for Azure CLI Tools and install the package**
 
-**5.	Install the [Azure building blocks npm package] (https://github.com/mspnp/template-building-blocks/wiki/Install-Azure-Building-Blocks)**
+**5.	Install the [Azure building blocks npm package](https://github.com/mspnp/template-building-blocks/wiki/Install-Azure-Building-Blocks)**
      - Install node.js
      - (you may need to close and re-open again PowerShell and VSC) 
         ```
