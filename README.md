@@ -454,7 +454,9 @@ We will then move to Phase 2. This phase is what builds the actual tunnel, sets 
 
 Apply changes to take them effect
 
-![pfsense VPN2](/images/pfsense\ VPN\ P2.PNG)
+![pfsense VPN2](/images/pfsense-VPN-P2.PNG)
+
+
 
 
 
