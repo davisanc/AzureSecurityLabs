@@ -1,0 +1,9 @@
+
+$rgName = 'Sec-Foundation-MTC';
+ $vmName = 'sql-vm1';
+ $KeyVaultName = 'KeyVault-MTC-Sec';
+ $KeyVault = Get-AzureRmKeyVault -VaultName $KeyVaultName -ResourceGroupName $rgname;
+ $diskEncryptionKeyVaultUrl = $KeyVault.VaultUri;
+ $KeyVaultResourceId = $KeyVault.ResourceId;
+
+ Set-AzureRmVMDiskEncryptionExtension -ResourceGroupName $rgname -VMName $vmName -DiskEncryptionKeyVaultUrl $diskEncryptionKeyVaultUrl -DiskEncryptionKeyVaultId $KeyVaultResourceId;
