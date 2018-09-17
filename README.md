@@ -38,5 +38,56 @@ Activate your pass
 
 ![active pass](/images/activate-azure-pass.PNG)
 
+It will take a few minutes until Azure sets up your new subscription
+
+![setting subs](/images/azure-pass-setting-subscription.PNG)
+
+Next when you log into https://portal.azure.com , go to Cost Management + Billing and you will be able to see your Azure pass credit
+
+### 2.  Configuration needed before starting the labs (Time to complete: 15 min)
+
+1.	Visual Studio Code 
+- Install vscode from https://code.visualstudio.com
+2.	PowerShell (we need PS version 6)
+- Install the Azure PowerShell module
+- Make sure you have installed PS version 6 or higher
+```
+Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
+```
+3. Install Azure CLI 2.0
+- Open a Command Prompt and check that az produces command help output (try closing Windows Powershell and Visual Studio Code and re-open again)
+- Note: in case you face an issue when you try to run an az command it says "az : The term 'az' is not recognized as the name of a cmdlet, function, script file, or operable program." The issue is because the azure cli 2.0 is instled in location - C:\Users\<username>\AppData\Local\Programs\Python\Python37-32\Scripts\  and this path isn't added to the PATH variable. 
+First make sure you have python installed in your machine. If you don’t have the original CLI (or python) at all, you need that first. Download and install it from here: https://www.python.org/downloads/release/python-352/
+1.	Uninstall Azure CLI earlier versions with command - pip uninstall azure-cli
+2.	Re-install Azure CLI 2.0 - pip install --user azure-cli
+3.	Add the path C:\Users\<username>\AppData\Local\Programs\Python\Python37-32\Scripts\ to PATH 
+- check if the az command is working: az --help
+
+4.	(Optional) On Visual Studio, go to Extensions, search for Azure CLI Tools and install the package
+5.	Install the Azure building blocks npm package.
+- Install node.js
+- (you may need to close and re-open again PowerShell and VSC) 
+- 
+  ```
+  npm install -g @mspnp/azure-building-blocks
+  ```
+- Test Azure Building Blocks with the following command on PowerShell or VSC:
+  ```
+  azbb
+  ```
+6.	From a command prompt, bash prompt, or PowerShell prompt, sign into your Azure account as follows:
+  ```
+  Az login
+  ```
+7.	Make sure you use the right subscription (enterprise or Azure pass)
+  ```
+  az account set --subscription  "<subscription-ID>"
+  ```
+
+
+
+
+
+
 
 
