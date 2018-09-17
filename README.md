@@ -36,7 +36,7 @@ Enter the promo code of your Azure Pass
 
 Activate your pass
 
-![active pass](/activate-azure-pass.PNG)
+![active pass](/images/activate-azure-pass.PNG)
 
 
 
