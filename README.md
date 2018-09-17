@@ -128,6 +128,131 @@ Apply your NSG to the JumpBox VM NIC
 
 ![NSG-inbound-sql](/images/NSG-inbound-rules-for-SQL.PNG)
 
+Confirm that you can RDP from the Jumpbox to the SQL server and also from the Business VM (by the specific NSG added)  but not from the Web VM
 
-    
+![RDP blocked](/images/RDP-blocked-from-web.PNG)
+
+### 5. Azure Networking logs
+
+Network logging and monitoring in Azure is comprehensive and covers two broad categories:
+- Network Watcher: Scenario-based network monitoring is provided with the features in Network Watcher. This service includes packet capture, next hop, IP flow verify, security group view, NSG flow logs. Scenario level monitoring provides an end to end view of network resources in contrast to individual network resource monitoring.
+- Resource monitoring: Resource level monitoring comprises four features, diagnostics logs, metrics, troubleshooting, and resource health. All these features are built at the network resource level.
+
+To troubleshoot your NSG rules, enable NSG flow logs. This will enable Network watcher. You will need to select an storage account within your Resource Group. The NSG flow logs will be stored within a blob container of the selected storage account. More details https://docs.microsoft.com/en-us/azure/network-watcher/network-watcher-nsg-flow-logging-portal
+
+![NSG flow logs](/images/NSG-flow-logs-enabled.PNG)
+
+Also, you may want to enable Traffic Analytics for rich analytics and visualization. You will need to create an OMS workspace (select the Free Tier and put it on the same RG and location) and link it to Traffic Analytics
+Traffic Analytics provides rich analytics and visualization derived from NSG flow logs and other Azure resources' data. Drill through geo-map, easily figure out traffic hotspots and get insights into optimization possibilities. Learn about all features To use this feature, choose an OMS workspace. To minimize data egress costs, we recommend that you choose a workspace in the same region your flow logs storage account is located. Network Performance Monitor solution will be installed on the workspace. We also advise that you use the same workspace for all NSGs as much as possible. Additional meta-data is added to your flow logs data, to provide enhanced analytics.
+
+![flow log ta](/images/flow-logs-and-traffic-analytics.PNG)
+
+Click Save
+
+![NSG and TA enabled](/images/NSG-and-TA-enabled.PNG)
+
+Finally, to go to Network Watcher, on the left-side of the portal select All services, then enter Monitor in the Filter box. When Monitor appears in the search results, select it. To start exploring traffic analytics and its capabilities, select Network watcher, then Traffic Analytics
+The dashboard may take up to 30 minutes to appear the first time because Traffic Analytics must first aggregate enough data for it to derive meaningful insights, before it can generate any reports.
+
+### 6.  Lab 3 – Control outbound security traffic with Azure Firewall
+
+Azure Firewall is a stateful firewall as a service, built in with high availability and cloud scalability. The primary use case for the Azure Firewall is to centrally create, enforce and log application and network policies. As the first version of the product, the firewall is focused on securing outbound flows by FQDN whitelisting/blacklisting. It provides source network address translation and it’s integrated with Azure Monitor for logging and analytics
+
+At this time the Azure Firewall is on public preview. To enable the firewall in your subscription you need use the following Azure PowerShell commands:
+
+```
+Register-AzureRmProviderFeature -FeatureName AllowRegionalGatewayManagerForSecureGateway -ProviderNamespace Microsoft.Network
+```
+
+```
+Register-AzureRmProviderFeature -FeatureName AllowAzureFirewall -ProviderNamespace Microsoft.Network
+```
+
+It takes up to 30 minutes for feature registration to complete. You can check your registration status by running the following Azure PowerShell commands:
+
+```
+Get-AzureRmProviderFeature -FeatureName AllowRegionalGatewayManagerForSecureGateway -ProviderNamespace Microsoft.Network
+```
+
+```
+Get-AzureRmProviderFeature -FeatureName AllowAzureFirewall -ProviderNamespace Microsoft.Network
+```
+
+After the registration is complete, run the following command:
+
+```
+Register-AzureRmResourceProvider -ProviderNamespace Microsoft.Network
+```
+
+The cloud firewall needs to have a subnet within your VNET named ‘AzureFirewallSubnet’
+
+On the portal create a new subnet in your VNET with that name (i.e 10.0.6.0/24)
+
+Go to your resource, click Create a resource, networking, and look for ‘Firewall
+
+![firewall](/images/firewall.PNG)
+
+We will work on the Web VM, and we will change the default route of the web subnet to go through the firewall
+
+**Create a default Route**
+
+![route table](/images/route-table.PNG)
+
+1.	Click Subnets, and then click Associate.
+2.	Click Virtual network, and then select ‘ra-ntier-vnet’
+3.	For Subnet, click ‘mgmt
+4.	Click OK.
+5.	Click Routes, and then click Add.
+6.	For Route name, type FW-DG.
+7.	For Address prefix, type 0.0.0.0/0.
+8.	For Next hop type, select Virtual appliance.
+    Azure Firewall is actually a managed service, but virtual appliance works in this situation.
+9.	For Next hop address, type the private IP address for the firewall 
+10.	Click OK.
+
+**Create application rules**
+
+1.	Click on the firewall
+2.	Under Settings, click Rules.
+3.	Click Add application rule collection.
+4.	For Name, type App-Coll01.
+5.	For Priority, type 200.
+6.	For Action, select Allow.
+7.	Under Rules, for Name, type AllowGH.
+8.	For Source Addresses, type 10.0.1.0/24
+9.	For Protocol:port, type http, https. 
+10.	For Target FQDNS, type github.com
+11.	Click Add.
+
+*Note:
+Azure Firewall includes a built-in rule collection for infrastructure FQDNs that are allowed by default. These FQDNs are specific for the platform and can't be used for other purposes. The allowed infrastructure FQDNs include:
+- Compute access to storage Platform Image Repository (PIR).
+- Managed disks status storage access.
+- Windows Diagnostics
+*You can override this build-in infrastructure rule collection by creating a deny all application rule collection which is processed last. It will always be processed before the infrastructure rule collection. Anything not in the infrastructure rule collection is denied by default.*
+
+**Configure network rules**
+
+The idea is to permit DNS traffic to go through the Firewall from a L3/L4 perspective
+1.	Click Add network rule collection.
+2.	For Name, type Net-Coll01.
+3.	For Priority, type 200.
+4.	For Action, select Allow.
+5.	Under Rules, for Name, type AllowDNS.
+6.	For Protocol, select UDP.
+7.	For Source Addresses, type 10.0.2.0/24.
+8.	For Destination address, type 168.63.129.16
+9.	For Destination Ports, type 53.
+10.	Click Add.
+
+**Test your firewall rules**
+
+Open a browser and try go to github. 
+
+![firewall allowed](/images/Firewall-allowed-rule.PNG)
+
+Try going to another page, this action should be blocked:
+
+![firewall blocked](/images/Fireall-blocked-rule.PNG)
+
 
