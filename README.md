@@ -228,7 +228,7 @@ We will work on the Web VM, and we will change the default route of the web subn
 Azure Firewall includes a built-in rule collection for infrastructure FQDNs that are allowed by default. These FQDNs are specific for the platform and can't be used for other purposes. The allowed infrastructure FQDNs include:
 - Compute access to storage Platform Image Repository (PIR).
 - Managed disks status storage access.
-- Windows Diagnostics
+- Windows Diagnostics*
 *You can override this build-in infrastructure rule collection by creating a deny all application rule collection which is processed last. It will always be processed before the infrastructure rule collection. Anything not in the infrastructure rule collection is denied by default.*
 
 **Configure network rules**
