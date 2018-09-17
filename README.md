@@ -46,15 +46,17 @@ Next when you log into https://portal.azure.com , go to Cost Management + Billin
 
 ### 2.  Configuration needed before starting the labs (Time to complete: 15 min)
 
-1.	Visual Studio Code 
+**1.	Visual Studio Code** 
 - Install vscode from https://code.visualstudio.com
-2.	PowerShell (we need PS version 6)
+
+**2.	PowerShell (we need PS version 6)**
 - Install the Azure PowerShell module
 - Make sure you have installed PS version 6 or higher
 ```
 Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
 ```
-3. Install Azure CLI 2.0
+
+**3. Install Azure CLI 2.0**
 - Open a Command Prompt and check that az produces command help output (try closing Windows Powershell and Visual Studio Code and re-open again)
 - Note: in case you face an issue when you try to run an az command it says "az : The term 'az' is not recognized as the name of a cmdlet, function, script file, or operable program." The issue is because the azure cli 2.0 is instled in location - C:\Users\<username>\AppData\Local\Programs\Python\Python37-32\Scripts\  and this path isn't added to the PATH variable. 
 First make sure you have python installed in your machine. If you don’t have the original CLI (or python) at all, you need that first. Download and install it from here: https://www.python.org/downloads/release/python-352/
@@ -110,9 +112,9 @@ The Web Tier doesn’t have any LB, as we will later create an External Applicat
 
 For now, the only Internet access to the environment is through the JumpBox as it’s the only VM with a public IP address
 
-Test: make sure you can ping from the JB to the Web, Biz and DB virtual machines (enable PING on the firewall settings)
+**Test:** make sure you can ping from the JB to the Web, Biz and DB virtual machines (enable PING on the firewall settings)
 
-### 4.  Lab 1-  Protecting the Network Perimeter – NSG (Network security groups)
+### 4.  Lab 1 - Protecting the Network Perimeter – NSG (Network security groups)
 
 Create an NSG rule to restrict traffic between tiers. For example, in the 3-tier architecture shown, the web tier does not communicate directly with the database tier. To enforce this, the database tier should block incoming traffic from the web tier subnet
 
@@ -132,7 +134,7 @@ Confirm that you can RDP from the Jumpbox to the SQL server and also from the Bu
 
 ![RDP blocked](/images/RDP-blocked-from-web.PNG)
 
-### 5. Azure Networking logs
+### 5. Lab 2 - Azure Networking logs
 
 Network logging and monitoring in Azure is comprehensive and covers two broad categories:
 - Network Watcher: Scenario-based network monitoring is provided with the features in Network Watcher. This service includes packet capture, next hop, IP flow verify, security group view, NSG flow logs. Scenario level monitoring provides an end to end view of network resources in contrast to individual network resource monitoring.
@@ -168,7 +170,7 @@ Register-AzureRmProviderFeature -FeatureName AllowRegionalGatewayManagerForSecur
 Register-AzureRmProviderFeature -FeatureName AllowAzureFirewall -ProviderNamespace Microsoft.Network
 ```
 
-It takes up to 30 minutes for feature registration to complete. You can check your registration status by running the following Azure PowerShell commands:
+**It takes up to 30 minutes for feature registration to complete**. You can check your registration status by running the following Azure PowerShell commands:
 
 ```
 Get-AzureRmProviderFeature -FeatureName AllowRegionalGatewayManagerForSecureGateway -ProviderNamespace Microsoft.Network
@@ -326,7 +328,7 @@ With this new insight into your Azure VMs, Security Center can provide additiona
 
 ![oms recomm](/images/oms-recomm.png)
 
-### Lab 6.  Storage Security – Encryption at Rest - Apply disk encryption to a running VM
+### 9. Lab 6 - Storage Security – Encryption at Rest - Apply disk encryption to a running VM
 
 Having looked at ASC we’ve seen the recommendations to apply disk encryption to our VMs
 
@@ -367,13 +369,13 @@ aadClientSecret: dasancsec
 
 **Encrypt a running VM:**
 
-Azure CLI
+**Azure CLI**
 ```
 az vm encryption enable -g Sec-Foundation-MTC --name "sql-vm1" --disk-encryption-keyvault "KeyVault-MTC-Sec" --aad-client-id "David Sanchez" --aad-client-secret "<your-secret>"--volume-type ALL
 ```
 Powershell pre-req script: you can download the 'DiskEncryption.ps' file available here
 
-Powershell
+**Powershell**
 ```
 $rgName = 'MySecureRg';
  $vmName = 'MySecureVM';
@@ -390,7 +392,7 @@ Using the pre-req script you get the final result for the SQL VM
 
 ![sql vm encrypted](/images/sql-vm-encrypted.PNG)
 
-### Lab 7.  Extending your Data Centre to Azure in a secure way – Site to Site VPN Access
+### 10. Lab 7 - Extending your Data Centre to Azure in a secure way – Site to Site VPN Access
 
 Note: Only run this lab if you are using an enterprise subscription or Pay-As-You-Go, BUT not the Azure pass (as the pfSense image is managed by a 3rd company there is a charge for this and cannot be covered by the pass credits)
 
@@ -486,7 +488,7 @@ Finally, simply check that you have connectivity from the pfSense Gateway to the
 
 ![telnet port 80](/images/telnet-port-80-to-web.PNG)
 
-### 11. Lab 8: Azure Active Directory Role-Based Access Control
+### 11. Lab 8 - Azure Active Directory Role-Based Access Control
 
 Role-based access control (RBAC) is the way that you manage access to resources in Azure. In this lab, you will grant a user access to create and manage virtual machines in a resource group
 
@@ -512,7 +514,7 @@ After a few moments, the user is assigned the Virtual Machine Contributor role a
 
 ![rbac final](/images/rbac-final.png)
 
-### 11 Lab 9: Enable DDoS protection for your resources
+### 12. Lab 9 - Enable DDoS protection for your resources
 
 *NOTE: The DDoS protection plan on the Standard Tier (Basic is Free) has a cost of ~ $3,000 a month. This means that for the use of this lab it will incur in aprox $100 which will exhaust your Azure pass credit. We recommend to use your enterprise subscription for this lab, and once you have finished revert back to DDoS protection Basic if you don’t plan to use the service anymore*
 
