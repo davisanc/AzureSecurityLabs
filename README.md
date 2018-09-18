@@ -55,7 +55,7 @@ Next when you log into https://portal.azure.com , go to Cost Management + Billin
 Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
 ```
 
-**3. Install [Azure CLI 2.0](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)**
+**3. Install [Azure CLI 2.0](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest){:target="_blank"}**
 
 - Open a Command Prompt and check that az produces command help output (try closing Windows Powershell and Visual Studio Code and re-open again)
 
