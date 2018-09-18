@@ -107,7 +107,7 @@ Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
 
 4.	Open the n-tier-windows-security-labs.json file
 
-5.	In the json file, search for all instances with passwords. Replace them with your own admin users and passwords and save the file
+5.	In the json file, search for all instances with passwords. Replace them with your own admin username and passwords and save the file
 
 6.	Run azbb command to set up through an ARM template the basics of the lab: jumpbox web VM, app VM and SQL VM:
     ```
