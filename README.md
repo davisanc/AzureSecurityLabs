@@ -101,7 +101,7 @@ Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
   ```
 2.	Run the following command to create a Storage account for your Cloud resources.
   ```
-  az storage account create --location <location> \ --name <storage-account-name> \ --resource-group <resource-group-name> \ --sku Standard_LRS
+  az storage account create --location <location> --name <storage-account-name> --resource-group <resource-group-name>  --sku Standard_LRS
   ```
 3.	Navigate to https://github.com/davisanc/AzureSecurityLabs 
 
