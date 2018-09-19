@@ -2,6 +2,9 @@
 
 These series of labs are based on the **[Azure Reference Architecture](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/n-tier/n-tier-sql-server)** to deploy an **N-Tier application**
 
+To simplify and speed up the process of creating this architecture we will only deploy one VM per Tier. Also, the Domain Controller VM 
+and AD Domain Services are removed from the lab template, as this could be run on a separate workshop
+
 ![image of 3tier](/images/n-tier-sql-server.png)
 
 ## Lab Series
@@ -48,9 +51,13 @@ Next, when you log into https://portal.azure.com, go to **Cost Management + Bill
 **1.	[Visual Studio Code](https://azurecitadel.github.io/guides/vscode/#install-visual-studio-code)** 
 - Install Visual Studio Code from https://code.visualstudio.com
 
-**2.	[PowerShell](https://azurecitadel.github.io/guides/powershell) (we need PS version 6)**
-- Install the Azure PowerShell module.
+**2.	[PowerShell](https://azurecitadel.github.io/guides/powershell) (we need PowerShell version 6)**
+- Install the Azure PowerShell module. On your Powershell console:
+```
+Install-Module AzureRM
+```
 - Make sure you have installed PowerShell version 6 (or higher).
+
 ```
 Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
 ```
@@ -143,7 +150,7 @@ Example:
     ```
     *Note: this environment will need about 50 minutes to deploy. Once the last command completes, report to your proctors that you have reached this point*
 
-    The Application and Database tier have an internal Load Balancer in front of them, so you can scale up the tier with more VMs if needed and the Load Balancer will distribute the traffic accordingly.
+    The Application and Database tier should have an internal Load Balancer in front of them as per the Azure Reference Architecture, so you can scale up the tier with more VMs if needed and the Load Balancer will distribute the traffic accordingly. However, to speed up the process of creating this architecture, there will be no Load Balancers at the Application and Database Tiers
 
     The Web Tier is not currently load balanced, as we will create an external Application Gateway in front of the web tier later in the labs.
 
