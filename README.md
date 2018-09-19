@@ -48,7 +48,10 @@ Next when you log into https://portal.azure.com , go to Cost Management + Billin
 **1.	Install [Visual Studio Code](https://code.visualstudio.com)** 
 
 **2.	[PowerShell](https://azurecitadel.github.io/guides/powershell) (we need PS version 6)**
-- Install the Azure PowerShell module
+- Install the Azure PowerShell module. On your Powershell console:
+```
+Install-Module AzureRM
+```
 - Make sure you have installed PS version 6 or higher
 ```
 Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
