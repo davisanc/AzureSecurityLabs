@@ -124,51 +124,10 @@
                                 "isPrimary": true,
                                 "isPublic": false,
                                 "privateIPAllocationMethod": "Dynamic",
-                                "subnetName": "biz",
-                                "backendPoolNames": [
-                                    "lb-bep1"
-                                ]
+                                "subnetName": "biz"
                             }
                         ],
-                        "osType": "windows",
-                        "loadBalancerSettings": {
-                            "frontendIPConfigurations": [
-                                {
-                                    "name": "biz-lb-fe-config1",
-                                    "loadBalancerType": "Internal",
-                                    "internalLoadBalancerSettings": {
-                                        "privateIPAddress": "10.0.2.100",
-                                        "subnetName": "biz"
-                                    }
-                                }
-                            ],
-                            "loadBalancingRules": [
-                                {
-                                    "name": "lbr1",
-                                    "frontendPort": 80,
-                                    "backendPort": 80,
-                                    "protocol": "Tcp",
-                                    "backendPoolName": "lb-bep1",
-                                    "frontendIPConfigurationName": "biz-lb-fe-config1",
-                                    "enableFloatingIP": false,
-                                    "probeName": "lbp1"
-                                }
-                            ],
-                            "probes": [
-                                {
-                                    "name": "lbp1",
-                                    "port": 80,
-                                    "protocol": "Http",
-                                    "requestPath": "/"
-                                }
-                            ],
-                            "backendPools": [
-                                {
-                                    "name": "lb-bep1",
-                                    "nicIndex": 0
-                                }
-                            ]
-                        }
+                        "osType": "windows"
                     }
                 },
                 {  
@@ -204,51 +163,9 @@
                                 "isPrimary": true,
                                 "isPublic": false,
                                 "subnetName": "sql",
-                                "privateIPAllocationMethod": "Dynamic",
-                                "backendPoolNames": [
-                                    "lbbep1"
-                                ]                                
+                                "privateIPAllocationMethod": "Dynamic"                               
                             }
-                        ],
-                        "loadBalancerSettings": {
-                            "frontendIPConfigurations": [
-                                {
-                                    "name": "lbfe1",
-                                    "loadBalancerType": "Internal",
-                                    "internalLoadBalancerSettings": {
-                                        "privateIPAddress": "10.0.3.100",
-                                        "subnetName": "sql"
-                                    }
-                                }
-                            ],
-                            "loadBalancingRules": [
-                                {
-                                    "name": "SQLAlwaysOnEndPointListener",
-                                    "frontendPort": 1433,
-                                    "backendPort": 1433,
-                                    "protocol": "Tcp",
-                                    "backendPoolName": "lbbep1",
-                                    "frontendIPConfigurationName": "lbfe1",
-                                    "enableFloatingIP": false,
-                                    "probeName": "lbp1"
-                                }
-                            ],
-                            "probes": [
-                                {
-                                    "name": "lbp1",
-                                    "port": 59999,
-                                    "protocol": "Tcp",
-                                    "requestPath": null
-                                }
-                            ],
-                            "backendPools": [
-                                {
-                                    "name": "lbbep1",
-                                    "nicIndex": 0
-                                }
-                            ],
-                            "inboundNatRules": []
-                        }
+                        ]                        
                     }
                 }
             ]
