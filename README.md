@@ -1,4 +1,4 @@
-# AzureSecurityLabs
+# Azure Security Workshop - Labs
 
 These series of labs are based on the **[Azure Reference Architecture](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/n-tier/n-tier-sql-server)** to deploy an **N-Tier application**
 
@@ -9,27 +9,27 @@ These series of labs are based on the **[Azure Reference Architecture](https://d
 1.	Redeem your Azure Passes and activate your credit
 2.	Configuration needed before starting the labs
 3.	Deploy the solution
-4.	Lab 1-  Protecting the Network Perimeter – NSG (Network security groups)
+4.	Lab 1 - Protecting the Network Perimeter – NSG (Network Security Groups)
 5.	Lab 2 - Azure Networking logs
-6.	Lab 3 – Control outbound security traffic with Azure Firewall
-7.	Lab 4 – Protecting the Web Application - Application Gateway and WAF (Web Application Firewall)
-8.	Lab 5 – Understand your application security posture in Azure -Azure Security Center for security recommendations
-9.	Lab 6 – Storage Security – Encryption at Rest - Apply disk encryption to a running VM
-10.	Lab 7 – Extending your Data Centre to Azure in a secure way – Site to Site VPN Access
-11.	Lab 8: Azure Active Directory Role-Based Access Control
-12.	Lab 9: Enable DDoS protection for your resources
+6.	Lab 3 - Control outbound security traffic with Azure Firewall
+7.	Lab 4 - Protecting the Web Application - Application Gateway and WAF (Web Application Firewall)
+8.	Lab 5 - Understand your application security posture in Azure - Azure Security Center for security recommendations
+9.	Lab 6 - Storage Security – Encryption at Rest - Apply disk encryption to a running VM
+10.	Lab 7 - Extending your Data Centre to Azure in a secure way – Site to Site VPN Access
+11.	Lab 8 - Azure Active Directory Role-Based Access Control
+12.	Lab 9 - Enable DDoS protection for your resources
 
 ## 1.	Redeem your Azure Passes if you will use your Personal Microsoft Account
 
-*Note: We recommend using an enterprise subscription with a working account that have privileges to create resources. There are some labs on this guide that require the use or 3rd party Virtual Machines that don’t allow the use of Azure pass credits. In order to minimise costs we will enable ‘auto’shutdown’ of virtual machines.* 
+*Note: We recommend using an Enterprise Subscription with a working account that has privileges to create resources. There are some labs on this guide that require the use of 3rd party Virtual Machines that do not allow the use of Azure Pass credits. In order to minimise costs we will enable ‘auto’shutdown’ of Virtual Machines.* 
 
 Make sure you have a working Microsoft account that you can use to redeem the Azure pass
 
-Open a browser in private/incognito mode and go to https://microsoftazurepass.com
+Open a browser in Private/Incognito mode and go to https://microsoftazurepass.com
 
 ![image or redeem](/images/redeem-your-azure-pass.PNG)
 
-Login with your personal account, confirm your details and click next
+Login with your personal account, confirm your details and click **Next**
 
 Enter the promo code of your Azure Pass
 
@@ -41,26 +41,30 @@ It will take a few minutes until Azure sets up your new subscription
 
 ![setting subs](/images/azure-pass-setting-subscription.PNG)
 
-Next when you log into https://portal.azure.com , go to Cost Management + Billing and you will be able to see your Azure pass credit
+Next, when you log into https://portal.azure.com, go to **Cost Management + Billing** and you will be able to see your Azure Pass credit.
 
 ## 2.  Configuration needed before starting the labs (Time to complete: 15 min)
 
 **1.	[Visual Studio Code](https://azurecitadel.github.io/guides/vscode/#install-visual-studio-code)** 
-- Install vscode from https://code.visualstudio.com
+- Install Visual Studio Code from https://code.visualstudio.com
 
 **2.	[PowerShell](https://azurecitadel.github.io/guides/powershell) (we need PS version 6)**
-- Install the Azure PowerShell module
-- Make sure you have installed PS version 6 or higher
+- Install the Azure PowerShell module.
+- Make sure you have installed PowerShell version 6 (or higher).
 ```
 Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
 ```
 
 **3. Install [Azure CLI 2.0](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)**
 
-- Open a Command Prompt and check that az produces command help output (try closing Windows Powershell and Visual Studio Code and re-open again)
+- Open a Command Prompt (or the Terminal Window in VS Code) and check that running the 'az' command produces command help output (you may need to restart Windows Powershell/Visual Studio Code and re-open again for the installation to register).
 
-- *Note: in case you face an issue when you try to run an az command it says "az : The term 'az' is not recognized as the name of a cmdlet, function, script file, or operable program." The issue is because the azure cli 2.0 is instled in location - C:\Users\<username>\AppData\Local\Programs\Python\Python37-32\Scripts\  and this path isn't added to the PATH variable.* 
-      *First make sure you have python installed in your machine. If you don’t have the original CLI (or python) at all, you need that  first. Download and install it from here: https://www.python.org/downloads/release/python-352/*
+- *Note: you might face an issue when you try to run an az command that says
+```
+az : The term 'az' is not recognized as the name of a cmdlet, function, script file, or operable program.
+```
+    The issue is because the Azure CLI 2.0 is installed in location - C:\Users\<username>\AppData\Local\Programs\Python\Python37-32\Scripts\ which is not added to the PATH variable.* 
+    1. *First make sure you have python installed in your machine. If you don’t have the original CLI (or python) at all, you need that  first. Download and install it from here: https://www.python.org/downloads/release/python-352/*
       
     1.	Uninstall Azure CLI earlier versions with command - pip uninstall azure-cli
     2.	Re-install Azure CLI 2.0 - pip install --user azure-cli
@@ -70,44 +74,65 @@ Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
           az --help
           ```
           
-**4.	(Optional) On Visual Studio, go to Extensions, search for Azure CLI Tools and install the package**
+**4.	(Optional) Install Visual Studio Code Extensions**
+In Visual Studio Code, go to Extensions, search for **Azure CLI Tools** and install the package.
 
 **5.	Install the [Azure building blocks npm package](https://github.com/mspnp/template-building-blocks/wiki/Install-Azure-Building-Blocks)**
 
-- Install node.js
-- (you may need to close and re-open again PowerShell and VSC) 
+- Install **node.js** from the link above (you may need to close and re-open again PowerShell/Visual Studio Code).
+- Install the Azure Building Blocks package:
    ```
    npm install -g @mspnp/azure-building-blocks
    ```
-- Test Azure Building Blocks with the following command on PowerShell or VSC:
+- Test Azure Building Blocks with the following command on PowerShell or VS Code:
    ```
    azbb
    ```
         
 **6.	From a command prompt, bash prompt, or PowerShell prompt, sign into your Azure account as follows:**
   ```
-  Az login
+  az login
   ```
-**7.	Make sure you use the right subscription (enterprise or Azure pass)**
+**7.	Make sure you use the right subscription (Enterprise or Azure Pass)**
+  To get your Subscription ID, run the following command to list Subscriptions within your account:
+  ```
+  az account list --query "[].{id:id,name:name}"
+  ```
+  Note the ID relevant to your Subscription, and set the CLI to use this as the active subscription:
   ```
   az account set --subscription  "<subscription-ID>"
   ```
 
 ## 3.  Deploy the Solution (Time to complete: 50 min)
 
-1.	Run the following command to create a resource group (use ‘uksouth’ for location)
+1.	Run the following command to create a Resource Group (use ‘uksouth’ for location)
   ```
   az group create --location <location> --name <resource-group-name>
   ```
-2.	Run the following command to create a Storage account for your Cloud resources.
+2.	Run the following command to create a Storage Account for your Cloud resources.
   ```
   az storage account create --location <location> --name <storage-account-name> --resource-group <resource-group-name>  --sku Standard_LRS
   ```
-3.	Navigate to https://github.com/davisanc/AzureSecurityLabs 
+3.	In your browser, navigate to https://github.com/davisanc/AzureSecurityLabs 
 
-4.	Open the n-tier-windows-security-labs.json file
+4.	Open the **n-tier-windows-security-labs.json** file. This file is an Azure Resource Manager (ARM) Template which describes the infrastructure resources we need to use for this lab as code. When deployed, the template will instruct Resource Manager to create the resources as described in the text.
 
-5.	In the json file, search for all instances with passwords. Replace them with your own admin username and passwords and save the file
+For more on ARM Templates, please visit [https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview#template-deployment](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview#template-deployment)
+
+6.  Just above the text, click the **Raw** button to see the raw JSON.
+
+7.	Copy and paste the text into a new file in Visual Studio Code. In the JSON text, search for all instances of **adminUsername** and **adminPassword** and replace both the property values with your own admin username and passwords, and save the file locally as **n-tier-windows-security-labs.json**.
+Example:
+Before...
+```
+"adminUsername": "admin",
+"adminPassword": "P4ssw0rd123$%",
+```
+After...
+```
+"adminUsername": "adminUserName",
+"adminPassword": "C4ndY*Fl0$S18",
+```
 
 6.	Run azbb command to set up through an ARM template the basics of the lab: jumpbox web VM, app VM and SQL VM:
     ```
