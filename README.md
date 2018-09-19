@@ -76,10 +76,10 @@ az : The term 'az' is not recognized as the name of a cmdlet, function, script f
     2.	Re-install Azure CLI 2.0 - pip install --user azure-cli
     3.	Add the path C:\Users\<username>\AppData\Local\Programs\Python\Python37-32\Scripts\ to PATH 
  
- check if the az command is working: 
-    ```
-    az --help
-    ```
+- Check if the az command is working:    
+ ```
+ az --help
+ ```
           
 **4.	(Optional) Install Visual Studio Code Extensions**
 In Visual Studio Code, go to Extensions, search for **Azure CLI Tools** and install the package.
