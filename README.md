@@ -45,8 +45,7 @@ Next when you log into https://portal.azure.com , go to Cost Management + Billin
 
 ## 2.  Configuration needed before starting the labs (Time to complete: 15 min)
 
-**1.	[Visual Studio Code](https://azurecitadel.github.io/guides/vscode/#install-visual-studio-code)** 
-- Install vscode from https://code.visualstudio.com
+**1.	[Visual Studio Code](https://code.visualstudio.com)** 
 
 **2.	[PowerShell](https://azurecitadel.github.io/guides/powershell) (we need PS version 6)**
 - Install the Azure PowerShell module
