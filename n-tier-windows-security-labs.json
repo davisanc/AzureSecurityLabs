@@ -39,8 +39,6 @@
                                 }
                             ],
                             "dnsServers": [
-                                "10.0.4.4",
-                                "10.0.4.5",
                                 "168.63.129.16"
                             ]
                         }
@@ -52,7 +50,7 @@
                         "vmCount": 1,
                         "namePrefix": "jb",
                         "size": "Standard_DS1_v2",
-                        "adminUsername": "admin",
+                        "adminUsername": "adminUser",
                         "adminPassword": "P4ssw0rd123$%",
                         "virtualNetwork": {
                             "name": "ra-ntier-vnet"
@@ -76,7 +74,7 @@
                         "namePrefix": "web",
                         "size": "Standard_DS1_v2",
                         "computerNamePrefix": "web",
-                        "adminUsername": "admin",
+                        "adminUsername": "adminUser",
                         "adminPassword": "P4ssw0rd123$%",
                         "virtualNetwork": {
                             "name": "ra-ntier-vnet"
@@ -115,7 +113,7 @@
                         "namePrefix": "biz",
                         "size": "Standard_DS1_v2",
                         "computerNamePrefix": "biz",
-                        "adminUsername": "admin",
+                        "adminUsername": "adminUser",
                         "adminPassword": "P4ssw0rd123$%",
                         "virtualNetwork": {
                             "name": "ra-ntier-vnet"
@@ -180,7 +178,7 @@
                         "namePrefix": "sql",
                         "size": "Standard_DS12_v2",
                         "computerNamePrefix": "sql",
-                        "adminUsername": "admin",
+                        "adminUsername": "adminUser",
                         "adminPassword": "P4ssw0rd123$%",
                         "osType": "windows",
                         "imageReference": {
