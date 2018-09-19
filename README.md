@@ -65,7 +65,7 @@ Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
 
 - Open a Command Prompt (or the Terminal Window in VS Code) and check that running the 'az' command produces command help output (you may need to restart Windows Powershell/Visual Studio Code and re-open again for the installation to register).
 
-- *Note: you might face an issue when you try to run an az command that says
+- *Note: you might face an issue when you try to run an az command that says*
 ```
 az : The term 'az' is not recognized as the name of a cmdlet, function, script file, or operable program.
 ```
