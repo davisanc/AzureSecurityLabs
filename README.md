@@ -117,38 +117,41 @@ In Visual Studio Code, go to Extensions, search for **Azure CLI Tools** and inst
 
 4.	Open the **n-tier-windows-security-labs.json** file. This file is an Azure Resource Manager (ARM) Template which describes the infrastructure resources we need to use for this lab as code. When deployed, the template will instruct Resource Manager to create the resources as described in the text.
 
-For more on ARM Templates, please visit [https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview#template-deployment](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview#template-deployment)
+    For more on ARM Templates, please visit: 
+    
+    [https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview#template-deployment](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview#template-deployment)
 
-6.  Just above the text, click the **Raw** button to see the raw JSON.
+6.  Just above the main text pane on the Github page, click the **Raw** button to see the unformatted JSON.
 
 7.	Copy and paste the text into a new file in Visual Studio Code. In the JSON text, search for all instances of **adminUsername** and **adminPassword** and replace both the property values with your own admin username and passwords, and save the file locally as **n-tier-windows-security-labs.json**.
 Example:
-Before...
-```
-"adminUsername": "admin",
-"adminPassword": "P4ssw0rd123$%",
-```
-After...
-```
-"adminUsername": "adminUserName",
-"adminPassword": "C4ndY*Fl0$S18",
-```
 
-6.	Run azbb command to set up through an ARM template the basics of the lab: jumpbox web VM, app VM and SQL VM:
+    Before...
+    ```
+    "adminUsername": "admin",
+    "adminPassword": "P4ssw0rd123$%",
+    ```
+    After...
+    ```
+    "adminUsername": "adminUserName",
+    "adminPassword": "C4ndY*Fl0$S18",
+    ```
+
+6.	Run the following `azbb` command to deploy the base resources required for the lab using the ARM template modified above. This will include a Jumpbox, Web VM, Application VM and a SQL Server VM:
     ```
     azbb -s <Subscription-ID> -g <Resource-Group-Name> -l <Location> -p .\<name-of-your-tempalte.json> --deploy
     ```
-*Note: this environment will need about 50 minutes to deploy. Once you have run the last commands report to your proctors you have got to this point*
+    *Note: this environment will need about 50 minutes to deploy. Once the last command completes, report to your proctors that you have reached this point*
 
-The Application and Database tier have an internal load balancer in front of them, so you can scale up the tier with more VMs if needed and the LB will distribute the traffic accordingly
+    The Application and Database tier have an internal Load Balancer in front of them, so you can scale up the tier with more VMs if needed and the Load Balancer will distribute the traffic accordingly.
 
-The Web Tier doesn’t have any LB, as we will later create an External Application Gateway in front of the web tier
+    The Web Tier is not currently load balanced, as we will create an external Application Gateway in front of the web tier later in the labs.
 
-For now, the only Internet access to the environment is through the JumpBox as it’s the only VM with a public IP address
+    For now, the only Internet access to the environment is through the Jump Box as it is the only VM with a Public IP address.
 
 **Test: make sure you can ping from the JB to the Web, Biz and DB virtual machines (enable PING on the firewall settings)**
 
-## 4.  Lab 1 - Protecting the Network Perimeter – NSG (Network security groups)
+## 4.  Lab 1 - Protecting the Network Perimeter with Network Security Groups
 
 Create an NSG rule to restrict traffic between tiers. For example, in the 3-tier architecture shown, the web tier does not communicate directly with the database tier. To enforce this, the database tier should block incoming traffic from the web tier subnet
 
