@@ -2,6 +2,9 @@
 
 These series of labs are based on the **[Azure Reference Architecture](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/n-tier/n-tier-sql-server)** to deploy an **N-Tier application**
 
+To simplify and speed up the process of creating this architecture we will only deploy one VM per Tier. Also, the Domain Controller VM 
+and AD Domain Services are removed from the lab template, as this could be run on a separate workshop
+
 ![image of 3tier](/images/n-tier-sql-server.png)
 
 ## Lab Series
@@ -117,7 +120,7 @@ Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
     ```
 *Note: this environment will need about 50 minutes to deploy. Once you have run the last commands report to your proctors you have got to this point*
 
-The Application and Database tier have an internal load balancer in front of them, so you can scale up the tier with more VMs if needed and the LB will distribute the traffic accordingly
+The Application and Database tier should have an internal load balancer in front of them as per Azure Reference Architecture, so you can scale up the tier with more VMs if needed and the LB will distribute the traffic accordingly. However, to speed up the process of creating this architecture, there will be no load balancer at the Application and Database Tier
 
 The Web Tier doesn’t have any LB, as we will later create an External Application Gateway in front of the web tier
 
