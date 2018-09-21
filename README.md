@@ -266,7 +266,7 @@ After the registration is complete, run the following command:
 Register-AzureRmResourceProvider -ProviderNamespace Microsoft.Network
 ```
 
-The cloud firewall needs to have a subnet within your VNET named ‘AzureFirewallSubnet’
+**The cloud firewall needs to have a subnet within your VNET named ‘AzureFirewallSubnet’**
 
 On the portal create a new subnet in your VNET with that name (i.e 10.0.6.0/24)
 
