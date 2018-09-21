@@ -274,15 +274,15 @@ Go to your resource, click Create a resource, networking, and look for ‘Firewa
 
 ![firewall](/images/firewall.PNG)
 
-We will work on the Web VM, and we will change the default route of the web subnet to go through the firewall
+**We will work on the Web VM**, and we will change the default route of the web subnet to go through the firewall
 
 **Create a default Route**
 
 ![route table](/images/route-table.PNG)
 
 1.	Click Subnets, and then click Associate.
-2.	Click Virtual network, and then select ‘ra-ntier-vnet’
-3.	For Subnet, click ‘mgmt
+2.	Click Virtual network, and then select **‘ra-ntier-vnet’**
+3.	For Subnet, click **‘web'**
 4.	Click OK.
 5.	Click Routes, and then click Add.
 6.	For Route name, type FW-DG.
@@ -315,13 +315,14 @@ We will work on the Web VM, and we will change the default route of the web subn
 **Configure network rules**
 
 The idea is to permit DNS traffic to go through the Firewall from a L3/L4 perspective
+
 1.	Click Add network rule collection.
 2.	For Name, type Net-Coll01.
 3.	For Priority, type 200.
 4.	For Action, select Allow.
 5.	Under Rules, for Name, type AllowDNS.
 6.	For Protocol, select UDP.
-7.	For Source Addresses, type 10.0.2.0/24.
+7.	For Source Addresses, type 10.0.1.0/24.
 8.	For Destination address, type 168.63.129.16
 9.	For Destination Ports, type 53.
 10.	Click Add.
