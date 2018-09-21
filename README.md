@@ -329,13 +329,15 @@ The idea is to permit DNS traffic to go through the Firewall from a L3/L4 perspe
 
 **Test your firewall rules**
 
-Open a browser and try go to github. 
+RDP to the JumpBox and from there to the Web VM. Open a browser and try go to github. 
 
 ![firewall allowed](/images/Firewall-allowed-rule.PNG)
 
-Try going to another page, this action should be blocked:
+Try going to another site, this action should be blocked:
 
 ![firewall blocked](/images/Fireall-blocked-rule.PNG)
+
+![bbc blocked](/images/bbc.PNG)
 
 ## 7. Lab 4 – Protecting the Web Application - Application Gateway and WAF (Web Application Firewall)
 
