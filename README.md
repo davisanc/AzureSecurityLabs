@@ -199,19 +199,17 @@ This section creates the security group to protect the database tier.
 
     You can view these rules in the Azure Console by selecting the security group object within the Resource Group, and also by running this CLI command:
     ```
-    az network nsg show --resource-group <resource-group-name>
-        --name SQL-NSG
-        --query "defaultSecurityRules[]"
-        --output table
+    az network nsg show --resource-group <resource-group-name> --name SQL-NSG --query "defaultSecurityRules[]" --output table
     ```
+    `az network nsg show --resource-group <resource-group-name> --name SQL-NSG --query "defaultSecurityRules[]" --output table`
 
-    These rules cannot be deleted. What we can do is create a series of new rules in the security group with a higher priority to catch the filter the traffic.
+    These rules cannot be deleted. What we can do is create a new series of rules in the security group with a higher priority to filter the traffic before the default rules are evaluated.
 
 2.  Allow inbound traffic from the business tier subnet.
 
     Create a new rule within your new security group. Like typical firewall rules, security group rules are based on information about the source, destination, protocol, port and action (allow/deny).
 
-    This rule will allow any traffic into the database tier from the business tier. This is done by specifying the CIDR of the business tier subnet, 10.0.2.0/24, as the source and any resource within this subnet can communicate with the database tier.
+    This rule will allow any traffic into the database tier from the business tier. This is done by specifying the CIDR of the business tier subnet (10.0.2.0/24) as the source. Any resource within this subnet can communicate with the database tier.
 
     ```
     az network nsg rule create --name AllowFromBiz --nsg-name SQL-NSG --priority 110 --resource-group <resource-group-name> --description "Allow all traffic from the Business Tier" --access Allow --direction Inbound --source-address-prefix 10.0.2.0/24 --source-port-ranges * --protocol * --destination-address-prefix * --destination-port-ranges *
@@ -235,7 +233,7 @@ This section creates the security group to protect the database tier.
     az network nsg rule create --name AllowRDPFromJB --nsg-name SQL-NSG --priority 130 --resource-group <resource-group-name> --description "Allow RDP traffic from the Jump Box" --access Allow --direction Inbound --source-address-prefix 10.0.128.0/25 --source-port-ranges * --protocol TCP --destination-address-prefix * --destination-port-ranges 3389
     ```
 
-5.	Deny all inbound traffic from the VNet.
+5.	Deny all other inbound traffic from the VNet.
 
     Now we have set up the base access requirements, we need to block all other traffic from within the VNet. Instead of a source address, we can use the **VirtualNetwork** tag in the rule:
 
@@ -266,7 +264,7 @@ Follow these steps to attach the new NSG to the network interface of the SQL VM.
 
 Alternatively you can use the following CLI command to make this attachment. The command references the NIC resource and attaches the security group to the NIC.
 
-The name of the NIC for the SQL server is **sql-vm1-nic1**.
+**Note:** The name of the NIC for the SQL server is **sql-vm1-nic1**
 
 ```
 az network nic update --resource-group <resource-group-name> --name sql-vm1-nic1 --network-security-group SQL-NSG
@@ -274,7 +272,7 @@ az network nic update --resource-group <resource-group-name> --name sql-vm1-nic1
 
 ### 4.3 - Overview and final steps
 
-Your NSG rule set should look similar to this... 
+Your NSG rule set should look similar to this...
 
 ![NSG-inbound-sql](/images/NSG-SQL-NIC.PNG)
 
