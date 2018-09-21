@@ -167,7 +167,7 @@ Create an NSG rule to restrict traffic between tiers. For example, in the 3-tier
     *Note: by default an NSG will have 3 rules pre populated. One to allow traffic from the VNET to VNET, one to allow traffic from the Azure load balancer to VNET, and one default deny. These rules can't be deleted. The idea here is to create a new rule in the NSG with higher priority of the VNET to VNET that blocks this type of traffic*
 2.	Allow inbound traffic from the business tier subnet (Use the business subnet range 10.0.2.0/24)
 3.	Allow inbound traffic from the database tier subnet itself. This rule allows communication between the database VMs, which is needed for database replication and failover.(Use the business subnet range 10.0.3.0/24)
-4.	Allow RDP traffic (port 3389) from the jumpbox subnet. This rule lets administrators connect to the database tier from the jumpbox.
+4.	Allow RDP traffic (port 3389) from the jumpbox subnet. This rule lets administrators connect to the database tier from the jumpbox. (Use the management subnet range 10.0.0.128/25)
 5.	Deny all inbound traffic from Internet. Use the “Internet” tag in the rule
 
 Create rules 2 – 4 with higher priority than the first rule, so they override it
