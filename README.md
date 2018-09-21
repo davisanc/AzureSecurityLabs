@@ -210,8 +210,13 @@ Click Save
 
 ![NSG and TA enabled](/images/NSG-and-TA-enabled.PNG)
 
-Finally, to go to Network Watcher, on the left-side of the portal select All services, then enter Monitor in the Filter box. When Monitor appears in the search results, select it. To start exploring traffic analytics and its capabilities, select Network watcher, then Traffic Analytics
+Finally, to go to Network Watcher. On the left-side of the portal select All services, then enter **Monitor** in the Filter box. When Monitor appears in the search results, select it. To start exploring traffic analytics and its capabilities, select Network watcher, then Traffic Analytics
 The dashboard may take up to 30 minutes to appear the first time because Traffic Analytics must first aggregate enough data for it to derive meaningful insights, before it can generate any reports.
+
+Aslo, you may want to visualize the Network Topology. In Network Watcher, click on **Topology** (Filter by Subscription, RG and VNET)
+
+![TOPOLOGY](/images/topology.PNG)
+
 
 ## 6.  Lab 3 – Control outbound security traffic with Azure Firewall
 
