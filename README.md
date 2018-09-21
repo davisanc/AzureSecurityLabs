@@ -110,7 +110,7 @@ In Visual Studio Code, go to Extensions, search for **Azure CLI Tools** and inst
   az account set --subscription  "<subscription-ID>"
   ```
 
-## 3.  Deploy the Solution (Time to complete: 50 min)
+## 3.  Deploy the Solution (Time to complete: 35 to 40 min)
 
 1.	Run the following command to create a Resource Group (use ‘uksouth’ for location)
   ```
