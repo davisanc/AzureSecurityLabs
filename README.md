@@ -225,9 +225,11 @@ Aslo, you may want to visualize the Network Topology. In Network Watcher, click 
 
 Azure Firewall is a stateful firewall as a service, built in with high availability and cloud scalability. The primary use case for the Azure Firewall is to centrally create, enforce and log application and network policies. As the **first version** of the product, the firewall is focused on **securing outbound flows by FQDN whitelisting/blacklisting**. It provides source network address translation and it’s integrated with Azure Monitor for logging and analytics
 
-At this time the Azure Firewall is on public preview. To enable the firewall in your subscription you need use the following Azure PowerShell commands:
+At this time the Azure Firewall is on public preview
 
-1. 
+To enable the firewall in your subscription you need use the following Azure PowerShell commands:
+
+1. Run this command from PS
 ```
 Register-AzureRmProviderFeature -FeatureName AllowRegionalGatewayManagerForSecureGateway -ProviderNamespace Microsoft.Network
 ```
