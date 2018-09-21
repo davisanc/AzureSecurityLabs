@@ -227,6 +227,7 @@ Azure Firewall is a stateful firewall as a service, built in with high availabil
 
 At this time the Azure Firewall is on public preview. To enable the firewall in your subscription you need use the following Azure PowerShell commands:
 
+1. 
 ```
 Register-AzureRmProviderFeature -FeatureName AllowRegionalGatewayManagerForSecureGateway -ProviderNamespace Microsoft.Network
 ```
@@ -240,11 +241,9 @@ Powershell error – Import-Module : File AzureRM.psm1 cannot be loaded because 
 ```
 PS c:\> Set-ExecutionPolicy RemoteSigned
 ```
-You may need to login again to your Azure subscription with **Connect-AzureRmAccount** or **az login**
-
-Make sure you are on the right subscription
+You may need to login again to your Azure subscription with **Connect-AzureRmAccount** or **az login**. Make sure you are on the right subscription
     
-
+2. Now run the following PS command needed to enable the Firewall
 ```
 Register-AzureRmProviderFeature -FeatureName AllowAzureFirewall -ProviderNamespace Microsoft.Network
 ```
