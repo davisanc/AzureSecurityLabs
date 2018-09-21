@@ -201,7 +201,6 @@ This section creates the security group to protect the database tier.
     ```
     az network nsg show --resource-group <resource-group-name> --name SQL-NSG --query "defaultSecurityRules[]" --output table
     ```
-    `az network nsg show --resource-group <resource-group-name> --name SQL-NSG --query "defaultSecurityRules[]" --output table`
 
     These rules cannot be deleted. What we can do is create a new series of rules in the security group with a higher priority to filter the traffic before the default rules are evaluated.
 
@@ -280,18 +279,18 @@ Confirm that you can RDP from the Jump Box to the SQL server and also from the B
 
 ![RDP blocked](/images/RDP-blocked-from-web.PNG)
 
-## 5. Lab 2 - Azure Networking logs
+## 5. Lab 2 - Azure networking logs
 
 Network logging and monitoring in Azure is comprehensive and covers two broad categories:
-- **Network Watcher**: Scenario-based network monitoring is provided with the features in Network Watcher. This service includes packet capture, next hop, IP flow verify, security group view, NSG flow logs. Scenario level monitoring provides an end to end view of network resources in contrast to individual network resource monitoring.
-- **Resource monitoring**: Resource level monitoring comprises four features, diagnostics logs, metrics, troubleshooting, and resource health. All these features are built at the network resource level.
+- **Network Watcher**: Scenario-based network monitoring is provided with the features in Network Watcher. This service includes packet capture, next hop, IP flow verify, security group view and NSG flow logs. Scenario level monitoring provides an end to end view of network resources in contrast to individual network resource monitoring.
+- **Resource monitoring**: Resource level monitoring comprises four features: diagnostics logs, metrics, troubleshooting, and resource health. All of these features are built at the network resource level.
 
 To troubleshoot your NSG rules, enable NSG flow logs. This will enable Network watcher. 
-Go to the search bar on the Portal, look for Network Watcher. Filter by your subscription ID and Resource Group
+Go to the search bar on the Portal, look for Network Watcher. Filter by your Subscription ID and Resource Group.
 
 ![network watcher](/images/Network-watcher.PNG)
 
-Click on the NSG you worked on the previous lab, enable **Flow Logs**
+Click on the NSG you worked on on the previous lab, enable **Flow Logs**
 
 You will need to select an storage account within your Resource Group. The NSG flow logs will be stored within a blob container of the selected storage account. More details https://docs.microsoft.com/en-us/azure/network-watcher/network-watcher-nsg-flow-logging-portal
 
@@ -312,16 +311,17 @@ Also, you may get the following message: *Displaying only resources data. No flo
 
 ![TOPOLOGY](/images/traffc-analytics.PNG)
 
-Aslo, you may want to visualize the Network Topology. In Network Watcher, click on **Topology** (Filter by Subscription, RG and VNET)
+Also, you may want to visualize the Network Topology. In Network Watcher, click on **Topology** (Filter by Subscription, RG and VNET)
 
 ![TOPOLOGY](/images/topology.PNG)
 
-
 ## 6.  Lab 3 – Control outbound security traffic with Azure Firewall
 
-Azure Firewall is a stateful firewall as a service, built in with high availability and cloud scalability. The primary use case for the Azure Firewall is to centrally create, enforce and log application and network policies. As the **first version** of the product, the firewall is focused on **securing outbound flows by FQDN whitelisting/blacklisting**. It provides source network address translation and it’s integrated with Azure Monitor for logging and analytics
+Azure Firewall is a stateful firewall as a service, with high availability and cloud scalability built-in. The primary use case for the Azure Firewall is to centrally create, enforce and log application and network policies. As the **first version** of the product, the firewall is focused on **securing outbound flows by FQDN whitelisting/blacklisting**. It provides source network address translation and it is integrated with Azure Monitor for logging and analytics.
 
-At this time the Azure Firewall is on public preview. To enable the firewall in your subscription you need use the following Azure PowerShell commands:
+### 6.1 - Enabling Azure Firewall preview
+
+The Azure Firewall is currently in public preview. To enable the firewall in your subscription you need use the following Azure PowerShell commands:
 
 ```
 Register-AzureRmProviderFeature -FeatureName AllowRegionalGatewayManagerForSecureGateway -ProviderNamespace Microsoft.Network
@@ -341,23 +341,27 @@ Get-AzureRmProviderFeature -FeatureName AllowRegionalGatewayManagerForSecureGate
 Get-AzureRmProviderFeature -FeatureName AllowAzureFirewall -ProviderNamespace Microsoft.Network
 ```
 
-After the registration is complete, run the following command:
+After the registration is complete, run the following PowerShell command:
 
 ```
 Register-AzureRmResourceProvider -ProviderNamespace Microsoft.Network
 ```
 
+### 6.2 - Create a subnet for the firewall
+
 The cloud firewall needs to have a subnet within your VNET named ‘AzureFirewallSubnet’
 
 On the portal create a new subnet in your VNET with that name (i.e 10.0.6.0/24)
 
-Go to your resource, click Create a resource, networking, and look for ‘Firewall
+### 6.3 - Create the firewall
+
+On the Azure Portal, click **Create a resource**, **Networking**, and look for **Firewall**.
 
 ![firewall](/images/firewall.PNG)
 
-We will work on the Web VM, and we will change the default route of the web subnet to go through the firewall
+We will work on the Web VM, and we will change the default route of the web subnet to send all traffic through the firewall.
 
-**Create a default Route**
+#### Create a default Route
 
 ![route table](/images/route-table.PNG)
 
