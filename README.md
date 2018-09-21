@@ -51,13 +51,16 @@ Next, when you log into https://portal.azure.com, go to **Cost Management + Bill
 **1.	Install [Visual Studio Code](https://code.visualstudio.com)** 
 
 **2.	[PowerShell](https://azurecitadel.github.io/guides/powershell) (we need PowerShell version 6)**
+
 - Install the Azure PowerShell module. On your Powershell console:
-```
+
+```/PowerShell
 Install-Module AzureRM
 ```
+
 - Make sure you have installed PowerShell version 6 (or higher).
 
-```
+```/PowerShell
 Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
 ```
 
@@ -66,46 +69,52 @@ Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
 - Open a Command Prompt (or the Terminal Window in VS Code) and check that running the 'az' command produces command help output (you may need to restart Windows Powershell/Visual Studio Code and re-open again for the installation to register).
 
 - *Note: you might face an issue when you try to run an az command that says*
+
 ```
 az : The term 'az' is not recognized as the name of a cmdlet, function, script file, or operable program.
 ```
+
     The issue is because the Azure CLI 2.0 is installed in location - C:\Users\<username>\AppData\Local\Programs\Python\Python37-32\Scripts\ which is not added to the PATH variable.* 
     1. *First make sure you have python installed in your machine. If you don’t have the original CLI (or python) at all, you need that  first. Download and install it from here: https://www.python.org/downloads/release/python-352/*
       
     1.	Uninstall Azure CLI earlier versions with command - pip uninstall azure-cli
     2.	Re-install Azure CLI 2.0 - pip install --user azure-cli
-    3.	Add the path C:\Users\<username>\AppData\Local\Programs\Python\Python37-32\Scripts\ to PATH 
- 
-- Check if the az command is working:    
+    3.	Add the path C:\Users\<username>\AppData\Local\Programs\Python\Python37-32\Scripts\ to PATH
+
+- Check if the az command is working:
  ```
  az --help
  ```
-          
+
 **4.	(Optional) Install Visual Studio Code Extensions**
 In Visual Studio Code, go to Extensions, search for **Azure CLI Tools** and install the package.
 
 **5.	Install the [Azure building blocks npm package](https://github.com/mspnp/template-building-blocks/wiki/Install-Azure-Building-Blocks)**
 
-- Install **node.js** from the link above (you may need to close and re-open again PowerShell/Visual Studio Code).
+- Install **node.js** from the link above (you may need to close and re-open PowerShell/Visual Studio Code).
 - Install the Azure Building Blocks package:
+
    ```
    npm install -g @mspnp/azure-building-blocks
    ```
+
 - Test Azure Building Blocks with the following command on PowerShell or VS Code:
    ```
    azbb
    ```
-        
+
 **6.	From a command prompt, bash prompt, or PowerShell prompt, sign into your Azure account as follows:**
   ```
   az login
   ```
-**7.	Make sure you use the right subscription (Enterprise or Azure Pass)**
-  To get your Subscription ID, run the following command to list Subscriptions within your account:
+
+**7.	Set the CLI to use the correct subscription (Enterprise or Azure Pass)**
+  To get your Subscription ID, run the following command to list the Subscriptions within your account:
   ```
   az account list --query "[].{id:id,name:name}"
   ```
-  Note the ID relevant to your Subscription, and set the CLI to use this as the active subscription:
+
+  Make a note of the relevant ID for your Subscription, and set the CLI to use this as the active subscription:
   ```
   az account set --subscription  "<subscription-ID>"
   ```
@@ -148,7 +157,7 @@ Example:
     ```
     azbb -s <Subscription-ID> -g <Resource-Group-Name> -l <Location> -p .\<name-of-your-tempalte.json> --deploy
     ```
-    *Note: this environment will need about 50 minutes to deploy. Once the last command completes, report to your proctors that you have reached this point*
+    *Note: this environment will need about 35 minutes to deploy. Once the last command completes, report to your proctors that you have reached this point*
 
     The Application and Database tier should have an internal Load Balancer in front of them as per the Azure Reference Architecture, so you can scale up the tier with more VMs if needed and the Load Balancer will distribute the traffic accordingly. However, to speed up the process of creating this architecture, there will be no Load Balancers at the Application and Database Tiers
 
@@ -160,27 +169,113 @@ Example:
 
 ## 4.  Lab 1 - Protecting the Network Perimeter with Network Security Groups
 
-Create an NSG rule to restrict traffic between tiers. For example, in the 3-tier architecture shown, the web tier does not communicate directly with the database tier. To enforce this, the database tier should block incoming traffic from the web tier subnet
+Network Security Groups filter traffic to and from resources in an Azure virtual network. They can be applied at subnet or virtual machine level, and filter the traffic based on a set of rules.
 
-1.	Deny all inbound traffic from the VNet. (Use the VIRTUAL_NETWORK tag in the rule.)
+Further information on network security groups (NSG) can be found in the Azure documentation:
+
+[https://docs.microsoft.com/en-us/azure/virtual-network/security-overview](https://docs.microsoft.com/en-us/azure/virtual-network/security-overview)
+
+You can use security groups to protect/restrict traffic between tiers. In the 3-tier architecture shown, the web tier should not communicate directly with any resource in the database tier. To enforce this, the database subnet should block all incoming traffic from the web tier subnet. This can be done using a security group.
+
+### 4.1 - Creating the security group
+This section creates the security group to protect the database tier.
+
+1.  In the VS Code terminal, enter the following CLI command to create the security group **SQL-NSG**
+    ```
+    az network nsg create --name SQL-NSG --resource-group <resource-group-name> --location <location>
+    ```
+
+    When the command completes, the terminal will show all properties of the security group, and you can also see the new NSG in the Azure console.
+
+    By default, a security group will be pre-populated with three **inbound** rules (in order of execution):
+    1. allow any traffic from the VNet to VNet
+    2. allow any traffic from the Azure load balancer to the VNet
+    3. deny all inbound traffic (that does not match any other rule)
     
-    *Note: by default an NSG will have 3 rules pre populated. One to allow traffic from the VNET to VNET, one to allow traffic from the Azure load balancer to VNET, and one default deny. These rules can't be deleted. The idea here is to create a new rule in the NSG with higher priority of the VNET to VNET that blocks this type of traffic*
-2.	Allow inbound traffic from the business tier subnet (Use the business subnet range 10.0.2.0/24)
-3.	Allow inbound traffic from the database tier subnet itself. This rule allows communication between the database VMs, which is needed for database replication and failover.(Use the business subnet range 10.0.3.0/24)
-4.	Allow RDP traffic (port 3389) from the jumpbox subnet. This rule lets administrators connect to the database tier from the jumpbox. (Use the management subnet range 10.0.0.128/25)
-5.	Deny all inbound traffic from Internet. Use the “Internet” tag in the rule
+    There are also three **outbound** rules:
+    1. allow any traffic outboud to the VNet
+    2. allow all traffic outbound to the Internet
+    3. deny all outbound traffic
 
-Create rules 2 – 4 with higher priority (lower number on the Priority field of the NSG rule) than the first rule, so they are evaluated first
+    You can see these rules in the Azure Console by selecting the security group object within the Resource Group, and from a CLI viewpoint run the following command:
+    ```
+    az network nsg show --resource-group <resource-group-name> --name SQL-NSG --query "defaultSecurityRules[]" --output table
+    ```
 
-**Apply your NSG to the SQL VM NIC**
+    These rules cannot be deleted. What we can do is create a series of new rules in the security group with a higher priority to catch the filter the traffic.
+
+2.  Allow inbound traffic from the business tier subnet.
+
+    Create a new rule within your new security group. Like typical firewall rules, security group rules are based on information about the source, destination, protocol, port and action (allow/deny).
+
+    This rule will allow any traffic into the database tier from the business tier. This is done by specifying the CIDR of the business tier subnet, 10.0.2.0/24, as the source and any resource within this subnet can communicate with the database tier.
+
+    ```
+    az network nsg rule create --name AllowFromBiz --nsg-name SQL-NSG --priority 110 --resource-group <resource-group-name> --description "Allow all traffic from the Business Tier" --access Allow --direction Inbound --source-address-prefix 10.0.2.0/24 --source-port-ranges * --protocol * --destination-address-prefix * --destination-port-ranges *
+    ```
+
+3.	Allow inbound traffic from the database tier subnet itself.
+
+    This rule allows communication between the database VMs, which is needed for database replication and failover. Use the database (SQL) subnet range 10.0.3.0/24 as the source:
+
+    ```
+    az network nsg rule create --name AllowFromSQL --nsg-name SQL-NSG --priority 120 --resource-group <resource-group-name> --description "Allow all intra SQL traffic within the Database Tier" --access Allow --direction Inbound --source-address-prefix 10.0.3.0/24 --source-port-ranges * --protocol * --destination-address-prefix * --destination-port-ranges *
+    ```
+
+4.	Allow RDP access from the Jump Box.
+
+    Allowing RDP traffic on the RDP port (3389) from the Jump Box lets remote administrators connect to the database servers from the Jump Box. By only specifying the RDP port, users of the Jump Box will not be able to connect via any other method, port or protocol.
+
+    Use the management subnet range 10.0.0.128/25 as the source:
+
+    ```
+    az network nsg rule create --name AllowRDPFromJB --nsg-name SQL-NSG --priority 130 --resource-group <resource-group-name> --description "Allow RDP traffic from the Jump Box" --access Allow --direction Inbound --source-address-prefix 10.0.128.0/25 --source-port-ranges * --protocol TCP --destination-address-prefix * --destination-port-ranges 3389
+    ```
+
+5.	Deny all inbound traffic from the VNet.
+
+    Now we have set up the base access requirements, we need to block all other traffic from within the VNet. Instead of a source address, we can use the **VirtualNetwork** tag in the rule:
+
+    ```
+    az network nsg rule create --name DenyFromVNet --nsg-name SQL-NSG --priority 140 --resource-group <resource-group-name> --description "Deny general VNet traffic" --access Deny --direction Inbound --source-address-prefix VirtualNetwork --destination-port-ranges *
+    ```
+
+6.	Deny all inbound traffic from the Internet.
+
+    Create the final rule yourself using the commands above as the pattern. Set your own description, and use these properties:
+
+    - **Name:** DenyFromInternet
+    - **Priority:** 150
+    - **Source Address:** Internet
+
+#### Rule Priority
+Consider the following when creating security group rules...
+
+- Security group rules run in priority order, with the lowest priority rule being evaluated first.
+- Leave a reasonable gap between your rules. It makes for a lot of work to try and retro-fit a new rule with a higher priority in between rules priorties 4,5 and 6 than 140, 150 and 160.
+- The first **Deny** rule encountered by the evaluation instantly deny the access.
+
+### 4.2 - Attach the security group to the SQL Server network interface / NIC
+
+Follow these steps to attach the new NSG to the network interface of the SQL VM...
 
 ![NSG-inbound-sql](/images/attach-NSG-NIC.PNG)
 
-Your NSG will look similar to this 
+Alternatively you can use the following CLI command to make this attachment. The command references the NIC resource and attaches the security group to the NIC.
+
+The name of the NIC for the SQL server is **sql-vm1-nic1**.
+
+```
+az network nic update --resource-group <resource-group-name> --name sql-vm1-nic1 --network-security-group SQL-NSG
+```
+
+### 4.3 - Overview and final steps
+
+Your NSG rule set should look similar to this... 
 
 ![NSG-inbound-sql](/images/NSG-SQL-NIC.PNG)
 
-Confirm that you can RDP from the Jumpbox to the SQL server and also from the Business VM but not from the Web VM (you will need to RDP to the JumpBox first, then RDP to the Business and Web VMs to finally RDP to the SQL VM)
+Confirm that you can RDP from the Jump Box to the SQL server and also from the Business VM but not from the Web VM (you will need to RDP to the Jump Box first, then RDP to the Business and Web VMs to finally RDP to the SQL VM)
 
 ![RDP blocked](/images/RDP-blocked-from-web.PNG)
 
