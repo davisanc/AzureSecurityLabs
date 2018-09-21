@@ -190,7 +190,10 @@ Network logging and monitoring in Azure is comprehensive and covers two broad ca
 - **Network Watcher**: Scenario-based network monitoring is provided with the features in Network Watcher. This service includes packet capture, next hop, IP flow verify, security group view, NSG flow logs. Scenario level monitoring provides an end to end view of network resources in contrast to individual network resource monitoring.
 - **Resource monitoring**: Resource level monitoring comprises four features, diagnostics logs, metrics, troubleshooting, and resource health. All these features are built at the network resource level.
 
-To troubleshoot your NSG rules, enable NSG flow logs. This will enable Network watcher. You will need to select an storage account within your Resource Group. The NSG flow logs will be stored within a blob container of the selected storage account. More details https://docs.microsoft.com/en-us/azure/network-watcher/network-watcher-nsg-flow-logging-portal
+To troubleshoot your NSG rules, enable NSG flow logs. This will enable Network watcher. 
+Go to the search bar on the Portal, look for Network Watcher. Filter by your subscription ID and Resource Group
+
+You will need to select an storage account within your Resource Group. The NSG flow logs will be stored within a blob container of the selected storage account. More details https://docs.microsoft.com/en-us/azure/network-watcher/network-watcher-nsg-flow-logging-portal
 
 ![NSG flow logs](/images/NSG-flow-logs-enabled.PNG)
 
