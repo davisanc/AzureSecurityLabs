@@ -174,7 +174,12 @@ Create rules 2 – 4 with higher priority than the first rule, so they override 
 
 **Apply your NSG to the SQL VM NIC**
 
+![NSG-inbound-sql](/images/attach-NSG-NIC.PNG)
+
+Your NSG will look similar to this 
+
 ![NSG-inbound-sql](/images/NSG-inbound-rules-for-SQL.PNG)
+![NSG-inbound-sql](/images/NSG-SQL-NIC.PNG)
 
 Confirm that you can RDP from the Jumpbox to the SQL server and also from the Business VM but not from the Web VM (you will need to RDP to the JumpBox first, then RDP to the Business and Web VMs to finally RDP to the SQL VM)
 
