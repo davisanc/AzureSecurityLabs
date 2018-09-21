@@ -195,11 +195,13 @@ Go to the search bar on the Portal, look for Network Watcher. Filter by your sub
 
 ![network watcher](/images/Network-watcher.PNG)
 
+Click on the NSG you worked on the previous lab, enable **Flow Logs**
+
 You will need to select an storage account within your Resource Group. The NSG flow logs will be stored within a blob container of the selected storage account. More details https://docs.microsoft.com/en-us/azure/network-watcher/network-watcher-nsg-flow-logging-portal
 
 ![NSG flow logs](/images/NSG-flow-logs-enabled.PNG)
 
-Also, you may want to enable Traffic Analytics for rich analytics and visualization. You will need to create an OMS workspace (select the Free Tier and put it on the same RG and location) and link it to Traffic Analytics
+Also, you may want to enable **Traffic Analytics for rich analytics and visualization**. You will need to create an **OMS workspace** (select the Free Tier and put it on the same RG and location) and link it to Traffic Analytics
 Traffic Analytics provides rich analytics and visualization derived from NSG flow logs and other Azure resources' data. Drill through geo-map, easily figure out traffic hotspots and get insights into optimization possibilities. Learn about all features To use this feature, choose an OMS workspace. To minimize data egress costs, we recommend that you choose a workspace in the same region your flow logs storage account is located. Network Performance Monitor solution will be installed on the workspace. We also advise that you use the same workspace for all NSGs as much as possible. Additional meta-data is added to your flow logs data, to provide enhanced analytics.
 
 ![flow log ta](/images/flow-logs-and-traffic-analytics.PNG)
