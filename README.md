@@ -188,18 +188,21 @@ This section creates the security group to protect the database tier.
     When the command completes, the terminal will show all properties of the security group, and you can also see the new NSG in the Azure console.
 
     By default, a security group will be pre-populated with three **inbound** rules (in order of execution):
-    1. allow any traffic from the VNet to VNet
+    1. allow any VNet to VNet traffic
     2. allow any traffic from the Azure load balancer to the VNet
     3. deny all inbound traffic (that does not match any other rule)
     
     There are also three **outbound** rules:
-    1. allow any traffic outboud to the VNet
+    1. allow any traffic outbound to the VNet
     2. allow all traffic outbound to the Internet
     3. deny all outbound traffic
 
-    You can see these rules in the Azure Console by selecting the security group object within the Resource Group, and from a CLI viewpoint run the following command:
+    You can view these rules in the Azure Console by selecting the security group object within the Resource Group, and also by running this CLI command:
     ```
-    az network nsg show --resource-group <resource-group-name> --name SQL-NSG --query "defaultSecurityRules[]" --output table
+    az network nsg show --resource-group <resource-group-name>
+        --name SQL-NSG
+        --query "defaultSecurityRules[]"
+        --output table
     ```
 
     These rules cannot be deleted. What we can do is create a series of new rules in the security group with a higher priority to catch the filter the traffic.
