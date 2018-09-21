@@ -231,7 +231,8 @@ At this time the Azure Firewall is on public preview. To enable the firewall in 
 Register-AzureRmProviderFeature -FeatureName AllowRegionalGatewayManagerForSecureGateway -ProviderNamespace Microsoft.Network
 ```
 
-    *Note: If you get the following error:
+*Note: If you get the following error:*
+    
     ```
     Powershell error – Import-Module : File AzureRM.psm1 cannot be loaded because running scripts is disabled on this system
     ```
