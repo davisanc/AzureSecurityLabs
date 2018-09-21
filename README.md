@@ -212,6 +212,9 @@ Click Save
 
 Finally, to go to Network Watcher. On the left-side of the portal select All services, then enter **Monitor** in the Filter box. When Monitor appears in the search results, select it. To start exploring traffic analytics and its capabilities, select Network watcher, then Traffic Analytics
 The dashboard may take up to 30 minutes to appear the first time because Traffic Analytics must first aggregate enough data for it to derive meaningful insights, before it can generate any reports.
+Also, you may get the following message: *Displaying only resources data. No flow information is available for the selected workspace. Please refresh and load the workspace again after some time to see flow logs data.*
+
+![TOPOLOGY](/images/traffc-analytics.PNG)
 
 Aslo, you may want to visualize the Network Topology. In Network Watcher, click on **Topology** (Filter by Subscription, RG and VNET)
 
