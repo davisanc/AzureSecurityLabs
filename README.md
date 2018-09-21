@@ -193,6 +193,8 @@ Network logging and monitoring in Azure is comprehensive and covers two broad ca
 To troubleshoot your NSG rules, enable NSG flow logs. This will enable Network watcher. 
 Go to the search bar on the Portal, look for Network Watcher. Filter by your subscription ID and Resource Group
 
+![network watcher](/images/Network-watcher.PNG)
+
 You will need to select an storage account within your Resource Group. The NSG flow logs will be stored within a blob container of the selected storage account. More details https://docs.microsoft.com/en-us/azure/network-watcher/network-watcher-nsg-flow-logging-portal
 
 ![NSG flow logs](/images/NSG-flow-logs-enabled.PNG)
