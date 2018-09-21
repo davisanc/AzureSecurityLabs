@@ -172,11 +172,11 @@ Create an NSG rule to restrict traffic between tiers. For example, in the 3-tier
 
 Create rules 2 – 4 with higher priority than the first rule, so they override it
 
-Apply your NSG to the SQL VM NIC
+**Apply your NSG to the SQL VM NIC**
 
 ![NSG-inbound-sql](/images/NSG-inbound-rules-for-SQL.PNG)
 
-Confirm that you can RDP from the Jumpbox to the SQL server and also from the Business VM (by the specific NSG added)  but not from the Web VM
+Confirm that you can RDP from the Jumpbox to the SQL server and also from the Business VM but not from the Web VM (you will need to RDP to the JumpBox first, then RDP to the Business and Web VMs to finally RDP to the SQL VM)
 
 ![RDP blocked](/images/RDP-blocked-from-web.PNG)
 
