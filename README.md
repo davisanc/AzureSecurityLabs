@@ -170,7 +170,7 @@ Create an NSG rule to restrict traffic between tiers. For example, in the 3-tier
 
 Create rules 2 – 4 with higher priority than the first rule, so they override it
 
-Apply your NSG to the JumpBox VM NIC
+Apply your NSG to the SQL VM NIC
 
 ![NSG-inbound-sql](/images/NSG-inbound-rules-for-SQL.PNG)
 
