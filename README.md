@@ -323,10 +323,25 @@ Azure Firewall is a stateful firewall as a service, with high availability and c
 
 The Azure Firewall is currently in public preview. To enable the firewall in your subscription you need use the following Azure PowerShell commands:
 
+To enable the firewall in your subscription you need use the following Azure PowerShell commands:
+
+1. Run this command from PS
 ```
 Register-AzureRmProviderFeature -FeatureName AllowRegionalGatewayManagerForSecureGateway -ProviderNamespace Microsoft.Network
 ```
 
+*Note: If you get the following error:*
+    
+```
+Powershell error – Import-Module : File AzureRM.psm1 cannot be loaded because running scripts is disabled on this system
+```
+*Run this command:*
+```
+PS c:\> Set-ExecutionPolicy RemoteSigned
+```
+You may need to login again to your Azure subscription with **Connect-AzureRmAccount** or **az login**. Make sure you are on the right subscription
+    
+2. Now run the following PS command needed to enable the Firewall
 ```
 Register-AzureRmProviderFeature -FeatureName AllowAzureFirewall -ProviderNamespace Microsoft.Network
 ```
@@ -366,8 +381,8 @@ We will work on the Web VM, and we will change the default route of the web subn
 ![route table](/images/route-table.PNG)
 
 1.	Click Subnets, and then click Associate.
-2.	Click Virtual network, and then select ‘ra-ntier-vnet’
-3.	For Subnet, click ‘mgmt
+2.	Click Virtual network, and then select **‘ra-ntier-vnet’**
+3.	For Subnet, click **‘web'**
 4.	Click OK.
 5.	Click Routes, and then click Add.
 6.	For Route name, type FW-DG.
@@ -378,6 +393,8 @@ We will work on the Web VM, and we will change the default route of the web subn
 10.	Click OK.
 
 **Create application rules**
+
+We will write a simple rule to enable web traffic to github.com and block anything else
 
 1.	Click on the firewall
 2.	Under Settings, click Rules.
@@ -399,27 +416,30 @@ We will work on the Web VM, and we will change the default route of the web subn
 
 **Configure network rules**
 
-The idea is to permit DNS traffic to go through the Firewall from a L3/L4 perspective
+The idea is to permit DNS traffic to our DNS server to go through the Firewall (from a L3/L4 perspective)
+
 1.	Click Add network rule collection.
 2.	For Name, type Net-Coll01.
 3.	For Priority, type 200.
 4.	For Action, select Allow.
 5.	Under Rules, for Name, type AllowDNS.
 6.	For Protocol, select UDP.
-7.	For Source Addresses, type 10.0.2.0/24.
+7.	For Source Addresses, type 10.0.1.0/24.
 8.	For Destination address, type 168.63.129.16
 9.	For Destination Ports, type 53.
 10.	Click Add.
 
 **Test your firewall rules**
 
-Open a browser and try go to github. 
+RDP to the JumpBox and from there to the Web VM. Open a browser and try go to github. 
 
 ![firewall allowed](/images/Firewall-allowed-rule.PNG)
 
-Try going to another page, this action should be blocked:
+Try going to another site, this action should be blocked:
 
 ![firewall blocked](/images/Fireall-blocked-rule.PNG)
+
+![bbc blocked](/images/bbc.PNG)
 
 ## 7. Lab 4 – Protecting the Web Application - Application Gateway and WAF (Web Application Firewall)
 
