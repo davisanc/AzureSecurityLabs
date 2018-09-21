@@ -294,6 +294,8 @@ Go to your resource, click Create a resource, networking, and look for ‘Firewa
 
 **Create application rules**
 
+We will write a simple rule to enable web traffic to github.com and block anything else
+
 1.	Click on the firewall
 2.	Under Settings, click Rules.
 3.	Click Add application rule collection.
@@ -314,7 +316,7 @@ Go to your resource, click Create a resource, networking, and look for ‘Firewa
 
 **Configure network rules**
 
-The idea is to permit DNS traffic to go through the Firewall from a L3/L4 perspective
+The idea is to permit DNS traffic to our DNS server to go through the Firewall (from a L3/L4 perspective)
 
 1.	Click Add network rule collection.
 2.	For Name, type Net-Coll01.
