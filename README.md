@@ -233,15 +233,16 @@ Register-AzureRmProviderFeature -FeatureName AllowRegionalGatewayManagerForSecur
 
 *Note: If you get the following error:*
     
-    ```
-    Powershell error – Import-Module : File AzureRM.psm1 cannot be loaded because running scripts is disabled on this system
-    ```
-    Run this command:
-    ```
-    PS c:\> Set-ExecutionPolicy RemoteSigned
-    ```
-    You may need to login again to your Azure subscription with **Connect-AzureRmAccount** or **az login**
-    Make sure you are on the right subscription
+```
+Powershell error – Import-Module : File AzureRM.psm1 cannot be loaded because running scripts is disabled on this system
+```
+*Run this command:*
+```
+PS c:\> Set-ExecutionPolicy RemoteSigned
+```
+You may need to login again to your Azure subscription with **Connect-AzureRmAccount** or **az login**
+
+Make sure you are on the right subscription
     
 
 ```
