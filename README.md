@@ -523,12 +523,12 @@ az network nic show --name web-vm1-nic1 --resource-group <resource-group-name> -
 
 ## 8. Lab 5 – Understand your application security posture in Azure -Azure Security Center for security recommendations
 
-First thing is to upgrade your subscription to the Standard Tier to get all features of ASC
+First thing is to upgrade your subscription to the Standard Tier to get all features of Azure Security Center
 
 **Enable your Azure subscription**
 
-1.	Sign into the Azure portal.
-2.	On the Microsoft Azure menu, select Security Center. Security Center - Overview opens.
+1. Sign into the Azure portal.
+2. On the Microsoft Azure menu, select **Security Center**. The **Security Center - Overview** opens.
 
 ![oms](/images/OMS.png)
 
@@ -538,20 +538,21 @@ You can view and filter the list of subscriptions by clicking the Subscriptions 
 
 Within minutes of launching Security Center the first time, you may see:
 - **Recommendations** for ways to improve the security of your Azure subscriptions. Clicking the Recommendations tile will launch a prioritized list.
-- An inventory of **Compute & apps, Networking, Data security, and Identity & access** resources that are now being assessed by Security Center along with the security posture of each.
+- An inventory of **Compute & apps, Networking, Data security, and Identity & Access** resources that are now being assessed by Security Center along with the security posture of each.
 
 To take full advantage of Security Center, you need to complete the steps below to upgrade to the Standard tier and install the Microsoft Monitoring Agent.
 
 **Upgrade to the Standard tier**
 
 For the purpose of the Security Center quickstarts and tutorials you must upgrade to the Standard tier. Your first 60 days are free, and you can return to the Free tier any time.
-1.	Under the Security Center main menu, select **Onboarding to advanced security**
-2.	Under Onboarding to advanced security, Security Center lists subscriptions and workspaces eligible for onboarding. Select a subscription from the list.
 
-![oms advanced](/images/oms-advanced.png)
+1. Under the Security Center main menu, select **Onboarding to advanced security**
+2. Under Onboarding to advanced security, Security Center lists subscriptions and workspaces eligible for onboarding. Select a subscription from the list.
 
-3.	Security policy provides information on the resource groups contained in the subscription. Pricing also opens.
-4.	Under Pricing, select Standard to upgrade from Free to Standard and click Save.
+    ![oms advanced](/images/oms-advanced.png)
+
+3. Security policy provides information on the resource groups contained in the subscription. Pricing also opens.
+4. Under Pricing, select Standard to upgrade from Free to Standard and click Save.
 
 ![oms pricing](/images/oms-pricing.png)
 
@@ -564,43 +565,54 @@ Now that you’ve upgraded to the Standard tier, you have access to additional S
 Security Center collects data from your Azure VMs and non-Azure computers to monitor for security vulnerabilities and threats. Data is collected using the Microsoft Monitoring Agent, which reads various security-related configurations and event logs from the machine and copies the data to your workspace for analysis. By default, Security Center will create a new workspace for you.
 When automatic provisioning is enabled, Security Center installs the Microsoft Monitoring Agent on all supported Azure VMs and any new ones that are created. Automatic provisioning is strongly recommended.
 To enable automatic provisioning of the Microsoft Monitoring Agent:
-1.	Under the Security Center main menu, select Security Policy.
-2.	Select the subscription.
-3.	Under Security policy, select Data Collection.
-4.	Under Data Collection, select On to enable automatic provisioning.
-5.	Select Save.
+
+1. Under the Security Center main menu, select **Security Policy**.
+2. Select the subscription.
+3. Under **Security policy**, select **Data Collection**.
+4. Under **Data Collection**, select **On** to enable automatic provisioning.
+5. Click **Save**.
 
 ![oms datacollection](/images/oms-datacollection.png)
 
-With this new insight into your Azure VMs, Security Center can provide additional Recommendations related to system update status, OS security configurations, endpoint protection, as well as generate additional Security alerts.
+With this new insight into your Azure VMs, Security Center can provide additional recommendations related to system update status, Operating System security configurations, endpoint protection, as well as generate additional security alerts.
 
 ![oms recomm](/images/oms-recomm.png)
 
 ## 9. Lab 6 - Storage Security – Encryption at Rest - Apply disk encryption to a running VM
 
-Having looked at ASC we’ve seen the recommendations to apply disk encryption to our VMs
+Having looked at Azure Security Center we can see recommendations to apply disk encryption to our VMs. This can be done with the help of [Azure Key Vault](https://azure.microsoft.com/en-us/services/key-vault/).
 
-Azure Disk encryption needs the Key Vault and the VMs to be co-located in the same region. Create and use a Key Vault that is in the same region as the VM to be encrypted
+For Azure Disk encryption to work, the Key Vault and the VMs must be co-located in the same Azure region.
+
+**Create and use a Key Vault that is in the same region as the VM to be encrypted**
+
+Create a new Key Vault from the portal following the steps in the image below, or create a Key Vault using this CLI command:
+
+```
+az keyvault create --name <your-keyvault-name> --resource-group <resource-group-name> --sku standard
+```
 
 ![create keyv](/images/Create-KeyVault.PNG)
 
-You can enable encryption by using a template, PowerShell cmdlets, or CLI commands. The following sections explain in detail how to enable Azure Disk Encryption
+### 9.1 - Applying VM disk encryption
 
-*Important: It is mandatory to snapshot and/or backup a managed disk based VM instance outside of, and prior to enabling Azure Disk Encryption. A snapshot of the managed disk can be taken from the portal, or Azure Backup can be used. Backups ensure that a recovery option is possible in the case of any unexpected failure during encryption*
+You can enable encryption by using a template, PowerShell cmdlets, or CLI commands. The following sections explain in detail how to enable Azure Disk Encryption.
 
-**Run a pre-requisities script to encrypt data disk of your/s VM**
+*Important: It is mandatory to snapshot and/or backup a managed disk based VM instance outside of, and prior to enabling Azure Disk Encryption. A snapshot of the managed disk can be taken from the portal, or Azure Backup can be used. Backups ensure that a recovery option is possible in the case of any unexpected failure during encryption.*
 
-Make sure you have powershell verion 6 installed on your local machine
+**Run a prerequisite script to encrypt the data disk of your VM(s)**
 
-Verify the installed versions of the AzureRM module. If needed, update the Azure PowerShell module.
-- The AzureRM module version needs to be 6.0.0 or higher.
-- Using the latest AzureRM module version is recommended.
-```
-Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
-```
-```
-Update-Module -Name AzureRM
-```
+1. Make sure you have PowerShell version 6 installed on your local machine.
+2. Verify the installed versions of the AzureRM module. The AzureRM module version needs to be 6.0.0 or higher.
+
+    ```
+    Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
+    ```
+3. If needed, update the Azure PowerShell module. Using the latest AzureRM module version is recommended (This will require administrative rights to the PowerShell session).
+
+    ```
+    Update-Module -Name AzureRM
+    ```
 
 **Enable encryption on existing or running VMs with Azure CLI**
 
