@@ -582,9 +582,7 @@ With this new insight into your Azure VMs, Security Center can provide additiona
 
 Having looked at Azure Security Center we can see recommendations to apply disk encryption to our VMs. This can be done with the help of Azure Key Vault.
 
-Full details about Azure Key Vault can be found here:
-
-[https://azure.microsoft.com/en-us/services/key-vault/](https://azure.microsoft.com/en-us/services/key-vault/)
+Full details about Azure Key Vault can be found here: [https://azure.microsoft.com/en-us/services/key-vault/](https://azure.microsoft.com/en-us/services/key-vault/)
 
 For Azure Disk encryption to work, the Key Vault and the VMs must be co-located in the same Azure region.
 
