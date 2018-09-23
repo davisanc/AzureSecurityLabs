@@ -487,20 +487,37 @@ Try going to another site, this action should be blocked:
 
 ![bbc blocked](/images/bbc.PNG)
 
-## 7. Lab 4 – Protecting the Web Application - Application Gateway and WAF (Web Application Firewall)
+## 7. Lab 4 – Protecting the Web Application - Application Gateway and Web Application Firewall (WAF)
 
-Access to the Web VMs will be through an Application Gateway, which acts as a Layer7 HTTP reverse proxy and can load balance the web traffic. The Application Gateway can be enabled with a WAF to protect our application against know vulnerabilities like the OWASP Top 10. Internet access to the Web tier should go through the AppGW and we will associate a public IP address to the gateway
+In this architecture, access to the web services running on the web VMs will be via an Application Gateway, which acts as a Layer7 HTTP reverse proxy and can load balance the web traffic. The Application Gateway can be enabled with a WAF to protect our application against known vulnerabilities, such as those listed on the the [2017 OWASP Top 10 list](https://www.owasp.org/index.php/Top_10-2017_Top_10).
 
-Run through Powershell, Azure CLI or an ARM template for the creation of the AppGW/WAF:
+Internet traffic destined for the web servers should always go through a load balancer or Application Gateway where possible, with the advertised endpoint for the traffic set as a public IP address attached to the gateway.
 
-Azure ARM template:  on https://github.com/davisanc/AzureSecurityLabs , download the app_gw-security-labs.json and deploy as an ARM template
+### 7.1 - Creating the Application Gateway
 
-Azure CLI:
+#### Using ARM Templates
+
+We have included an ARM template for deploying the application gateway. The template, **app_gw-security-labs.json** is listed above in this repository. Download the file and deploy the template.
+
+#### Azure CLI
+
+This command creates the Application Gateway (for the purposes of this lab) into the **appgateway** subnet of our VNet. Please review the Azure CLI documentation for [creating an application gateway](https://docs.microsoft.com/en-us/cli/azure/network/application-gateway?view=azure-cli-latest#az-network-application-gateway-create) to see the full list of possible parameters.
+
 ```
-az network application-gateway create  --name myAppGateway --location uksouth --resource-group Sec-Foundation-MTC --capacity 2 --sku Standard_Medium --http-settings-cookie-based-affinity Disabled --public-ip-address myAGPublicIPAddress  --vnet-name ra-ntier-vnet --subnet appgateway   --servers 10.0.1.5
+az network application-gateway create --name myAppGateway --location <location> --resource-group <resource-group-name> --capacity 2 --sku Standard_Medium --http-settings-cookie-based-affinity Disabled --vnet-name ra-ntier-vnet --subnet appgateway --servers <web-server-ip-address>
 ```
-**Optional: Create a (DVWA) Damn Vulnerable Web Application from the marketplace, add the VM to the Application Gateway Pool and run a sequence of SQL injection and XSS attacks, checking the WAF can stop them**
-This DVWA is managed by a 3rd party company so the Azure pass credits cannot be used. You will need to use an enterprise subscription or a Pay-as-You-Go
+
+**Please note:** the IP address of the web server required is the *internal* IP address of web server **web-vm1**. You can get the address under the **Networking** settings for the resource or by running the following CLI command:
+
+```
+az network nic show --name web-vm1-nic1 --resource-group <resource-group-name> --query "ipConfigurations[].privateIpAddress"
+```
+
+**Please also note** that we did not specify Public IP Address resources for this application gateway. Not specifying an IP address will create a new Public IP address, however you can be more descriptive and create these first before creating the gateway.
+
+**Optional: Create a (DVWA) Damn Vulnerable Web Application VM from the marketplace, add the VM to the Application Gateway Pool and run a sequence of SQL injection and XSS attacks to test that the WAF can stop them.**
+
+**IMPORTANT:** This DVWA is managed by a 3rd party company, so Azure Pass credits cannot be used. You will need to use either an Enterprise or Pay-as-You-Go subscription.
 
 ![DVWA](/images/dvwa-vm.PNG)
 
