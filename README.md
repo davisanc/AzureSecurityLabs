@@ -364,74 +364,120 @@ Register-AzureRmResourceProvider -ProviderNamespace Microsoft.Network
 
 ### 6.2 - Create a subnet for the firewall
 
-The cloud firewall needs to have a subnet within your VNET named ‘AzureFirewallSubnet’
+The cloud firewall needs to have a dedicated subnet within your VNet named **AzureFirewallSubnet**. 
 
-On the portal create a new subnet in your VNET with that name (i.e 10.0.6.0/24)
+On the portal create a new subnet in **ra-ntier-vnet** VNet named **AzureFirewallSubnet** with the IP address space of **10.0.6.0/24**.
+
+Alternatively, run the following CLI command to create the subnet:
+```
+az network vnet subnet create --address-prefix 10.0.6.0/24 --name AzureFirewallSubnet --resource-group <resource-group-name> --vnet-name ra-ntier-vnet
+```
 
 ### 6.3 - Create the firewall
 
-On the Azure Portal, click **Create a resource**, **Networking**, and look for **Firewall**.
+On the Azure Portal, click **Create a resource**, **Networking**, and look for **Firewall**. Configure the firewall as per the image below...
 
 ![firewall](/images/firewall.PNG)
 
-We will work on the Web VM, and we will change the default route of the web subnet to send all traffic through the firewall.
+Once the firewall object is created, vire the properties of the firewall and take a note of the private IP address.
 
-#### Create a default Route
+### 6.4 Routing the web-tier traffic
+We will work on the Web VM, and we will set the default route of the web-tier subnet to send all traffic through the firewall.
 
-![route table](/images/route-table.PNG)
+1. Create a new Route Table
 
-1.	Click Subnets, and then click Associate.
-2.	Click Virtual network, and then select **‘ra-ntier-vnet’**
-3.	For Subnet, click **‘web'**
-4.	Click OK.
-5.	Click Routes, and then click Add.
-6.	For Route name, type FW-DG.
-7.	For Address prefix, type 0.0.0.0/0.
-8.	For Next hop type, select Virtual appliance.
-    Azure Firewall is actually a managed service, but virtual appliance works in this situation.
-9.	For Next hop address, type the private IP address for the firewall 
-10.	Click OK.
+    ![route table](/images/route-table.PNG)
 
-**Create application rules**
+    The Azure CLI command to create the route table is:
 
-We will write a simple rule to enable web traffic to github.com and block anything else
+    ```
+    az network route-table create --name Firewall-Route --resource-group <resource-group-name> --location <location>
+    ```
 
-1.	Click on the firewall
-2.	Under Settings, click Rules.
-3.	Click Add application rule collection.
-4.	For Name, type App-Coll01.
-5.	For Priority, type 200.
-6.	For Action, select Allow.
-7.	Under Rules, for Name, type AllowGH.
-8.	For Source Addresses, type 10.0.1.0/24
-9.	For Protocol:port, type http, https. 
-10.	For Target FQDNS, type github.com
-11.	Click Add.
+2. Create a default route
 
-*Note:Azure Firewall includes a built-in rule collection for infrastructure FQDNs that are allowed by default. These FQDNs are specific for the platform and can't be used for other purposes. The allowed infrastructure FQDNs include:*
+    To create the default route in the Azure Portal follow these steps. (The Azure CLI command follows these steps if you prefer.)
+
+    1. In the Azure portal, locate and click on the route table resource created in the step above.
+    2. Click **Routes** in the options on the left.
+    3. Click **Add**.
+    4. Create the route with the following properties:
+        - **Route name:** FW-DG
+        - **Address prefix:** 0.0.0.0/0
+        - **Next hop type:** Select **Virtual Appliance**
+        Azure Firewall is actually a managed service, but **Virtual Appliance** works in this situation.
+        - **Next Hop Address:** type the private IP address for the firewall created above.
+        - Click **OK**.
+
+    Azure CLI command to create the default route:
+
+    ```
+    az network route-table route create --resource-group <resource-group-name> --route-table-name Firewall-Route --name FW-DG --address-prefix 0.0.0.0/0 --next-hop-type VirtualAppliance --next-hop-ip-address <firewall-ip-address>
+    ```
+
+3. Attach the route table to the web subnet
+
+    1. Click **Subnets** in the list options for the route table.
+    2. Click **Associate**.
+    3. Click **Virtual network** and select **ra-ntier-vnet** from the list of VNets.
+    4. Choose the **web** subnet from the list given, and click **OK**.
+
+    To achieve this using the Azure CLI:
+
+    ```
+    az network vnet subnet update --name web --resource-group <resource-group-name> --vnet-name ra-ntier-vnet --route-table Firewall-Route
+    ```
+
+    You may notice that the CLI method attaches the route table to the subnet within the vnet using the 'network vnet' command subset, rather than setting this as a property on the route table object itself.
+
+### 6.5 - Create application rules
+
+We will write a simple rule to enable web traffic to github.com and block anything else. The rule uses the CIDR of the web subnet so allow any resources within that tier access to github.com, so existing *and* future VMs will be allowed to communicate via this rule.
+
+1. Click on the firewall resource.
+2. Under settings, click **Rules**.
+3. Click **Application rule collection**  and the click **+ Add application rule collection**.
+4. Use the following settings for the new collection...
+    - **Name:** App-Coll01
+    - **Priority:** 200
+    - **Action:** Allow
+    - Add the first rule...
+        - **Name:** AllowGH
+        - **Source Addresses:** 10.0.1.0/24
+        - **Protocol:Port:** http,https
+        - **Target FQDNs:** github.com
+    - Click **Add**
+
+After a short time the new application rule will appear in the firewall.
+
+*Note:Azure Firewall includes a built-in rule collection for infrastructure FQDNs that are allowed by default. These FQDNs are specific for the platform and cannot be used for other purposes. The allowed infrastructure FQDNs include:*
 - Compute access to storage Platform Image Repository (PIR).
 - Managed disks status storage access.
-- Windows Diagnostics
-*You can override this build-in infrastructure rule collection by creating a deny all application rule collection which is processed last. It will always be processed before the infrastructure rule collection. Anything not in the infrastructure rule collection is denied by default.*
+- Windows Diagnostics.
 
-**Configure network rules**
+*You can override this build-in infrastructure rule collection by creating a 'deny all' application rule collection which is processed last. It will always be processed before the infrastructure rule collection. Anything not in the infrastructure rule collection is denied by default.*
 
-The idea is to permit DNS traffic to our DNS server to go through the Firewall (from a L3/L4 perspective)
+### 6.6 - Configure network rules
 
-1.	Click Add network rule collection.
-2.	For Name, type Net-Coll01.
-3.	For Priority, type 200.
-4.	For Action, select Allow.
-5.	Under Rules, for Name, type AllowDNS.
-6.	For Protocol, select UDP.
-7.	For Source Addresses, type 10.0.1.0/24.
-8.	For Destination address, type 168.63.129.16
-9.	For Destination Ports, type 53.
-10.	Click Add.
+The idea is to permit DNS traffic to our DNS server to go through the Firewall (from a Level3/Level4 perspective).
 
-**Test your firewall rules**
+1. On the firewall resource, under **Rules**, click **Network rule collection**.
+2. Click **+ Add network rule collection**.
+3. Use these setting for the new collection...
+    - **Name:** Net-Coll01
+    - **Priority** 200
+    - **Action:** Allow
+    - Add the first rule...
+        - **Name:** AllowDNS
+        - **Protocol:** select UDP
+        - **Source Addresses:** type 10.0.1.0/24
+        - **Destination address:** type 168.63.129.16, the IP address for internal DNS resolution
+        - **Destination Ports:** 53.
+    - Click **Add**.
 
-RDP to the JumpBox and from there to the Web VM. Open a browser and try go to github. 
+### 6.7 - Test your firewall rules
+
+RDP to the JumpBox and from there to the Web VM. Open a browser and try go to github.com.
 
 ![firewall allowed](/images/Firewall-allowed-rule.PNG)
 
