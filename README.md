@@ -366,7 +366,7 @@ Register-AzureRmResourceProvider -ProviderNamespace Microsoft.Network
 
 The cloud firewall needs to have a dedicated subnet within your VNet named **AzureFirewallSubnet**. 
 
-On the portal create a new subnet in **ra-ntier-vnet** VNet named **AzureFirewallSubnet** with the IP address space of **10.0.6.0/24**.
+On the portal create a new subnet in the **ra-ntier-vnet** VNet named **AzureFirewallSubnet** with the IP address space of **10.0.6.0/24**.
 
 Alternatively, run the following CLI command to create the subnet:
 ```
@@ -379,7 +379,7 @@ On the Azure Portal, click **Create a resource**, **Networking**, and look for *
 
 ![firewall](/images/firewall.PNG)
 
-Once the firewall object is created, vire the properties of the firewall and take a note of the private IP address.
+Once the firewall object is created, view the properties of the firewall and take a note of the private IP address.
 
 ### 6.4 Routing the web-tier traffic
 We will work on the Web VM, and we will set the default route of the web-tier subnet to send all traffic through the firewall.
@@ -404,12 +404,11 @@ We will work on the Web VM, and we will set the default route of the web-tier su
     4. Create the route with the following properties:
         - **Route name:** FW-DG
         - **Address prefix:** 0.0.0.0/0
-        - **Next hop type:** Select **Virtual Appliance**
-        Azure Firewall is actually a managed service, but **Virtual Appliance** works in this situation.
+        - **Next Hop Type:** Select **Virtual Appliance**. Azure Firewall is actually a managed service, but **Virtual Appliance** works in this situation.
         - **Next Hop Address:** type the private IP address for the firewall created above.
         - Click **OK**.
 
-    Azure CLI command to create the default route:
+    The Azure CLI command to create the default route is:
 
     ```
     az network route-table route create --resource-group <resource-group-name> --route-table-name Firewall-Route --name FW-DG --address-prefix 0.0.0.0/0 --next-hop-type VirtualAppliance --next-hop-ip-address <firewall-ip-address>
@@ -428,11 +427,11 @@ We will work on the Web VM, and we will set the default route of the web-tier su
     az network vnet subnet update --name web --resource-group <resource-group-name> --vnet-name ra-ntier-vnet --route-table Firewall-Route
     ```
 
-    You may notice that the CLI method attaches the route table to the subnet within the vnet using the 'network vnet' command subset, rather than setting this as a property on the route table object itself.
+    You may notice that the CLI method attaches the route table to the subnet inside the VNet using the 'network vnet' command subset, rather than setting this as a property on the route table object itself.
 
 ### 6.5 - Create application rules
 
-We will write a simple rule to enable web traffic to github.com and block anything else. The rule uses the CIDR of the web subnet so allow any resources within that tier access to github.com, so existing *and* future VMs will be allowed to communicate via this rule.
+We will write a simple rule to enable web traffic to *github.com* and block anything else. The rule uses the CIDR of the web subnet as the source address, allowing any resources within that tier access to *github.com*. Therefore existing *and* future VMs will be allowed to communicate via this rule.
 
 1. Click on the firewall resource.
 2. Under settings, click **Rules**.
@@ -451,9 +450,10 @@ We will write a simple rule to enable web traffic to github.com and block anythi
 After a short time the new application rule will appear in the firewall.
 
 *Note:Azure Firewall includes a built-in rule collection for infrastructure FQDNs that are allowed by default. These FQDNs are specific for the platform and cannot be used for other purposes. The allowed infrastructure FQDNs include:*
-- Compute access to storage Platform Image Repository (PIR).
-- Managed disks status storage access.
-- Windows Diagnostics.
+
+- *Compute access to storage Platform Image Repository (PIR).*
+- *Managed disks status storage access.*
+- *Windows Diagnostics.*
 
 *You can override this build-in infrastructure rule collection by creating a 'deny all' application rule collection which is processed last. It will always be processed before the infrastructure rule collection. Anything not in the infrastructure rule collection is denied by default.*
 
