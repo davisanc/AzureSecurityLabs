@@ -586,7 +586,7 @@ Full details about Azure Key Vault can be found here: [https://azure.microsoft.c
 
 For Azure Disk encryption to work, the Key Vault and the VMs must be co-located in the same Azure region.
 
-**Create and use a Key Vault that is in the same region as the VM to be encrypted**
+### 9.1 - Create the Azure Key Vault
 
 Create a new Key Vault from the portal following the steps in the image below, or create a Key Vault using this CLI command:
 
@@ -596,7 +596,7 @@ az keyvault create --name <your-keyvault-name> --resource-group <resource-group-
 
 ![create keyv](/images/Create-KeyVault.PNG)
 
-### 9.1 - Applying VM disk encryption
+### 9.2 - Applying VM disk encryption
 
 You can enable encryption by using a template, PowerShell cmdlets, or CLI commands. The following sections explain in detail how to enable Azure Disk Encryption.
 
