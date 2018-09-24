@@ -30,7 +30,7 @@ If you plan to use an Enterprise account with your enterprise subscription, plea
 
 If you want to use the Azure pass provided, please follow these instructions **ABSOLUTELY TO THE LETTER**. Please read each step twice, before you do it. This is eminently important: it’s possible to lock yourself out of your free subscription or create scenarios where the pass “is already in use”, where you get a message saying the “pass is not associated with this account” and about a dozen variants of these basic ideas. If you follow these instructions **TO THE LETTER WITH NO STEPS SKIPPED OR ALTERNATIVE STEPS TAKEN** (because “I can see what he means, but there’s no need to do that – I know what I’m doing”) – then you will have success. It’ll take you less than 5 minutes and you’ll have started the Azure labwork while others are still trying to activate their subscriptions. 
 
-You can only assign one free trial/Azure Pass during the entire life of a Hotmail/outlook.com/Live-ID… Therefore, avoid using an existing outlook.com/Hotmail.com/LiveID. We’ve come across it many times where people took out a trial in 2008 and have completely forgotten all about it. You’ll only get an error message saying you can’t do that….
+You can only assign one free trial/Azure Pass during the entire life of a Hotmail/outlook.com/Live-ID… Therefore, **avoid using an existing outlook.com/Hotmail.com/LiveID**. We’ve come across it many times where people took out a trial in 2008 and have completely forgotten all about it. You’ll only get an error message saying you can’t do that….
 
 1.	Close down all web browsers
 2.	Fire up a single InPrivate instance of Internet Explorer. Double check to make sure you have only a single, InPrivate instance of Internet Explorer loaded.
