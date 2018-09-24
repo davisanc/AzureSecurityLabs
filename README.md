@@ -57,9 +57,10 @@ You can only assign one free trial/Azure Pass during the entire life of a Hotmai
 8.	Shut down every browser and then open a single InPrivate browser.
 
 9.	Go to http://microsoftazurepass.com
+
 10.	Click the Start button
 
-![image or redeem](/images/redeem-your-azure-pass.png)
+![image or redeem](/images/redeem-your-azure-pass.PNG)
 
 11.	Enter your credentials and click the Sign in button:
 
@@ -75,7 +76,7 @@ You can only assign one free trial/Azure Pass during the entire life of a Hotmai
 
 14.	It takes a few minutes for the page to move on. Eventually you end up at an **ACTIVATE** button – click it:
 
-![active pass](/images/activate-azure-pass.png)
+![active pass](/images/activate-azure-pass.PNG)
 
 15.	After about 30 seconds you are asked to fill in a form. Click Next after filling in section 1.
 
@@ -89,8 +90,9 @@ You can only assign one free trial/Azure Pass during the entire life of a Hotmai
 
 ![image of signup](/images/signup.png)
 
-18.	This part also takes a few minutes. There’s one point where you get a page saying “This typically takes up to 4 minutes”. BE CAREFUL! – experience has taught me to never click anything on this page until you see a page saying “Your subscription is ready for you”. 
-19.	Click the “Or get started with your Azure subscription >” hyperlink. DO NOT click the green button:
+18.	This part also takes a few minutes. There’s one point where you get a page saying “This typically takes up to 4 minutes”. **BE CAREFUL!** – experience has taught me to never click anything on this page until you see a page saying “Your subscription is ready for you”. 
+
+19.	Click the “**Or get started with your Azure subscription >”** hyperlink. **DO NOT click the green button**:
 
 ![image of welcome](/images/welcome.png)
 
