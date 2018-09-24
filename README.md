@@ -843,9 +843,6 @@ On pfSense, go to Status, IPSEC, Overview and click **‘Connect VPN’**
 
 ![image of forget bgp](/images/forget-bgp.PNG)
 
-On the pfSense side:
-
-![image of vpn connected](/images/pfsense-connected.PNG)
 
 **Enable IPSEC traffic on the Virtual Machine pfSense NSG**
 
@@ -860,6 +857,10 @@ Configure a Rule to allow UDP 4500 ((IPsec NAT-T) & 500 (ISAKMP) ports
 After we added the relevant rules on the NSG and pfSense WAN interface, the connection is up and running 
 
 ![pfsense connections](/images/pfsense-connections.png)
+
+On the pfSense side:
+
+![image of vpn connected](/images/pfsense-connected.PNG)
 
 **Enable BGP traffic through IPSEC interface**
 
