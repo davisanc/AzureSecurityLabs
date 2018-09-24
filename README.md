@@ -556,7 +556,7 @@ Internet traffic destined for the web servers should always go through a load ba
 
 #### Using ARM Templates
 
-We have included a json file to deploy the application gateway as an ARM template. The template, **app_gw-security-labs.json** is listed above in this repository. Click on **Raw** , copy the content of the file and save it to a notepad file on your PC with the same name
+We have included a json file to deploy the application gateway as an ARM template. The template, **app_gw-security-labs.json** is listed above in this repository. Click on **Raw** , copy the content of the file and paste it to a new file in Visual Studio Code. Save it as a json file with the same name
 
 To deploy the template, on the Azure Portal go to **Create a resource** at the left panel, search for **Template Deployment**, click **Create**, and then click **Build your own template in the editor**
 
@@ -564,7 +564,13 @@ To deploy the template, on the Azure Portal go to **Create a resource** at the l
 
 Click on **Load File** and use the json file you have just saved to your PC. Click on **Save**
 
-Fill in the **BASICS** part with the Resource Group name and location, also the **SETTINGS** area with the VNET name and web subnet. Click on **Purchase**
+Fill in the **BASICS** part with the Resource Group name and location, also the **SETTINGS** area with the VNET name **ra-ntier-vnet** and **appgateway** subnet (The Application Gateway sits on its own subnet). 
+
+You will notice the template has already the IP address value of the Backend server (the Web VM with IIS)
+
+The template will deploy the AppGW with **WAF enabled on Detection mode**
+
+Click on **Purchase**
 
 ![image of purchase template](/images/purchase-template.PNG)
 
