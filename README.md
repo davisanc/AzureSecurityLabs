@@ -556,9 +556,11 @@ Internet traffic destined for the web servers should always go through a load ba
 
 #### Using ARM Templates
 
-We have included a json file to deploy the application gateway as an ARM template. The template, **app_gw-security-labs.json** is listed above in this repository. Download the file. To deploy the template, on the Azure Portal go to **Create a resource** at the left panel, search for **Template Deployment**, click **Create**, and then click **Build your own template in the editor**
+We have included a json file to deploy the application gateway as an ARM template. The template, **app_gw-security-labs.json** is listed above in this repository. Click on **Raw** , copy the content of the file and save it to a notepad file on your PC with the same name
 
-![image of template](/images/template.PNG)
+To deploy the template, on the Azure Portal go to **Create a resource** at the left panel, search for **Template Deployment**, click **Create**, and then click **Build your own template in the editor**
+
+![image of template](/images/template.PNG
 
 Click on **Load File** and use the json file you have just downloaded to your PC. Click on **Save**
 
