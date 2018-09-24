@@ -819,7 +819,7 @@ Go to your RG, click ‘Add resource’ and look for ‘ Local Network Gateway�
 
 ![local nt gateway](/images/local-nt-gateway.png)
 
-Once the local gateway is created we will define a connection to our onpremise VPN Gateway. We will use a private shared key to enable the IPSEC VPN to come up. Remember to mark BGP to ‘enabled’ on your Connection. 
+Once the local gateway is created we will **define a connection to our onpremise VPN Gateway**. We will use a private shared key to enable the IPSEC VPN to come up. Remember to mark BGP to ‘enabled’ on your Connection. 
 
 **Configure the pfSense VPN Firewall**
 
