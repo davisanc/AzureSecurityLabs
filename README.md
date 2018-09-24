@@ -9,7 +9,7 @@ and AD Domain Services are removed from the lab template, as this could be run o
 
 ## Lab Series
 
-1.	Redeem your Azure Passes and activate your credit
+1.	Create a Microsoft Account, redeem your Azure Passes and activate your credit
 2.	Configuration needed before starting the labs
 3.	Deploy the solution
 4.	Lab 1 - Protecting the Network Perimeter – NSG (Network Security Groups)
@@ -22,29 +22,86 @@ and AD Domain Services are removed from the lab template, as this could be run o
 11.	Lab 8 - Azure Active Directory Role-Based Access Control
 12.	Lab 9 - Enable DDoS protection for your resources
 
-## 1.	Redeem your Azure Passes if you will use your Personal Microsoft Account
+## 1.	Create a Microsoft Account, redeem your Azure Passes if you will use your Personal Microsoft Account
 
 *Note: We recommend using an Enterprise Subscription with a working account that has privileges to create resources. There are some labs on this guide that require the use of 3rd party Virtual Machines that do not allow the use of Azure Pass credits. In order to minimise costs we will enable ‘auto’shutdown’ of Virtual Machines.* 
 
-Make sure you have a working Microsoft account that you can use to redeem the Azure pass
+If you plan to use an Enterprise account with your enterprise subscription, please go to the next section of the lab series **Configuration needed before starting the labs**
 
-Open a browser in Private/Incognito mode and go to https://microsoftazurepass.com
+If you want to use the Azure pass provided, please follow these instructions **ABSOLUTELY TO THE LETTER**. Please read each step twice, before you do it. This is eminently important: it’s possible to lock yourself out of your free subscription or create scenarios where the pass “is already in use”, where you get a message saying the “pass is not associated with this account” and about a dozen variants of these basic ideas. If you follow these instructions **TO THE LETTER WITH NO STEPS SKIPPED OR ALTERNATIVE STEPS TAKEN** (because “I can see what he means, but there’s no need to do that – I know what I’m doing”) – then you will have success. It’ll take you less than 5 minutes and you’ll have started the Azure labwork while others are still trying to activate their subscriptions. 
+
+You can only assign one free trial/Azure Pass during the entire life of a Hotmail/outlook.com/Live-ID… Therefore, avoid using an existing outlook.com/Hotmail.com/LiveID. We’ve come across it many times where people took out a trial in 2008 and have completely forgotten all about it. You’ll only get an error message saying you can’t do that….
+
+1.	Close down all web browsers
+2.	Fire up a single InPrivate instance of Internet Explorer. Double check to make sure you have only a single, InPrivate instance of Internet Explorer loaded.
+3.	Go to http://account.live.com. If it shows you are logged in, click the sign-out button, close the browser down and fire up another InPrivate Instance.
+4.	Go to http://outlook.com and create a new account…
+    
+    Use the azsecseptX@outlook.com , where X has given to you by the proctors
+
+![image of outlook](/images/outlook.PNG)
+
+…or you might get a box like this:
+
+![image of signin](/images/signin.PNG)
+
+5.	Go through the sign-up process and remember your username and password.
+6.	Click the icon in the top right corner of the page:
+
+![image of account](/images/account.PNG)
+
+7.	Click Sign out on the right hand pane that appears:
+
+![image of signout](/images/signout.PNG)
+
+8.	Shut down every browser and then open a single InPrivate browser.
+
+9.	Go to http://microsoftazurepass.com
+10.	Click the Start button
 
 ![image or redeem](/images/redeem-your-azure-pass.PNG)
 
-Login with your personal account, confirm your details and click **Next**
+11.	Enter your credentials and click the Sign in button:
 
-Enter the promo code of your Azure Pass
+![image of credentials](/images/credentials.PNG)
 
-Activate your pass
+12.	Click the **Confirm Microsoft Account** button.
+
+![image of confirm](/images/confirm.PNG)
+
+13.	Enter the promo code you instructor has given you and then click **Claim Promo Code**
+
+![image of claim](/images/claim.PNG)
+
+14.	It takes a few minutes for the page to move on. Eventually you end up at an **ACTIVATE** button – click it:
 
 ![active pass](/images/activate-azure-pass.PNG)
 
-It will take a few minutes until Azure sets up your new subscription
+15.	After about 30 seconds you are asked to fill in a form. Click Next after filling in section 1.
 
-![setting subs](/images/azure-pass-setting-subscription.PNG)
+![image of form](/images/form.PNG)
 
-Next, when you log into https://portal.azure.com, go to **Cost Management + Billing** and you will be able to see your Azure Pass credit.
+16.	You are prompted for a phone number enter some data and click Next. It might take a minute or two to process…
+
+![image of phone](/images/phone.PNG)
+
+17.	At the agreement screen – agree to the terms and conditions. You might opt out of the marketing info – your choice, then click **Sign-Up**:
+
+![image of signup](/images/signup.PNG)
+
+18.	This part also takes a few minutes. There’s one point where you get a page saying “This typically takes up to 4 minutes”. BE CAREFUL! – experience has taught me to never click anything on this page until you see a page saying “Your subscription is ready for you”. 
+19.	Click the “Or get started with your Azure subscription >” hyperlink. DO NOT click the green button:
+
+![image of welcome](/images/welcome.PNG)
+
+20.	Eventually you end up at a button that says “manage my subscription” – go ahead. You’re ready…
+21.	You’re now in your Azure subscription. You’re offered to go on a tour of the UI – it’s probably best to save time and click **Maybe later**
+22.	To check whether you genuinely have a subscription and not just a UI that will fail to provision anything, click **Cost Management and Billing** near the bottom of the left-hand pane:
+
+23.	If the **SUBSCRIPTION** and **SUBSCRIPTION ID** columns are blank, something has gone wrong – talk to your instructor. Otherwise, you’re good to go. **Congratulations!**
+
+![image of ready](/images/ready.PNG)
+
 
 ## 2.  Configuration needed before starting the labs (Time to complete: 15 min)
 
