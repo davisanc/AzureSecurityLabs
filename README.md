@@ -598,6 +598,8 @@ Go to the AppGW resource you just created, and look for the Public IP address as
 
 **IMPORTANT:** This DVWA is managed by a 3rd party company, so Azure Pass credits cannot be used. You will need to use either an Enterprise or Pay-as-You-Go subscription.
 
+If you are interested to test the Azure WAF or any other 3rd party WAFs using the DVWA, please report to your proctors for addional guidance and further steps to simulate some attacks like SQL injection, XSS, etc
+
 ![DVWA](/images/dvwa-vm.PNG)
 
 ## 8. Lab 5 – Understand your application security posture in Azure -Azure Security Center for security recommendations
