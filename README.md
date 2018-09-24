@@ -43,56 +43,56 @@ You can only assign one free trial/Azure Pass during the entire life of a Hotmai
 
 …or you might get a box like this:
 
-![image of signin](/images/signin.PNG)
+![image of signin](/images/signin.png)
 
 5.	Go through the sign-up process and remember your username and password.
 6.	Click the icon in the top right corner of the page:
 
-![image of account](/images/account.PNG)
+![image of account](/images/account.png)
 
 7.	Click Sign out on the right hand pane that appears:
 
-![image of signout](/images/signout.PNG)
+![image of signout](/images/signout.png)
 
 8.	Shut down every browser and then open a single InPrivate browser.
 
 9.	Go to http://microsoftazurepass.com
 10.	Click the Start button
 
-![image or redeem](/images/redeem-your-azure-pass.PNG)
+![image or redeem](/images/redeem-your-azure-pass.png)
 
 11.	Enter your credentials and click the Sign in button:
 
-![image of credentials](/images/credentials.PNG)
+![image of credentials](/images/credentials.png)
 
 12.	Click the **Confirm Microsoft Account** button.
 
-![image of confirm](/images/confirm.PNG)
+![image of confirm](/images/confirm.png)
 
 13.	Enter the promo code you instructor has given you and then click **Claim Promo Code**
 
-![image of claim](/images/claim.PNG)
+![image of claim](/images/claim.png)
 
 14.	It takes a few minutes for the page to move on. Eventually you end up at an **ACTIVATE** button – click it:
 
-![active pass](/images/activate-azure-pass.PNG)
+![active pass](/images/activate-azure-pass.png)
 
 15.	After about 30 seconds you are asked to fill in a form. Click Next after filling in section 1.
 
-![image of form](/images/form.PNG)
+![image of form](/images/form.png)
 
 16.	You are prompted for a phone number enter some data and click Next. It might take a minute or two to process…
 
-![image of phone](/images/phone.PNG)
+![image of phone](/images/phone.png)
 
 17.	At the agreement screen – agree to the terms and conditions. You might opt out of the marketing info – your choice, then click **Sign-Up**:
 
-![image of signup](/images/signup.PNG)
+![image of signup](/images/signup.png)
 
 18.	This part also takes a few minutes. There’s one point where you get a page saying “This typically takes up to 4 minutes”. BE CAREFUL! – experience has taught me to never click anything on this page until you see a page saying “Your subscription is ready for you”. 
 19.	Click the “Or get started with your Azure subscription >” hyperlink. DO NOT click the green button:
 
-![image of welcome](/images/welcome.PNG)
+![image of welcome](/images/welcome.png)
 
 20.	Eventually you end up at a button that says “manage my subscription” – go ahead. You’re ready…
 21.	You’re now in your Azure subscription. You’re offered to go on a tour of the UI – it’s probably best to save time and click **Maybe later**
@@ -100,7 +100,7 @@ You can only assign one free trial/Azure Pass during the entire life of a Hotmai
 
 23.	If the **SUBSCRIPTION** and **SUBSCRIPTION ID** columns are blank, something has gone wrong – talk to your instructor. Otherwise, you’re good to go. **Congratulations!**
 
-![image of ready](/images/ready.PNG)
+![image of ready](/images/ready.png)
 
 
 ## 2.  Configuration needed before starting the labs (Time to complete: 15 min)
