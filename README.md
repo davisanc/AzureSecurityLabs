@@ -564,7 +564,7 @@ To deploy the template, on the Azure Portal go to **Create a resource** at the l
 
 Click on **Load File** and use the json file you have just saved to your PC. Click on **Save**
 
-Fill in the settings with the VNET name and web subnet. Click on **Purchase**
+Fill in the **BASICS** part with the Resource Group name and location, also the **SETTINGS** area with the VNET name and web subnet. Click on **Purchase**
 
 ![image of purchase template](/images/purchase-template.PNG)
 
