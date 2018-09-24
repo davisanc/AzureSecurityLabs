@@ -560,9 +560,9 @@ We have included a json file to deploy the application gateway as an ARM templat
 
 To deploy the template, on the Azure Portal go to **Create a resource** at the left panel, search for **Template Deployment**, click **Create**, and then click **Build your own template in the editor**
 
-![image of template](/images/template.PNG
+![image of template](/images/template.PNG)
 
-Click on **Load File** and use the json file you have just downloaded to your PC. Click on **Save**
+Click on **Load File** and use the json file you have just saved to your PC. Click on **Save**
 
 Fill in the settings with the VNET name and web subnet. Click on **Purchase**
 
