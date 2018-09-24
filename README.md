@@ -592,6 +592,8 @@ az network nic show --name web-vm1-nic1 --resource-group <resource-group-name> -
 
 **Please also note** that we did not specify Public IP Address resources for this application gateway. Not specifying an IP address will create a new Public IP address, however you can be more descriptive and create these first before creating the gateway.
 
+Go to the AppGW resource you just created, and look for the Public IP address assigned under **Frontend public IP address**. Open a new browser tab and introduce the Public IP address, and confirm that you can reach to the Web VM IIS page through the AppGW
+
 **Optional: Create a (DVWA) Damn Vulnerable Web Application VM from the marketplace, add the VM to the Application Gateway Pool and run a sequence of SQL injection and XSS attacks to test that the WAF can stop them.**
 
 **IMPORTANT:** This DVWA is managed by a 3rd party company, so Azure Pass credits cannot be used. You will need to use either an Enterprise or Pay-as-You-Go subscription.
