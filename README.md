@@ -180,7 +180,9 @@ In Visual Studio Code, go to Extensions, search for **Azure CLI Tools** and inst
 
 ## 3.  Deploy the Solution (Time to complete: 35 to 40 min)
 
-1.	Run the following command to create a Resource Group (use ‘uksouth’ for location)
+1.	Run the following command to create a Resource Group
+
+    ### **VERY IMPORTANT: Use Location 'WestEurope' to deploy your infrastructure for all labs. This will guarantee that you won't have issues with the Azure pass credit and availability of Virtual Machine types**
   ```
   az group create --location <location> --name <resource-group-name>
   ```
