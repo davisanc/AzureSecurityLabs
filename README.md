@@ -109,7 +109,7 @@ You can only assign one free trial/Azure Pass during the entire life of a Hotmai
 
 **1.	Install [Visual Studio Code](https://code.visualstudio.com)** 
 
-**2.	Powershell AzureRM module **
+**2.	Powershell AzureRM module**
 
 - Install the AzureRM module. On your Powershell console:
 
