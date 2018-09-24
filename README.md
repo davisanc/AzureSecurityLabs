@@ -839,7 +839,9 @@ On pfSense, go to Status, IPSEC, Overview and click **‘Connect VPN’**
 
 *NOTE: When using BGP over a Routed IPSEC tunnel, it wouldn’t be needed the configuration and management of P2 entries. You will me managing routes in the BGP config instead of P2 entries. Routed IPSEC is a pfSense feature available in 2.4.4, my setup runs on 2.4.3 so I will create the P2 entries manually*
 
-On the local gateway connections, as we are using BGP, **don’t forget to enable BGP or the IPSEC tunnel won’t come up!**
+On the local gateway connections, as we are using BGP, **don’t forget to enable BGP or the IPSEC tunnel won’t come up
+
+![image of forget bgp](/images/forget-bgp.PNG)
 
 **Enable IPSEC traffic on the Virtual Machine pfSense NSG**
 
