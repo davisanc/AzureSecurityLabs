@@ -556,7 +556,17 @@ Internet traffic destined for the web servers should always go through a load ba
 
 #### Using ARM Templates
 
-We have included an ARM template for deploying the application gateway. The template, **app_gw-security-labs.json** is listed above in this repository. Download the file and deploy the template.
+We have included an ARM template for deploying the application gateway. The template, **app_gw-security-labs.json** is listed above in this repository. Download the file. To deploy the template, on the Azure Portal go to **Create a resource** at the left panel, click **Build your own template in the editor**
+
+![image of template](/images/template.PNG)
+
+Click on **Load File** and use the json file you have just downloaded to your PC. Click on **Save**
+
+Fill in the settings with the VNET name and web subnet. Click on **Purchase**
+
+![image of purchase template](/images/purchase-template.PNG)
+
+The creation of the Application Gateway will take a few minutes
 
 #### Azure CLI
 
