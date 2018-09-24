@@ -185,6 +185,8 @@ In Visual Studio Code, go to Extensions, search for **Azure CLI Tools** and inst
   az group create --location <location> --name <resource-group-name>
   ```
 2.	Run the following command to create a Storage Account for your Cloud resources.
+    *Note: Storage account name must be between 3 and 24 characters in length and use numbers and lower-case letters only*
+
   ```
   az storage account create --location <location> --name <storage-account-name> --resource-group <resource-group-name>  --sku Standard_LRS
   ```
