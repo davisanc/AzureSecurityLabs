@@ -548,7 +548,7 @@ Try going to another site, this action should be blocked:
 
 ## 7. Lab 4 – Protecting the Web Application - Application Gateway and Web Application Firewall (WAF)
 
-In this architecture, access to the web services running on the web VMs will be via an Application Gateway, which acts as a Layer7 HTTP reverse proxy and can load balance the web traffic. The Application Gateway can be enabled with a WAF to protect our application against known vulnerabilities, such as those listed on the the [2017 OWASP Top 10 list](https://www.owasp.org/index.php/Top_10-2017_Top_10).
+In this architecture, access to the web services running on the web VMs will be via an Application Gateway, which acts as a Layer7 HTTP reverse proxy and can load balance web traffic. The Application Gateway can be enabled with a WAF to protect our application against known vulnerabilities, such as those listed on the the [2017 OWASP Top 10 list](https://www.owasp.org/index.php/Top_10-2017_Top_10).
 
 Internet traffic destined for the web servers should always go through a load balancer or Application Gateway where possible, with the advertised endpoint for the traffic set as a public IP address attached to the gateway.
 
