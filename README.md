@@ -39,7 +39,7 @@ You can only assign one free trial/Azure Pass during the entire life of a Hotmai
     
     Use the azsecseptX@outlook.com , where X has given to you by the proctors
 
-![image of outlook](/images/outlook.PNG)
+![image of outlook](/images/outlook.png)
 
 …or you might get a box like this:
 
