@@ -608,12 +608,12 @@ If you are interested to test the Azure WAF or any other 3rd party WAFs using th
 
 ## 8. Lab 5 – Understand your application security posture in Azure -Azure Security Center for security recommendations
 
-First thing is to upgrade your subscription to the Standard Tier to get all features of ASC
+First thing is to upgrade your subscription to the Standard Tier to get all features of Azure Security Center
 
 **Enable your Azure subscription**
 
-1.	Sign into the Azure portal.
-2.	On the Microsoft Azure menu, select Security Center. Security Center - Overview opens.
+1. Sign into the Azure portal.
+2. On the Microsoft Azure menu, select **Security Center**. The **Security Center - Overview** opens.
 
 ![oms](/images/OMS.png)
 
@@ -623,20 +623,21 @@ You can view and filter the list of subscriptions by clicking the Subscriptions 
 
 Within minutes of launching Security Center the first time, you may see:
 - **Recommendations** for ways to improve the security of your Azure subscriptions. Clicking the Recommendations tile will launch a prioritized list.
-- An inventory of **Compute & apps, Networking, Data security, and Identity & access** resources that are now being assessed by Security Center along with the security posture of each.
+- An inventory of **Compute & apps, Networking, Data security, and Identity & Access** resources that are now being assessed by Security Center along with the security posture of each.
 
 To take full advantage of Security Center, you need to complete the steps below to upgrade to the Standard tier and install the Microsoft Monitoring Agent.
 
 **Upgrade to the Standard tier**
 
 For the purpose of the Security Center quickstarts and tutorials you must upgrade to the Standard tier. Your first 60 days are free, and you can return to the Free tier any time.
-1.	Under the Security Center main menu, select **Onboarding to advanced security**
-2.	Under Onboarding to advanced security, Security Center lists subscriptions and workspaces eligible for onboarding. Select a subscription from the list.
 
-![oms advanced](/images/oms-advanced.png)
+1. Under the Security Center main menu, select **Onboarding to advanced security**
+2. Under Onboarding to advanced security, Security Center lists subscriptions and workspaces eligible for onboarding. Select a subscription from the list.
 
-3.	Security policy provides information on the resource groups contained in the subscription. Pricing also opens.
-4.	Under Pricing, select Standard to upgrade from Free to Standard and click Save.
+    ![oms advanced](/images/oms-advanced.png)
+
+3. Security policy provides information on the resource groups contained in the subscription. Pricing also opens.
+4. Under Pricing, select Standard to upgrade from Free to Standard and click Save.
 
 ![oms pricing](/images/oms-pricing.png)
 
@@ -649,49 +650,64 @@ Now that you’ve upgraded to the Standard tier, you have access to additional S
 Security Center collects data from your Azure VMs and non-Azure computers to monitor for security vulnerabilities and threats. Data is collected using the Microsoft Monitoring Agent, which reads various security-related configurations and event logs from the machine and copies the data to your workspace for analysis. By default, Security Center will create a new workspace for you.
 When automatic provisioning is enabled, Security Center installs the Microsoft Monitoring Agent on all supported Azure VMs and any new ones that are created. Automatic provisioning is strongly recommended.
 To enable automatic provisioning of the Microsoft Monitoring Agent:
-1.	Under the Security Center main menu, select Security Policy.
-2.	Select the subscription.
-3.	Under Security policy, select Data Collection.
-4.	Under Data Collection, select On to enable automatic provisioning.
-5.	Select Save.
+
+1. Under the Security Center main menu, select **Security Policy**.
+2. Select the subscription.
+3. Under **Security policy**, select **Data Collection**.
+4. Under **Data Collection**, select **On** to enable automatic provisioning.
+5. Click **Save**.
 
 ![oms datacollection](/images/oms-datacollection.png)
 
-With this new insight into your Azure VMs, Security Center can provide additional Recommendations related to system update status, OS security configurations, endpoint protection, as well as generate additional Security alerts.
+With this new insight into your Azure VMs, Security Center can provide additional recommendations related to system update status, Operating System security configurations, endpoint protection, as well as generate additional security alerts.
 
 ![oms recomm](/images/oms-recomm.png)
 
 ## 9. Lab 6 - Storage Security – Encryption at Rest - Apply disk encryption to a running VM
 
-Having looked at ASC we’ve seen the recommendations to apply disk encryption to our VMs
+Having looked at Azure Security Center we can see recommendations to apply disk encryption to our VMs. This can be done with the help of Azure Key Vault.
 
-Azure Disk encryption needs the Key Vault and the VMs to be co-located in the same region. Create and use a Key Vault that is in the same region as the VM to be encrypted
+Full details about Azure Key Vault can be found here: [https://azure.microsoft.com/en-us/services/key-vault/](https://azure.microsoft.com/en-us/services/key-vault/)
+
+For Azure Disk encryption to work, the Key Vault and the VMs must be co-located in the same Azure region and subscription.
+
+### 9.1 - Create the Azure Key Vault
+
+Create a new Key Vault from the portal following the steps in the image below, or create a Key Vault using this CLI command:
+
+```
+az keyvault create --name <your-keyvault-name> --resource-group <resource-group-name> --sku standard
+```
 
 ![create keyv](/images/Create-KeyVault.PNG)
 
-You can enable encryption by using a template, PowerShell cmdlets, or CLI commands. The following sections explain in detail how to enable Azure Disk Encryption
+### 9.2 - Applying VM disk encryption
 
-*Important: It is mandatory to snapshot and/or backup a managed disk based VM instance outside of, and prior to enabling Azure Disk Encryption. A snapshot of the managed disk can be taken from the portal, or Azure Backup can be used. Backups ensure that a recovery option is possible in the case of any unexpected failure during encryption*
+You can enable encryption by using a template, PowerShell cmdlets, or CLI commands. The following sections explain in detail how to enable Azure Disk Encryption.
 
-**Run a pre-requisities script to encrypt data disk of your/s VM**
+*Important: It is mandatory to snapshot and/or backup a managed disk based VM instance outside of, and prior to enabling Azure Disk Encryption. A snapshot of the managed disk can be taken from the portal, or Azure Backup can be used. Backups ensure that a recovery option is possible in the case of any unexpected failure during encryption.*
 
-Make sure you have powershell verion 6 installed on your local machine
+**Run a prerequisite script to encrypt the data disk of your VM(s)**
 
-Verify the installed versions of the AzureRM module. If needed, update the Azure PowerShell module.
-- The AzureRM module version needs to be 6.0.0 or higher.
-- Using the latest AzureRM module version is recommended.
-```
-Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
-```
-```
-Update-Module -Name AzureRM
-```
+1. Make sure you have PowerShell version 6 installed on your local machine.
+2. Verify the installed versions of the AzureRM module. The AzureRM module version needs to be 6.0.0 or higher.
+
+    ```
+    Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
+    ```
+3. If needed, update the Azure PowerShell module. Using the latest AzureRM module version is recommended (This will require administrative rights to the PowerShell session).
+
+    ```
+    Update-Module -Name AzureRM
+    ```
 
 **Enable encryption on existing or running VMs with Azure CLI**
 
-FYI there are some pre-req to check before enabling disk encryption: https://docs.microsoft.com/en-us/azure/security/azure-security-disk-encryption-prerequisites
+There are some prerequistes to check before enabling disk encryption. They can be found here:
 
-We will need an AAD application that will be used to write secrets to KeyVault (this is an authentication step). Also, we need a secret of the AAD application that was created on the earlier step. Recommendation is to run through the pre-req powershell script that handles this
+https://docs.microsoft.com/en-us/azure/security/azure-security-disk-encryption-prerequisites
+
+We will need an Azure Active Directory (AAD) application that will be used to write secrets to KeyVault as an authentication step. Also, we need a secret of the AAD application that was created on the earlier step. Recommendation is to run through the pre-req powershell script that handles this
 
 I will use the following names for the AAD App name and client secret. Running through the script, this App will be registered with AAD and will be authorized to use KeyVault. This client secret will be written in KeyVault
 
@@ -729,45 +745,69 @@ Using the pre-req script you get the final result for the SQL VM
 
 ## 10. Lab 7 - Extending your Data Centre to Azure in a secure way – Site to Site VPN Access
 
-Note: Only run this lab if you are using an enterprise subscription or Pay-As-You-Go, BUT not the Azure pass (as the pfSense image is managed by a 3rd company there is a charge for this and cannot be covered by the pass credits)
+**Note:** Only run this lab if you are using an Enterprise subscription or Pay-As-You-Go, **BUT NOT** the Azure Pass. As the pfSense image is managed by a 3rd company, there is a charge for this which cannot be covered by the Azure Pass credits.
 
-**Create a Firewall for the onpremise VPN side**
+**Create a Firewall for the on-premise VPN side**
 
-We will use a Virtual Machine running pfSense Firewall (open Source) to simulate an onpremise data center. Deploy this VM within the same RG but in another location (i.e West Europe)
+We will use a Virtual Machine running pfSense Firewall (open Source) to simulate an onpremise data center. In the Azure Portal, create a new resource within the same Resource Group but in another location (i.e West Europe). Search the Marketplace for the **Netgate pfSense Firewall** as shown below...
 
 ![pfsense](/images/pfSense.PNG)
 
-Select a small VM spec (i.e B1ms or B2s) using standard HDD and managed disks, create a new VNET and use non-overlapping IP addresses (i.e 192.168.0.0/16 for the address space and 192.168.1.0.24 for the ‘default’ subnet). Assign a new public IP address to the VM, leave the pre-configured NSG (HTTP and HTTPs should be open), enable ‘auto-shutdown’
+Select a small VM size (i.e B1ms or B2s) using standard HDD and managed disks, create a new VNet and use non-overlapping IP addresses (i.e 192.168.0.0/16 for the address space and 192.168.1.0/24 for the ‘default’ subnet). Assign a new public IP address to the VM, leave the pre-configured NSG (HTTP and HTTPs should be open) and enable ‘auto-shutdown’.
 
 ![pfsenseB1](/images/pfSense-B1ms-cost.PNG)
 
-Open a browser tab and enter the public IP address assigned. Login with the username and password you specified during the creation of the VM
+Once created, locate and make a note of the created Public IP address. Open a browser tab and enter the public IP address assigned. Login with the username and password you specified during the creation of the VM.
 
-Give a hostname and a Domain name to your pfSense virtual machine
+Give a hostname and a Domain name to your pfSense Virtual Machine.
 
 ![pfsense general](/images/pfSense-general.PNG)
 
-Leave default NTP settings
+Leave the default NTP settings.
 
-By default this pfSense firewall comes with a single NIC. During the installation of the settings it will ask the WAN ip address, choose DHCP. The IP address assigned to the Firewall is the same to the one you can see on the portal (192.168.1.4)
+By default this pfSense firewall comes with a single NIC. During the installation of the settings it will ask for the WAN ip address, choose DHCP. The IP address assigned to the Firewall is the same as the one you can see on the portal (192.168.1.4).
 
 **Create a VPN Gateway for the Azure VPN side**
 
-Go to your existing VNET, and click create a Gateway Subnet
+In the Azure Portal, bring up the properties of the existing Security Workshop VNet, **ra-ntier-vnet**. Click **Subnets** in the left-hand settings panel, and then click **+ Gateway subnet** to create a Gateway Subnet...
 
 ![vpn gw subnet](/images/VPN-GW-subnet.PNG)
 
-Next, we will create the Virtual Network Gateway. We will chose to create a new public IP address. Also, we will use BGP to exchange routes between Azure and the pfSense firewall, so we need to mark the BGP option when creating the Gateway. We will use a private BGP ASN of 65515
+The Azure CLI command to create this subnet is as follows:
 
-Create a new public ip address for the VPN Gateway
+```
+az network vnet subnet create --resource-group <resource-group-name> --vnet-name ra-ntier-vnet --name GatewaySubnet --address-prefix 10.0.7.0/24
+```
 
-Remember to use location where you have all your network resources (UKsouth)
+**Note** that when you create the Gateway subnet, even if you use the CLI command, the Azure Portal will disable the **Gateway subnet** option.
+
+Next, we will create the Virtual Network Gateway in the **ra-ntier-vnet** VNet. In the Azure Portal, create a new resource and search for **Virtual Network Gateway** from the Marketplace. Run through the creation steps taking note of the following settings:
+
+- Set the **Gateway type** as **VPN**
+- The VPN type will be **Route-based**
+- Choose to create a new Public IP address
+- Also, we will use BGP to exchange routes between Azure and the pfSense firewall, so we need to enable the BGP option when creating the gateway. Use a private BGP ASN of 65515.
+- Use **UK South** as the location for the gateway.
 
 *Note: it will take a few minutes to create the VPN Gateway*
 
 ![create vpn gateway](/images/create-vpn-gateway.png)
 
-You will find the BGP peer address on your VPN Gateway. This is the local address that BGP will use in your Azure VPN Gateway to initiate a BGP connection to your home gateway
+Creating the Virtual Network Gateway is also possible using the CLI. The CLI command requires a Public IP Address as a parameter (whereas the Portal will create on on the fly) so this is a two step process.
+
+First, create the Public IP Address resource. We will use the **Basic** SKU which will allocate a Dynamic IP address:
+
+```
+az network public-ip create --resource-group <resource-group-name> --name <ip-address-name> --sku Basic --location <location>
+```
+
+Next, we can create the Virtual Network Gateway using this IP address as a parameter:
+
+```
+az network vnet-gateway create --resource-group <resource-group-name> --name vpnGW-pfSense --vnet ra-ntier-vnet --gateway-type Vpn --vpn-type RouteBased --public-ip-address <vpn-ip-address-name> --sku VpnGw1 --asn 65501 --location <location>
+```
+
+Once created, you will find the BGP peer address on your VPN Gateway. This is the local address that BGP will use in your Azure VPN Gateway to initiate a BGP connection to your home gateway.
 
 ![VPN-GW-LOCAL](/images/VPN-GW-local-addr.PNG)
 
