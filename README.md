@@ -112,7 +112,7 @@ You can only assign one free trial/Azure Pass during the entire life of a Hotmai
 - If you already have Visual Studio Code, please open it. If not:
 
   - Install Visual Studio Code from the [Visual Studio Code website](https://code.visualstudio.com)
-  - Allow Visual Studio Code to launch after installation. If you already have Visual Studio Code installed, open it.
+  - Allow Visual Studio Code to launch after installation. If you already have Visual Studio Code installed, open it
 
 - In Visual Studio Code, click the **View** menu option and select **Terminal**. This will open a PowerShell terminal command prompt which is a great place to run the Azure CLI commands from in the labs.
 
@@ -128,9 +128,9 @@ You can only assign one free trial/Azure Pass during the entire life of a Hotmai
 
 - Make sure you have installed AzureRM version 6 (or higher).
 
-```/PowerShell
-Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
-```
+    ```/PowerShell
+    Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
+    ```
 
 **3. Install Azure CLI 2.0**
 
@@ -149,12 +149,11 @@ Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
     2. Uninstall Azure CLI earlier versions with command - pip uninstall azure-cli
     3. Re-install Azure CLI 2.0 - pip install --user azure-cli
     4. Add the path C:\Users\<username>\AppData\Local\Programs\Python\Python37-32\Scripts\ to PATH
+    5. Check if the az command is working:
 
-- Check if the az command is working:
-
-     ```
-     az --help
-     ```
+        ```
+        az --help
+        ```
 
 **4. (Optional) Install Visual Studio Code Extensions**
 In Visual Studio Code, go to Extensions, search for **Azure CLI Tools** and install the package. Reload Visual Studio Code once installed.
@@ -182,7 +181,7 @@ In Visual Studio Code, go to Extensions, search for **Azure CLI Tools** and inst
 **7. Set the CLI to use the correct subscription (Enterprise or Azure Pass)**
   To get your Subscription ID, run the following command to list the Subscriptions within your account:
   ```
-  az account list --query "[].{id:id,name:name}"
+  az account list --query "[].{id:id,name:name}" --output tsv
   ```
 
   Make a note of the relevant ID for your Subscription, and set the CLI to use this as the active subscription:
