@@ -796,6 +796,11 @@ az vm encryption show --name "MySecureVM" --resource-group "MySecureRg"
 You can also use the pre-req script, that runs all the previous commands for you
 Use the AzureDiskEncryptionPreRequisiteSetup.ps1 on this repository, and run it on Powershell
 
+The script will require the Resource Group name, KeyVault name, Location, Subscription ID, and AAD App name and client secret
+We recommend using PowerShell ISE 
+
+Full instructions are here: https://docs.microsoft.com/en-us/azure/security/quick-encrypt-vm-powershell
+
 This shoudd be the final result of the script
 
 ![sql vm encrypted](/images/sql-vm-encrypted.PNG)
