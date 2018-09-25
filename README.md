@@ -699,13 +699,13 @@ You can enable encryption by using a template, PowerShell cmdlets, or CLI comman
 There are some prerequistes to check before enabling disk encryption. They can be found here:
 https://docs.microsoft.com/en-us/azure/security/azure-security-disk-encryption-prerequisites
 
-We have summarized them for you here. Alternatively, you can run a pre-requisite script that will run all the follwing comamnds for you
+We have summarized them for you here. Alternatively, you can run a pre-requisite script that will run all the following comamnds for you
 
 If you prefer to do this one by one, go through the following steps. If you prefer to go with the pre-req scritpt, jumpt to 9.4 of this lab
 
 **On Powershell**
 
-1. Make sure you have PowerShell version 6 installed on your local machine.
+1. Make sure you have AzureRM module version 6 installed on your local machine.
 2. Verify the installed versions of the AzureRM module. The AzureRM module version needs to be 6.0.0 or higher.
 
     ```
