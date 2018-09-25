@@ -111,8 +111,8 @@ You can only assign one free trial/Azure Pass during the entire life of a Hotmai
 
 - If you already have Visual Studio Code, please open it. If not:
 
-    - Install [Visual Studio Code](https://code.visualstudio.com)**
-    - Allow Visual Studio Code to launch after installation. If you already have Visual Studio Code installed, open it.
+  - Install Visual Studio Code from the [Visual Studio Code website](https://code.visualstudio.com)
+  - Allow Visual Studio Code to launch after installation. If you already have Visual Studio Code installed, open it.
 
 - In Visual Studio Code, click the **View** menu option and select **Terminal**. This will open a PowerShell terminal command prompt which is a great place to run the Azure CLI commands from in the labs.
 
@@ -132,9 +132,11 @@ You can only assign one free trial/Azure Pass during the entire life of a Hotmai
 Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
 ```
 
-**3. Install [Azure CLI 2.0](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)**
+**3. Install Azure CLI 2.0**
 
-- Open a Command Prompt (or the Terminal Window in Visual Studio Code) and check that running the 'az' command produces command help output (you may need to restart Windows Powershell/Visual Studio Code and re-open again for the installation to register).
+- Visit the [Azure CLI 2.0 website](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) and install the Azure CLI onto your computer.
+
+- Open a Command Prompt (or the Terminal Window in Visual Studio Code) and check that running the `az` command produces command help output (you may need to restart Windows Powershell/Visual Studio Code and re-open again for the installation to register).
 
 - *Note: you might face an issue when you try to run an az command that says*
 
@@ -142,25 +144,25 @@ Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
     az : The term 'az' is not recognized as the name of a cmdlet, function, script file, or operable program.
     ```
 
-    The issue is because the Azure CLI 2.0 is installed in location - C:\Users\<username>\AppData\Local\Programs\Python\Python37-32\Scripts\ which is not added to the PATH variable.* 
+    The issue is because the Azure CLI 2.0 is installed in location - C:\Users\<username>\AppData\Local\Programs\Python\Python37-32\Scripts\ which is not added to the PATH variable.*
     1. *First make sure you have python installed in your machine. If you don’t have the original CLI (or python) at all, you need that  first. Download and install it from here: https://www.python.org/downloads/release/python-352/*
-      
-    2.	Uninstall Azure CLI earlier versions with command - pip uninstall azure-cli
-    3.	Re-install Azure CLI 2.0 - pip install --user azure-cli
-    4.	Add the path C:\Users\<username>\AppData\Local\Programs\Python\Python37-32\Scripts\ to PATH
+    2. Uninstall Azure CLI earlier versions with command - pip uninstall azure-cli
+    3. Re-install Azure CLI 2.0 - pip install --user azure-cli
+    4. Add the path C:\Users\<username>\AppData\Local\Programs\Python\Python37-32\Scripts\ to PATH
 
 - Check if the az command is working:
- 
+
      ```
      az --help
      ```
 
-**4.	(Optional) Install Visual Studio Code Extensions**
+**4. (Optional) Install Visual Studio Code Extensions**
 In Visual Studio Code, go to Extensions, search for **Azure CLI Tools** and install the package. Reload Visual Studio Code once installed.
 
-**5.	Install the [Azure building blocks npm package](https://github.com/mspnp/template-building-blocks/wiki/Install-Azure-Building-Blocks)**
+**5. Install the [Azure building blocks npm package](https://github.com/mspnp/template-building-blocks/wiki/Install-Azure-Building-Blocks)**
 
-- Install **node.js** from the link above (you may need to close and re-open PowerShell/Visual Studio Code).
+- Install **Node.js** from the link above. The LTS version will be fine.
+- You may need to close and re-open PowerShell/Visual Studio Code/Terminal window after the Node.js installation for the following commands to work.
 - Install the Azure Building Blocks package:
 
    ```
@@ -172,12 +174,12 @@ In Visual Studio Code, go to Extensions, search for **Azure CLI Tools** and inst
    azbb
    ```
 
-**6.	From a command prompt, bash prompt, or PowerShell prompt, sign into your Azure account as follows:**
+**6. From a command prompt, bash prompt, or PowerShell prompt, sign into your Azure account as follows:**
   ```
   az login
   ```
 
-**7.	Set the CLI to use the correct subscription (Enterprise or Azure Pass)**
+**7. Set the CLI to use the correct subscription (Enterprise or Azure Pass)**
   To get your Subscription ID, run the following command to list the Subscriptions within your account:
   ```
   az account list --query "[].{id:id,name:name}"
