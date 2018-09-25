@@ -107,50 +107,61 @@ You can only assign one free trial/Azure Pass during the entire life of a Hotmai
 
 ## 2.  Configuration needed before starting the labs (Time to complete: 15 min)
 
-**1.	Install [Visual Studio Code](https://code.visualstudio.com)** 
+**1. Working with Visual Studio Code**
 
-**2.	Powershell AzureRM module**
+- If you already have Visual Studio Code, please open it. If not:
+
+  - Install Visual Studio Code from the [Visual Studio Code website](https://code.visualstudio.com)
+  - Allow Visual Studio Code to launch after installation. If you already have Visual Studio Code installed, open it
+
+- In Visual Studio Code, click the **View** menu option and select **Terminal**. This will open a PowerShell terminal command prompt which is a great place to run the Azure CLI commands from in the labs.
+
+**2. Powershell AzureRM module**
 
 - Install the AzureRM module. On your Powershell console:
 
-```/PowerShell
-Install-Module AzureRM
-```
+    ```/PowerShell
+    Install-Module AzureRM
+    ```
+
+    If you get an error about Administrator rights, either open Visual Studio Code with elevated privileges or run the above command with the `-Scope CurrentUser` parameter.
 
 - Make sure you have installed AzureRM version 6 (or higher).
 
-```/PowerShell
-Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
-```
+    ```/PowerShell
+    Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
+    ```
 
-**3. Install [Azure CLI 2.0](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)**
+**3. Install Azure CLI 2.0**
 
-- Open a Command Prompt (or the Terminal Window in VS Code) and check that running the 'az' command produces command help output (you may need to restart Windows Powershell/Visual Studio Code and re-open again for the installation to register).
+- Visit the [Azure CLI 2.0 website](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) and install the Azure CLI onto your computer.
+
+- Open a Command Prompt (or the Terminal Window in Visual Studio Code) and check that running the `az` command produces command help output (you may need to restart Windows Powershell/Visual Studio Code and re-open again for the installation to register).
 
 - *Note: you might face an issue when you try to run an az command that says*
 
-```
-az : The term 'az' is not recognized as the name of a cmdlet, function, script file, or operable program.
-```
+    ```
+    az : The term 'az' is not recognized as the name of a cmdlet, function, script file, or operable program.
+    ```
 
-    The issue is because the Azure CLI 2.0 is installed in location - C:\Users\<username>\AppData\Local\Programs\Python\Python37-32\Scripts\ which is not added to the PATH variable.* 
+    The issue is because the Azure CLI 2.0 is installed in location - C:\Users\<username>\AppData\Local\Programs\Python\Python37-32\Scripts\ which is not added to the PATH variable.*
     1. *First make sure you have python installed in your machine. If you don’t have the original CLI (or python) at all, you need that  first. Download and install it from here: https://www.python.org/downloads/release/python-352/*
-      
-    1.	Uninstall Azure CLI earlier versions with command - pip uninstall azure-cli
-    2.	Re-install Azure CLI 2.0 - pip install --user azure-cli
-    3.	Add the path C:\Users\<username>\AppData\Local\Programs\Python\Python37-32\Scripts\ to PATH
+    2. Uninstall Azure CLI earlier versions with command - pip uninstall azure-cli
+    3. Re-install Azure CLI 2.0 - pip install --user azure-cli
+    4. Add the path C:\Users\<username>\AppData\Local\Programs\Python\Python37-32\Scripts\ to PATH
+    5. Check if the az command is working:
 
-- Check if the az command is working:
- ```
- az --help
- ```
+        ```
+        az --help
+        ```
 
-**4.	(Optional) Install Visual Studio Code Extensions**
-In Visual Studio Code, go to Extensions, search for **Azure CLI Tools** and install the package.
+**4. (Optional) Install Visual Studio Code Extensions**
+In Visual Studio Code, go to Extensions, search for **Azure CLI Tools** and install the package. Reload Visual Studio Code once installed.
 
-**5.	Install the [Azure building blocks npm package](https://github.com/mspnp/template-building-blocks/wiki/Install-Azure-Building-Blocks)**
+**5. Install the [Azure building blocks npm package](https://github.com/mspnp/template-building-blocks/wiki/Install-Azure-Building-Blocks)**
 
-- Install **node.js** from the link above (you may need to close and re-open PowerShell/Visual Studio Code).
+- Install **Node.js** from the link above. The LTS version will be fine.
+- You may need to close and re-open PowerShell/Visual Studio Code/Terminal window after the Node.js installation for the following commands to work.
 - Install the Azure Building Blocks package:
 
    ```
@@ -162,15 +173,15 @@ In Visual Studio Code, go to Extensions, search for **Azure CLI Tools** and inst
    azbb
    ```
 
-**6.	From a command prompt, bash prompt, or PowerShell prompt, sign into your Azure account as follows:**
+**6. From a command prompt, bash prompt, or PowerShell prompt, sign into your Azure account as follows:**
   ```
   az login
   ```
 
-**7.	Set the CLI to use the correct subscription (Enterprise or Azure Pass)**
+**7. Set the CLI to use the correct subscription (Enterprise or Azure Pass)**
   To get your Subscription ID, run the following command to list the Subscriptions within your account:
   ```
-  az account list --query "[].{id:id,name:name}"
+  az account list --query "[].{id:id,name:name}" --output tsv
   ```
 
   Make a note of the relevant ID for your Subscription, and set the CLI to use this as the active subscription:
@@ -180,30 +191,33 @@ In Visual Studio Code, go to Extensions, search for **Azure CLI Tools** and inst
 
 ## 3.  Deploy the Solution (Time to complete: 35 to 40 min)
 
-1.	Run the following command to create a Resource Group
+1. Run the following command to create a Resource Group
 
-    ### **VERY IMPORTANT: Use Location 'WestEurope' to deploy your infrastructure for all labs. This will guarantee that you won't have issues with the Azure pass credit and availability of Virtual Machine types**
-  ```
-  az group create --location <location> --name <resource-group-name>
-  ```
-2.	Run the following command to create a Storage Account for your Cloud resources.
+    **VERY IMPORTANT: Use location 'WestEurope' to deploy your infrastructure for all labs. This will guarantee that you won't have issues with the Azure Pass credits and availability of Virtual Machine types.**
+
+    ```
+    az group create --location <location> --name <resource-group-name>
+    ```
+
+2. Run the following command to create a Storage Account for your Cloud resources.
     *Note: Storage account name must be between 3 and 24 characters in length and use numbers and lower-case letters only*
 
-  ```
-  az storage account create --location <location> --name <storage-account-name> --resource-group <resource-group-name>  --sku Standard_LRS
-  ```
-3.	In your browser, navigate to https://github.com/davisanc/AzureSecurityLabs 
+    ```
+    az storage account create --location <location> --name <storage-account-name> --resource-group <resource-group-name> --sku Standard_LRS
+    ```
 
-4.	Open the **n-tier-windows-security-labs.json** file. This file is an Azure Resource Manager (ARM) Template which describes the infrastructure resources we need to use for this lab as code. When deployed, the template will instruct Resource Manager to create the resources as described in the text.
+3. In your browser, navigate to https://github.com/davisanc/AzureSecurityLabs 
+
+4. Open the **n-tier-windows-security-labs.json** file. This file is an Azure Resource Manager (ARM) Template which describes the infrastructure resources we need to use for this lab as code. When deployed, the template will instruct Resource Manager to create the resources as described in the text.
 
     For more on ARM Templates, please visit: 
-    
     [https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview#template-deployment](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview#template-deployment)
 
-6.  Just above the main text pane on the Github page, click the **Raw** button to see the unformatted JSON.
+5. Just above the main text pane on the Github page, click the **Raw** button to see the unformatted JSON.
 
-7.	Copy and paste the text into a new file in Visual Studio Code. In the JSON text, search for all instances of **adminUsername** and **adminPassword** and replace both the property values with your own admin username and passwords, and save the file locally as **n-tier-windows-security-labs.json**.
-Example:
+6. Copy and paste the text into a new file in Visual Studio Code. In the JSON text, search for all instances of **adminUsername** and **adminPassword** and replace both the property values with your own admin username and passwords, and save the file locally as **n-tier-windows-security-labs.json**.
+
+    Example:
 
     Before...
     ```
@@ -216,10 +230,12 @@ Example:
     "adminPassword": "C4ndY*Fl0$S18",
     ```
 
-6.	Run the following `azbb` command to deploy the base resources required for the lab using the ARM template modified above. This will include a Jumpbox, Web VM, Application VM and a SQL Server VM:
+7. Run the following `azbb` command to deploy the base resources required for the lab using the ARM template modified above. This will include a Jumpbox, Web VM, Application VM and a SQL Server VM:
+
     ```
     azbb -s <Subscription-ID> -g <Resource-Group-Name> -l <Location> -p .\<name-of-your-tempalte.json> --deploy
     ```
+
     *Note: this environment will need about 35 minutes to deploy. Once the last command completes, report to your proctors that you have reached this point*
 
     The Application and Database tier should have an internal Load Balancer in front of them as per the Azure Reference Architecture, so you can scale up the tier with more VMs if needed and the Load Balancer will distribute the traffic accordingly. However, to speed up the process of creating this architecture, there will be no Load Balancers at the Application and Database Tiers
@@ -228,7 +244,7 @@ Example:
 
     For now, the only Internet access to the environment is through the Jump Box as it is the only VM with a Public IP address.
 
-**Test: make sure you can ping from the JB to the Web, Biz and DB virtual machines (enable PING on the firewall settings)**
+    **Test: make sure you can ping from the JB to the Web, Biz and DB virtual machines (enable PING on the firewall settings)**
 
 ## 4.  Lab 1 - Protecting the Network Perimeter with Network Security Groups
 
