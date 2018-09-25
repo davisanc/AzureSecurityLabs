@@ -710,6 +710,18 @@ aadClientSecret: dasancsec
 ```
 On the portal go to **Azure Active Directory, App Registrations**, click **New Application Registration** and create the App that will write the secret to KeyVault
 
+You also need to enable key vault advanced access policies
+
+**Set key vault advanced access policies**
+
+The Azure platform needs access to the encryption keys or secrets in your key vault to make them available to the VM for booting and decrypting the volumes. Enable disk encryption on the key vault or deployments will fail.
+
+Set key vault advanced access policies through the Azure portal
+Select your keyvault, go to Access Policies, and Click to show advanced access policies.
+Select the box labeled Enable access to Azure Disk Encryption for volume encryption.
+Select Enable access to Azure Virtual Machines for deployment and/or Enable Access to Azure Resource Manager for template deployment, if needed.
+Click Save.
+
 **Encrypt a running VM:**
 
 
