@@ -640,30 +640,13 @@ For the purpose of the Security Center quickstarts and tutorials you must upgrad
 
     ![asc upgrade](/images/ASC-upgrade.PNG)
     
-    ![oms advanced](/images/oms-advanced.png)
-
-3. Security policy provides information on the resource groups contained in the subscription. Pricing also opens.
-4. Under Pricing, select Standard to upgrade from Free to Standard and click Save.
-
-![oms pricing](/images/oms-pricing.png)
+3. Install the ASC agents to your subscription
 
 Now that you’ve upgraded to the Standard tier, you have access to additional Security Center features, including **adaptive application controls, just in time VM access, security alerts, threat intelligence, automation playbooks**, and more. Note that security alerts will only appear when Security Center detects malicious activity.
 
 ![oms global](/images/oms-global.png)
 
-**Automate data collection**
-
-Security Center collects data from your Azure VMs and non-Azure computers to monitor for security vulnerabilities and threats. Data is collected using the Microsoft Monitoring Agent, which reads various security-related configurations and event logs from the machine and copies the data to your workspace for analysis. By default, Security Center will create a new workspace for you.
-When automatic provisioning is enabled, Security Center installs the Microsoft Monitoring Agent on all supported Azure VMs and any new ones that are created. Automatic provisioning is strongly recommended.
-To enable automatic provisioning of the Microsoft Monitoring Agent:
-
-1. Under the Security Center main menu, select **Security Policy**.
-2. Select the subscription.
-3. Under **Security policy**, select **Data Collection**.
-4. Under **Data Collection**, select **On** to enable automatic provisioning.
-5. Click **Save**.
-
-![oms datacollection](/images/oms-datacollection.png)
+**Recommendations**
 
 With this new insight into your Azure VMs, Security Center can provide additional recommendations related to system update status, Operating System security configurations, endpoint protection, as well as generate additional security alerts.
 
