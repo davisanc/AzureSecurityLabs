@@ -766,6 +766,13 @@ Using the pre-req script you get the final result for the SQL VM
 
 ![sql vm encrypted](/images/sql-vm-encrypted.PNG)
 
+Verify the disks are encrypted: To check on the encryption status of a IaaS VM, use the Get-AzureRmVmDiskEncryptionStatus cmdlet
+
+```
+Get-AzureRmVmDiskEncryptionStatus -ResourceGroupName <resource-group-name> -VMName <vm-name>
+
+```
+
 ## 10. Lab 7 - Extending your Data Centre to Azure in a secure way – Site to Site VPN Access
 
 **Note:** Only run this lab if you are using an Enterprise subscription or Pay-As-You-Go, **BUT NOT** the Azure Pass. As the pfSense image is managed by a 3rd company, there is a charge for this which cannot be covered by the Azure Pass credits.
