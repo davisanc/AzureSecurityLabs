@@ -806,6 +806,8 @@ Verify the disks are encrypted: To check on the encryption status of a IaaS VM, 
 Get-AzureRmVmDiskEncryptionStatus -ResourceGroupName <resource-group-name> -VMName <vm-name>
 
 ```
+Finally, if we get back to Azure Security Center, on the recommendations panel we will no longer see the recommendation on the SQL VM to apply disk encryption (it will need some time to refresh the new status)
+
 
 ## 10. Lab 7 - Extending your Data Centre to Azure in a secure way – Site to Site VPN Access
 
