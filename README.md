@@ -633,15 +633,19 @@ To take full advantage of Security Center, you need to complete the steps below 
 
 **Upgrade to the Standard tier**
 
-For the purpose of the Security Center quickstarts and tutorials you must upgrade to the Standard tier. Your first 60 days are free, and you can return to the Free tier any time.
+For the purpose of the Security Center quickstarts and tutorials **you must upgrade to the Standard tier**. Your first 60 days are free, and you can return to the Free tier any time.
 
 1. Under the Security Center main menu, select **Getting started**
-2. Under Onboarding to advanced security, Security Center lists subscriptions and workspaces eligible for onboarding. Select a subscription from the list.
+2. Security Center lists subscriptions eligible for onboarding. Under **Apply your trial on 1 subscription**, select yours from the list (Azure Pass or your enterprise subscription). Click on **Start Trial**
 
     ![asc upgrade](/images/ASC-upgrade.PNG)
     
-3. Install the ASC agents to your subscription
+3. To make the most of Azure Security Center, we need to enable **data collection agents**. They must be installed on your virtual machines for data collection so we can receive security alerts and recommendations
 
+We will install agents automatically. Install the **ASC agents** to your subscription
+
+![image of agents](/images/install-agent.PNG)
+    
 Now that you’ve upgraded to the Standard tier, you have access to additional Security Center features, including **adaptive application controls, just in time VM access, security alerts, threat intelligence, automation playbooks**, and more. Note that security alerts will only appear when Security Center detects malicious activity.
 
 ![oms global](/images/oms-global.png)
@@ -650,7 +654,7 @@ Now that you’ve upgraded to the Standard tier, you have access to additional S
 
 With this new insight into your Azure VMs, Security Center can provide additional recommendations related to system update status, Operating System security configurations, endpoint protection, as well as generate additional security alerts.
 
-![oms recomm](/images/oms-recomm.png)
+![oms recomm](/images/asc-recommendations.PNG)
 
 ## 9. Lab 6 - Storage Security – Encryption at Rest - Apply disk encryption to a running VM
 
