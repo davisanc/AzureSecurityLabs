@@ -690,7 +690,7 @@ az keyvault create --name <your-keyvault-name> --resource-group <resource-group-
 
 ![create keyv](/images/Create-KeyVault.PNG)
 
-### 9.2 - Prerequisites to go before running encryption**
+### 9.2 - Prerequisites to go before running encryption
 
 You can enable encryption by using a template, PowerShell cmdlets, or CLI commands. The following sections explain in detail how to enable Azure Disk Encryption.
 
@@ -788,7 +788,7 @@ Set-AzureRmVMDiskEncryptionExtension -ResourceGroupName $rgname -VMName $vmName 
 az vm encryption show --name "MySecureVM" --resource-group "MySecureRg"
 ```
 
-![image od disk-enc](/images/disc-enc.PNG)
+![image od disk-enc](/images/disk-enc.PNG)
 
 
 ### 9.4 Use the pre-req script
