@@ -793,7 +793,10 @@ az vm encryption show --name "MySecureVM" --resource-group "MySecureRg"
 
 ### 9.4 Use the pre-req script
 
-You could have also used the pre-req script, that runs all the previous commands for you, to get the final result for the SQL VM
+You can also use the pre-req script, that runs all the previous commands for you
+Use the AzureDiskEncryptionPreRequisiteSetup.ps1 on this repository, and run it on Powershell
+
+This shoudd be the final result of the script
 
 ![sql vm encrypted](/images/sql-vm-encrypted.PNG)
 
