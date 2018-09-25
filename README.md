@@ -635,9 +635,11 @@ To take full advantage of Security Center, you need to complete the steps below 
 
 For the purpose of the Security Center quickstarts and tutorials you must upgrade to the Standard tier. Your first 60 days are free, and you can return to the Free tier any time.
 
-1. Under the Security Center main menu, select **Onboarding to advanced security**
+1. Under the Security Center main menu, select **Getting started**
 2. Under Onboarding to advanced security, Security Center lists subscriptions and workspaces eligible for onboarding. Select a subscription from the list.
 
+    ![asc upgrade](/images/ASC-upgrade.PNG)
+    
     ![oms advanced](/images/oms-advanced.png)
 
 3. Security policy provides information on the resource groups contained in the subscription. Pricing also opens.
