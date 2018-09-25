@@ -99,8 +99,8 @@
     }
   },
   "variables": {
+     "publicIPAddressName": "AppGWpip",
     "applicationGatewayName": "AppGWmtc",
-    "publicIPAddressName": "AppGWpip",
     "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('existingVirtualNetworkName'),  parameters('subnetName'))]",
     "publicIPRef": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddressName'))]",
     "applicationGatewayID": "[resourceId('Microsoft.Network/applicationGateways', variables('applicationGatewayName'))]"
