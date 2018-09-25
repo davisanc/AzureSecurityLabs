@@ -690,13 +690,20 @@ az keyvault create --name <your-keyvault-name> --resource-group <resource-group-
 
 ![create keyv](/images/Create-KeyVault.PNG)
 
-### 9.2 - Applying VM disk encryption
+### 9.2 - Prerequisites to go before running encryption**
 
 You can enable encryption by using a template, PowerShell cmdlets, or CLI commands. The following sections explain in detail how to enable Azure Disk Encryption.
 
 *Important: It is mandatory to snapshot and/or backup a managed disk based VM instance outside of, and prior to enabling Azure Disk Encryption. A snapshot of the managed disk can be taken from the portal, or Azure Backup can be used. Backups ensure that a recovery option is possible in the case of any unexpected failure during encryption.*
 
-**Run a prerequisite script to encrypt the data disk of your VM(s)**
+There are some prerequistes to check before enabling disk encryption. They can be found here:
+https://docs.microsoft.com/en-us/azure/security/azure-security-disk-encryption-prerequisites
+
+We have summarized them for you here. Alternatively, you can run a pre-requisite script that will run all the follwing comamnds for you
+
+If you prefer to do this one by one, go through the following steps. If you prefer to go with the pre-req scritpt, jumpt to 9.4 of this lab
+
+**On Powershell**
 
 1. Make sure you have PowerShell version 6 installed on your local machine.
 2. Verify the installed versions of the AzureRM module. The AzureRM module version needs to be 6.0.0 or higher.
@@ -709,26 +716,32 @@ You can enable encryption by using a template, PowerShell cmdlets, or CLI comman
     ```
     Update-Module -Name AzureRM
     ```
+4. Install the Azure Active Directory PowerShell module
 
-**Enable encryption on existing or running VMs with Azure CLI**
+    ```
+    Install-Module AzureAD
+    ```
 
-There are some prerequistes to check before enabling disk encryption. They can be found here:
+5. Verify the installed versions of the module
 
-https://docs.microsoft.com/en-us/azure/security/azure-security-disk-encryption-prerequisites
+    ```
+    Get-Module AzureAD -ListAvailable | Select-Object -Property Name,Version,Path
+    ```
+6. Set up an Azure AD app and service principal
+    
+    On Az CLI:
+    
+    ```
+    az ad sp create-for-rbac --name "ServicePrincipalName" --password "My-AAD-client-secret" --skip-assignment
+    ```
+    *Note:The appId returned is the Azure AD ClientID used in other commands. It's also the SPN you'll use for az keyvault set-policy. The password is the client secret that you should use later to enable Azure Disk Encryption. Safeguard the Azure AD client secret appropriately.*
+    
+7. Set the key vault access policy for the Azure AD app with Azure CLI
 
-We will need an Azure Active Directory (AAD) application that will be used to write secrets to KeyVault as an authentication step. Also, we need a secret of the AAD application that was created on the earlier step. Recommendation is to run through the pre-req powershell script that handles this
-
-I will use the following names for the AAD App name and client secret. Running through the script, this App will be registered with AAD and will be authorized to use KeyVault. This client secret will be written in KeyVault
-
-```
-aadAppName: keyvault-dasanc-app
-aadClientSecret: dasancsec 
-```
-On the portal go to **Azure Active Directory, App Registrations**, click **New Application Registration** and create the App that will write the secret to KeyVault
-
-You also need to enable key vault advanced access policies
-
-**Set key vault advanced access policies**
+    ```
+    az keyvault set-policy --name "MySecureVault" --spn "<spn created with CLI/the Azure AD ClientID>" --key-permissions wrapKey -- secret-permissions set
+    ```
+8. Set key vault advanced access policies
 
 The Azure platform needs access to the encryption keys or secrets in your key vault to make them available to the VM for booting and decrypting the volumes. Enable disk encryption on the key vault or deployments will fail.
 
@@ -740,29 +753,47 @@ Click Save.
 
 ![image of key vault advanced](/images/keyvault-advancedset.PNG)
 
-**Encrypt a running VM:**
+
+### 9.3 Enable encryption on existing or running VMs with Azure CLI**
 
 
 **Azure CLI**
+
+Encrypt a running VM using a client secret:
+
 ```
-az vm encryption enable -g Sec-Foundation-MTC --name "sql-vm1" --disk-encryption-keyvault "KeyVault-MTC-Sec" --aad-client-id "David Sanchez" --aad-client-secret "<your-secret>"--volume-type ALL
+az vm encryption enable --resource-group "MySecureRg" --name "MySecureVM" --aad-client-id "<my spn created with CLI/my Azure AD ClientID>"  --aad-client-secret "My-AAD-client-secret" --disk-encryption-keyvault "MySecureVault" --volume-type [All|OS|Data]
 ```
 Powershell pre-req script: you can download the 'DiskEncryption.ps' file available here
 
 **Powershell**
 ```
 $rgName = 'MySecureRg';
- $vmName = 'MySecureVM';
- $KeyVaultName = 'MySecureVault';
- $KeyVault = Get-AzureRmKeyVault -VaultName $KeyVaultName -ResourceGroupName $rgname;
- $diskEncryptionKeyVaultUrl = $KeyVault.VaultUri;
- $KeyVaultResourceId = $KeyVault.ResourceId;
+$vmName = ‘MyExtraSecureVM’;
+$aadClientID = 'My-AAD-client-ID';
+$aadClientSecret = 'My-AAD-client-secret';
+$KeyVaultName = 'MySecureVault';
+$keyEncryptionKeyName = 'MyKeyEncryptionKey';
+$KeyVault = Get-AzureRmKeyVault -VaultName $KeyVaultName -ResourceGroupName $rgname;
+$diskEncryptionKeyVaultUrl = $KeyVault.VaultUri;
+$KeyVaultResourceId = $KeyVault.ResourceId;
+$keyEncryptionKeyUrl = (Get-AzureKeyVaultKey -VaultName $KeyVaultName -Name $keyEncryptionKeyName).Key.kid;
 
- Set-AzureRmVMDiskEncryptionExtension -ResourceGroupName $rgname -VMName $vmName -DiskEncryptionKeyVaultUrl $diskEncryptionKeyVaultUrl -DiskEncryptionKeyVaultId $KeyVaultResourceId;
+Set-AzureRmVMDiskEncryptionExtension -ResourceGroupName $rgname -VMName $vmName -AadClientID $aadClientID -AadClientSecret $aadClientSecret -DiskEncryptionKeyVaultUrl $diskEncryptionKeyVaultUrl -DiskEncryptionKeyVaultId $KeyVaultResourceId -KeyEncryptionKeyUrl $keyEncryptionKeyUrl -KeyEncryptionKeyVaultId $KeyVaultResourceId;
 ```
 *Note: you can also run disk encryption with key encryption key (out of scope of this lab)*
 
-Using the pre-req script you get the final result for the SQL VM
+**Finally, verify the disks are encrypted**
+```
+az vm encryption show --name "MySecureVM" --resource-group "MySecureRg"
+```
+
+![image od disk-enc](/images/disc-enc.PNG)
+
+
+### 9.4 Use the pre-req script
+
+You could have also used the pre-req script, that runs all the previous commands for you, to get the final result for the SQL VM
 
 ![sql vm encrypted](/images/sql-vm-encrypted.PNG)
 
