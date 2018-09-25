@@ -722,6 +722,8 @@ Select the box labeled Enable access to Azure Disk Encryption for volume encrypt
 Select Enable access to Azure Virtual Machines for deployment and/or Enable Access to Azure Resource Manager for template deployment, if needed.
 Click Save.
 
+![image of key vault advanced](/images/keyvault-advancedset.PNG)
+
 **Encrypt a running VM:**
 
 
