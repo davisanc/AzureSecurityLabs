@@ -15,7 +15,7 @@ and AD Domain Services are removed from the lab template, as this could be run o
 
 ## Lab Series
 4. [Lab 1](# Protecting-the-Network-Perimeter-with-Network-Security-Groups) - Protecting the Network Perimeter – NSG (Network Security Groups)
-5. [Lab 2](# Azure-networking-logs) - Azure Networking logs
+5. [Lab 2](#azure-networking-logs) - Azure Networking logs
 6. [Lab 3](#6.-lab-3---control-outbound-security-traffic-with-azure-firewall) - Control outbound security traffic with Azure Firewall
 7.	Lab 4 - Protecting the Web Application - Application Gateway and WAF (Web Application Firewall)
 8.	Lab 5 - Understand your application security posture in Azure - Azure Security Center for security recommendations
