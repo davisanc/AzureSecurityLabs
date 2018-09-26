@@ -16,7 +16,7 @@ and AD Domain Services are removed from the lab template, as this could be run o
 ## Lab Series
 4. [Lab 1](# Protecting-the-Network-Perimeter-with-Network-Security-Groups) - Protecting the Network Perimeter – NSG (Network Security Groups)
 5. [Lab 2](# Azure-networking-logs) - Azure Networking logs
-6. [Lab 3](# Control-outbound-security-traffic-with-Azure-Firewall) - Control outbound security traffic with Azure Firewall
+6. [Lab 3](#6.-Lab-3-–-Control-outbound-security-traffic-with-Azure-Firewall) - Control outbound security traffic with Azure Firewall
 7.	Lab 4 - Protecting the Web Application - Application Gateway and WAF (Web Application Firewall)
 8.	Lab 5 - Understand your application security posture in Azure - Azure Security Center for security recommendations
 9.	Lab 6 - Storage Security – Encryption at Rest - Apply disk encryption to a running VM
@@ -402,7 +402,7 @@ Also, you may want to visualize the Network Topology. In Network Watcher, click 
 
 ![TOPOLOGY](/images/topology.PNG)
 
-## 6.  Lab 3 – Control outbound security traffic with Azure Firewall
+## 6. Lab 3 – Control outbound security traffic with Azure Firewall
 
 Azure Firewall is a stateful firewall as a service, with high availability and cloud scalability built-in. The primary use case for the Azure Firewall is to centrally create, enforce and log application and network policies. As the **first version** of the product, the firewall is focused on **securing outbound flows by FQDN whitelisting/blacklisting**. It provides source network address translation and it is integrated with Azure Monitor for logging and analytics.
 
