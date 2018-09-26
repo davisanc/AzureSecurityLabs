@@ -7,14 +7,16 @@ and AD Domain Services are removed from the lab template, as this could be run o
 
 ![image of 3tier](/images/n-tier-sql-server.png)
 
-## Lab Series
+## Getting Set Up
 
 1.	Create a Microsoft Account, redeem your Azure Passes and activate your credit
 2.	Configuration needed before starting the labs
 3.	Deploy the solution
-4.	Lab 1 - Protecting the Network Perimeter – NSG (Network Security Groups)
-5.	Lab 2 - Azure Networking logs
-6.	Lab 3 - Control outbound security traffic with Azure Firewall
+
+## Lab Series
+4. [Lab 1](#Protecting-the-Network-Perimeter-with-Network-Security-Groups) - Protecting the Network Perimeter – NSG (Network Security Groups)
+5. [Lab 2](#Azure-networking-logs) - Azure Networking logs
+6. [Lab 3](#Control-outbound-security-traffic-with-Azure-Firewall) - Control outbound security traffic with Azure Firewall
 7.	Lab 4 - Protecting the Web Application - Application Gateway and WAF (Web Application Firewall)
 8.	Lab 5 - Understand your application security posture in Azure - Azure Security Center for security recommendations
 9.	Lab 6 - Storage Security – Encryption at Rest - Apply disk encryption to a running VM
@@ -189,7 +191,7 @@ In Visual Studio Code, go to Extensions, search for **Azure CLI Tools** and inst
   az account set --subscription  "<subscription-ID>"
   ```
 
-## 3.  Deploy the Solution (Time to complete: 35 to 40 min)
+## 3. Deploy the Solution (Time to complete: 35 to 40 min)
 
 1. Run the following command to create a Resource Group
 
@@ -246,7 +248,7 @@ In Visual Studio Code, go to Extensions, search for **Azure CLI Tools** and inst
 
     **Test: make sure you can ping from the JB to the Web, Biz and DB virtual machines (enable PING on the firewall settings)**
 
-## 4.  Lab 1 - Protecting the Network Perimeter with Network Security Groups
+## 4 - Lab 1 - Protecting the Network Perimeter with Network Security Groups
 
 Network Security Groups filter traffic to and from resources in an Azure virtual network. They can be applied at subnet or virtual machine level, and filter the traffic based on a set of rules.
 
@@ -254,17 +256,19 @@ Further information on network security groups (NSG) can be found in the Azure d
 
 [https://docs.microsoft.com/en-us/azure/virtual-network/security-overview](https://docs.microsoft.com/en-us/azure/virtual-network/security-overview)
 
-You can use security groups to protect/restrict traffic between tiers. In the 3-tier architecture shown, the web tier should not communicate directly with any resource in the database tier. To enforce this, the database subnet should block all incoming traffic from the web tier subnet. This can be done using a security group.
+From a security point of view, the infrastructure we have deployed is very open. All traffic can flow between all subnets and all servers with only the Windows Firewall preventing access.
+
+We can use security groups as an additional tool to protect/restrict traffic between tiers. In the 3-tier architecture shown, the web tier should not communicate directly with any resource in the database tier. To enforce this, security needs to be put in place which blocks all but the necessary incoming traffic from the web tier subnet in to the database subnet. This can be done using a security group.
 
 ### 4.1 - Creating the security group
-This section creates the security group to protect the database tier.
+This section creates the security group and the relevant rules to protect the database tier.
 
-1.  In the VS Code terminal, enter the following CLI command to create the security group **SQL-NSG**
+1. In the VS Code terminal, enter the following CLI command to create the security group named **SQL-NSG**:
     ```
     az network nsg create --name SQL-NSG --resource-group <resource-group-name> --location <location>
     ```
 
-    When the command completes, the terminal will show all properties of the security group, and you can also see the new NSG in the Azure console.
+    When the command completes, the terminal will output all properties of the security group, and you can also see the new NSG in the Azure console.
 
     By default, a security group will be pre-populated with three **inbound** rules (in order of execution):
     1. allow any VNet to VNet traffic
@@ -281,19 +285,19 @@ This section creates the security group to protect the database tier.
     az network nsg show --resource-group <resource-group-name> --name SQL-NSG --query "defaultSecurityRules[]" --output table
     ```
 
-    These rules cannot be deleted. What we can do is create a new series of rules in the security group with a higher priority to filter the traffic before the default rules are evaluated.
+    These rules cannot be deleted. What we *can* do however, is create a new series of rules in the security group with a *higher priority*, (a higher execution order) to filter the traffic before these default rules are evaluated.
 
-2.  Allow inbound traffic from the business tier subnet.
+2. Allow inbound traffic from the business tier subnet.
 
-    Create a new rule within your new security group. Like typical firewall rules, security group rules are based on information about the source, destination, protocol, port and action (allow/deny).
+    Create a new rule within your new security group. Security group rules are based on information about the source, destination, protocol, port and action (allow/deny), similar to traditional firewall rules.
 
-    This rule will allow any traffic into the database tier from the business tier. This is done by specifying the CIDR of the business tier subnet (10.0.2.0/24) as the source. Any resource within this subnet can communicate with the database tier.
+    The new rule will allow any traffic into the database tier from the business tier. This is done by specifying the CIDR of the business tier subnet (10.0.2.0/24) as the source. Any resource within this subnet can communicate with the database tier.
 
     ```
     az network nsg rule create --name AllowFromBiz --nsg-name SQL-NSG --priority 110 --resource-group <resource-group-name> --description "Allow all traffic from the Business Tier" --access Allow --direction Inbound --source-address-prefix 10.0.2.0/24 --source-port-ranges * --protocol * --destination-address-prefix * --destination-port-ranges *
     ```
 
-3.	Allow inbound traffic from the database tier subnet itself.
+3. Allow inbound traffic from the database tier subnet itself.
 
     This rule allows communication between the database VMs, which is needed for database replication and failover. Use the database (SQL) subnet range 10.0.3.0/24 as the source:
 
@@ -301,17 +305,17 @@ This section creates the security group to protect the database tier.
     az network nsg rule create --name AllowFromSQL --nsg-name SQL-NSG --priority 120 --resource-group <resource-group-name> --description "Allow all intra SQL traffic within the Database Tier" --access Allow --direction Inbound --source-address-prefix 10.0.3.0/24 --source-port-ranges * --protocol * --destination-address-prefix * --destination-port-ranges *
     ```
 
-4.	Allow RDP access from the Jump Box.
+4. Allow RDP access from the Jump Box.
 
-    Allowing RDP traffic on the RDP port (3389) from the Jump Box lets remote administrators connect to the database servers from the Jump Box. By only specifying the RDP port, users of the Jump Box will not be able to connect via any other method, port or protocol.
+    Allowing RDP traffic on the RDP port (3389) from the Jump Box lets remote administrators connect to the database servers from the Jump Box. By only specifying the RDP port, users of the Jump Box will not be able to connect to these servers via any other method, port or protocol.
 
     Use the management subnet range 10.0.0.128/25 as the source:
 
     ```
-    az network nsg rule create --name AllowRDPFromJB --nsg-name SQL-NSG --priority 130 --resource-group <resource-group-name> --description "Allow RDP traffic from the Jump Box" --access Allow --direction Inbound --source-address-prefix 10.0.128.0/25 --source-port-ranges * --protocol TCP --destination-address-prefix * --destination-port-ranges 3389
+    az network nsg rule create --name AllowRDPFromJB --nsg-name SQL-NSG --priority 130 --resource-group <resource-group-name> --description "Allow RDP traffic from the Jump Box" --access Allow --direction Inbound --source-address-prefix 10.0.0.128/25 --source-port-ranges * --protocol TCP --destination-address-prefix * --destination-port-ranges 3389
     ```
 
-5.	Deny all other inbound traffic from the VNet.
+5. Deny all other inbound traffic from the VNet.
 
     Now we have set up the base access requirements, we need to block all other traffic from within the VNet. Instead of a source address, we can use the **VirtualNetwork** tag in the rule:
 
@@ -319,7 +323,7 @@ This section creates the security group to protect the database tier.
     az network nsg rule create --name DenyFromVNet --nsg-name SQL-NSG --priority 140 --resource-group <resource-group-name> --description "Deny general VNet traffic" --access Deny --direction Inbound --source-address-prefix VirtualNetwork --destination-port-ranges *
     ```
 
-6.	Deny all inbound traffic from the Internet.
+6. Deny all inbound traffic from the Internet.
 
     Create the final rule yourself using the commands above as the pattern. Set your own description, and use these properties:
 
@@ -330,13 +334,13 @@ This section creates the security group to protect the database tier.
 #### Rule Priority
 Consider the following when creating security group rules...
 
-- Security group rules run in priority order, with the lowest priority rule being evaluated first.
-- Leave a reasonable gap between your rules. It makes for a lot of work to try and retro-fit a new rule with a higher priority in between rules priorties 4,5 and 6 than 140, 150 and 160.
-- The first **Deny** rule encountered by the evaluation instantly deny the access.
+- Security group rules run in priority order, with the rule given the *lowest* priority number being evaluated *first*.
+- Leave a reasonable gap between your rule numbers. It makes for a lot of work to try and retro-fit a new rule with a higher priority in between rules with priority numbers 4,5 and 6 than it does with numbers 140, 150 and 160.
+- The first **Deny** rule encountered by the evaluation instantly denies the access.
 
-### 4.2 - Attach the security group to the SQL Server network interface / NIC
+### 4.2 - Attach the security group to the SQL Server Network Interface Card (NIC)
 
-Follow these steps to attach the new NSG to the network interface of the SQL VM...
+Follow these steps to attach the new NSG to the virtual network interface of the SQL VM...
 
 ![NSG-inbound-sql](/images/attach-NSG-NIC.PNG)
 
@@ -358,13 +362,17 @@ Confirm that you can RDP from the Jump Box to the SQL server and also from the B
 
 ![RDP blocked](/images/RDP-blocked-from-web.PNG)
 
+An earlier test saw you try and ping the SQL server from the Jump Box. If you try this test again, despite the traffic being allowed on the Windows Firewall, the ping test should fail.
+
 ## 5. Lab 2 - Azure networking logs
 
 Network logging and monitoring in Azure is comprehensive and covers two broad categories:
+
 - **Network Watcher**: Scenario-based network monitoring is provided with the features in Network Watcher. This service includes packet capture, next hop, IP flow verify, security group view and NSG flow logs. Scenario level monitoring provides an end to end view of network resources in contrast to individual network resource monitoring.
 - **Resource monitoring**: Resource level monitoring comprises four features: diagnostics logs, metrics, troubleshooting, and resource health. All of these features are built at the network resource level.
 
-To troubleshoot your NSG rules, enable NSG flow logs. This will enable Network watcher. 
+To troubleshoot your NSG rules, enable NSG flow logs. This will enable Network watcher.
+
 Go to the search bar on the Portal, look for Network Watcher. Filter by your Subscription ID and Resource Group.
 
 ![network watcher](/images/Network-watcher.PNG)
