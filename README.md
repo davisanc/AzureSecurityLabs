@@ -217,7 +217,7 @@ In Visual Studio Code, go to Extensions, search for **Azure CLI Tools** and inst
 
 5. Just above the main text pane on the Github page, click the **Raw** button to see the unformatted JSON.
 
-6. Copy and paste the text into a new file in Visual Studio Code. In the JSON text, search for all instances of **adminUsername** and **adminPassword** and replace both the property values with your own admin username and passwords, and save the file locally as **n-tier-windows-security-labs.json**.
+6. Copy and paste the text into a new file in Visual Studio Code. In the JSON text, search for all instances of **adminUsername** and **adminPassword** and replace both the property values with your own admin username and passwords, and save the file locally as **n-tier-windows-security-labs.json**. **Make sure you don't use "admin" as default adminUsername or the ARM template won't be deployed**
 
     Example:
 
@@ -232,7 +232,7 @@ In Visual Studio Code, go to Extensions, search for **Azure CLI Tools** and inst
     "adminPassword": "C4ndY*Fl0$S18",
     ```
 
-7. Run the following `azbb` command to deploy the base resources required for the lab using the ARM template modified above. This will include a Jumpbox, Web VM, Application VM and a SQL Server VM:
+7. Run the following `azbb` command to deploy the base resources required for the lab using the ARM template modified above. This will include a Jumpbox, Web VM, Application VM and a SQL Server VM. Make sure you are on the right folder where you have saved the json file
 
     ```
     azbb -s <Subscription-ID> -g <Resource-Group-Name> -l <Location> -p .\<name-of-your-tempalte.json> --deploy
@@ -472,6 +472,8 @@ Once the firewall object is created, view the properties of the firewall and tak
 We will work on the Web VM, and we will set the default route of the web-tier subnet to send all traffic through the firewall.
 
 1. Create a new Route Table
+
+    Go to your Resource Group, click on **Add On**, and search for **Route Table**
 
     ![route table](/images/route-table.PNG)
 
