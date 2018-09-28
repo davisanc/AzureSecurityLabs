@@ -711,7 +711,7 @@ https://docs.microsoft.com/en-us/azure/security/azure-security-disk-encryption-p
 
 We have summarized them for you here. Alternatively, you can run a pre-requisite script that will run all the following comamnds for you
 
-If you prefer to do this one by one, go through the following steps. If you prefer to go with the pre-req scritpt, jumpt to 9.4 of this lab
+**IMPORTAN: If you prefer to do this one by one, go through the following steps. If you prefer to go with the pre-req scritpt, jumpt to 9.4 of this lab**
 
 **On Powershell**
 
