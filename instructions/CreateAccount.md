@@ -81,3 +81,5 @@ You can only assign one free trial/Azure Pass during the entire life of a Hotmai
 23.	If the **SUBSCRIPTION** and **SUBSCRIPTION ID** columns are blank, something has gone wrong – talk to your instructor. Otherwise, you’re good to go. **Congratulations!**
 
 ![image of ready](/images/ready.png)
+
+<< [Homepage](/README.md)
