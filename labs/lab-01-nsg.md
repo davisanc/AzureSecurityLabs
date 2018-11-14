@@ -114,4 +114,4 @@ Confirm that you can RDP from the Jump Box to the SQL server and also from the B
 
 << [Back to home page](/README.md)
 
-<< [Back to Lab Index](README.md)    [Next Lab](lab-02-networking-logs.md) >>
+<< [Back to Lab Index](README.md) . . . . . [Next Lab](lab-02-networking-logs.md) >>
