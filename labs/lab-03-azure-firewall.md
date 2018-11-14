@@ -59,7 +59,8 @@ The cloud firewall needs to have a dedicated subnet within your VNet named **Azu
 On the portal create a new subnet in the **ra-ntier-vnet** VNet named **AzureFirewallSubnet** with the IP address space of **10.0.6.0/24**.
 
 Alternatively, run the following CLI command to create the subnet:
-```
+
+```PowerShell
 az network vnet subnet create --address-prefix 10.0.3.0/24 --name AzureFirewallSubnet --resource-group <resource-group-name> --vnet-name ra-ntier-vnet
 ```
 
@@ -80,7 +81,7 @@ We will work on the Web VM, and we will set the default route of the web-tier su
 
     The Azure CLI command to create the route table is:
 
-    ```
+    ```bash
     az network route-table create --name Firewall-Route --resource-group <resource-group-name> --location <location>
     ```
 
@@ -100,7 +101,7 @@ We will work on the Web VM, and we will set the default route of the web-tier su
 
     The Azure CLI command to create the default route is:
 
-    ```
+    ```Bash
     az network route-table route create --resource-group <resource-group-name> --route-table-name Firewall-Route --name FW-DG --address-prefix 0.0.0.0/0 --next-hop-type VirtualAppliance --next-hop-ip-address <firewall-ip-address>
     ```
 
@@ -113,7 +114,7 @@ We will work on the Web VM, and we will set the default route of the web-tier su
 
     To achieve this using the Azure CLI:
 
-    ```
+    ```Bash
     az network vnet subnet update --name web --resource-group <resource-group-name> --vnet-name ra-ntier-vnet --route-table Firewall-Route
     ```
 
