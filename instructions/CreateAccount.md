@@ -1,6 +1,6 @@
 # Azure Security Workshop - Creating a Microsoft Account
 
-These instructions help you to create a Microsoft Account.
+These instructions help you to create a Microsoft Account and set up your Azure Pass.
 
 *Note: We recommend using an Enterprise Subscription with a working account that has privileges to create resources. There are some labs on this guide that require the use of 3rd party Virtual Machines that do not allow the use of Azure Pass credits. In order to minimise costs we will enable ‘auto’shutdown’ of Virtual Machines.*
 
