@@ -1,6 +1,9 @@
 # Lab 2 - Azure Networking Logs
 
+## Lab Overview
+
 Network logging and monitoring in Azure is comprehensive and covers two broad categories:
+
 - **Network Watcher**: Scenario-based network monitoring is provided with the features in Network Watcher. This service includes packet capture, next hop, IP flow verify, security group view and NSG flow logs. Scenario level monitoring provides an end to end view of network resources in contrast to individual network resource monitoring.
 - **Resource monitoring**: Resource level monitoring comprises four features: diagnostics logs, metrics, troubleshooting, and resource health. All of these features are built at the network resource level.
 
@@ -33,3 +36,7 @@ Also, you may get the following message: *Displaying only resources data. No flo
 Also, you may want to visualize the Network Topology. In Network Watcher, click on **Topology** (Filter by Subscription, RG and VNET)
 
 ![TOPOLOGY](/images/topology.PNG)
+
+<< [Back to home page](/README.md)
+
+<< [Previous Lab](lab-01-nsg.md) . . . . . [Next Lab](lab-03-azure-firewall.md) >>

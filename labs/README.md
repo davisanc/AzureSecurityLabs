@@ -2,7 +2,7 @@
 
 1. [Protecting the Network Perimeter – NSG (Network Security Groups)](lab-01-nsg.md)
 2. [Azure Networking logs](lab-02-networking-logs.md)
-3. Lab 3 - Control outbound security traffic with Azure Firewall
+3. [Control outbound security traffic with Azure Firewall](lab-03-azure-firewall.md)
 4. Lab 4 - Protecting th9e Web Application - Application Gateway and WAF (Web Application Firewall)
 5. Lab 5 - Understand your application security posture in Azure - Azure Security Center for security recommendations
 6. Lab 6 - Storage Security – Encryption at Rest - Apply disk encryption to a running VM
