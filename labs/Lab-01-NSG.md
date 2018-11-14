@@ -1,6 +1,6 @@
-# Lab 1
+# Lab 1 - Protecting the Network Perimeter
 
-## Protecting the Network Perimeter – NSG (Network Security Groups)
+## Utilising NSG (Network Security Groups)
 
 Network Security Groups filter traffic to and from resources in an Azure virtual network. They can be applied at subnet or virtual machine level, and filter the traffic based on a set of rules.
 
