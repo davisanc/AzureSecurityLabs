@@ -111,3 +111,7 @@ Your NSG rule set should look similar to this...
 Confirm that you can RDP from the Jump Box to the SQL server and also from the Business VM but not from the Web VM (you will need to RDP to the Jump Box first, then RDP to the Business and Web VMs to finally RDP to the SQL VM)
 
 ![RDP blocked](/images/RDP-blocked-from-web.PNG)
+
+<< [Back to home page](/README.md)
+
+<< [Back to Lab Index](README.md)    [Next Lab](lab-02-networking-logs.md) >>
