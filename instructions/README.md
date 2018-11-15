@@ -2,20 +2,19 @@
 
 These series of labs are based on the **[Azure Reference Architecture](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/n-tier/n-tier-sql-server)** to deploy an **N-Tier application**
 
-To simplify and speed up the process of creating this architecture we will only deploy one VM per Tier. Also, the Domain Controller VM and AD Domain Services are removed from the lab template, as this could be run on a separate workshop.
+To simplify and speed up the process of creating this architecture we will only deploy one VM per Tier. Also, the Domain Controller VM 
+and AD Domain Services are removed from the lab template, as this could be run on a separate workshop
 
 ![image of 3tier](/images/n-tier-sql-server.png)
 
-## Getting Set Up
+## Lab Series
 
 1.	Create a Microsoft Account, redeem your Azure Passes and activate your credit
 2.	Configuration needed before starting the labs
 3.	Deploy the solution
-
-## Lab Series
-4. Lab 1 - Protecting the Network Perimeter – NSG (Network Security Groups)
-5. Lab 2 - Azure Networking logs
-6. Lab 3 - Control outbound security traffic with Azure Firewall
+4.	Lab 1 - Protecting the Network Perimeter – NSG (Network Security Groups)
+5.	Lab 2 - Azure Networking logs
+6.	Lab 3 - Control outbound security traffic with Azure Firewall
 7.	Lab 4 - Protecting the Web Application - Application Gateway and WAF (Web Application Firewall)
 8.	Lab 5 - Understand your application security posture in Azure - Azure Security Center for security recommendations
 9.	Lab 6 - Storage Security – Encryption at Rest - Apply disk encryption to a running VM
@@ -23,67 +22,135 @@ To simplify and speed up the process of creating this architecture we will only 
 11.	Lab 8 - Azure Active Directory Role-Based Access Control
 12.	Lab 9 - Enable DDoS protection for your resources
 
-## 1. Create a Microsoft Account, redeem your Azure Passes if you will use your Personal Microsoft Account
+## 1.	Create a Microsoft Account, redeem your Azure Passes if you will use your Personal Microsoft Account
 
-If you are setting up an Azure Pass or creating a Microsoft Account for the purposes of this lab, please visit the [account creation](/instructions/CreateAccount.md) page.
+*Note: We recommend using an Enterprise Subscription with a working account that has privileges to create resources. There are some labs on this guide that require the use of 3rd party Virtual Machines that do not allow the use of Azure Pass credits. In order to minimise costs we will enable ‘auto’shutdown’ of Virtual Machines.* 
+
+If you plan to use an Enterprise account with your enterprise subscription, please go to the next section of the lab series **Configuration needed before starting the labs**
+
+If you want to use the Azure pass provided, please follow these instructions **ABSOLUTELY TO THE LETTER**. Please read each step twice, before you do it. This is eminently important: it’s possible to lock yourself out of your free subscription or create scenarios where the pass “is already in use”, where you get a message saying the “pass is not associated with this account” and about a dozen variants of these basic ideas. If you follow these instructions **TO THE LETTER WITH NO STEPS SKIPPED OR ALTERNATIVE STEPS TAKEN** (because “I can see what he means, but there’s no need to do that – I know what I’m doing”) – then you will have success. It’ll take you less than 5 minutes and you’ll have started the Azure labwork while others are still trying to activate their subscriptions. 
+
+You can only assign one free trial/Azure Pass during the entire life of a Hotmail/outlook.com/Live-ID… Therefore, **avoid using an existing outlook.com/Hotmail.com/LiveID**. We’ve come across it many times where people took out a trial in 2008 and have completely forgotten all about it. You’ll only get an error message saying you can’t do that….
+
+1.	Close down all web browsers
+2.	Fire up a single InPrivate instance of Internet Explorer. Double check to make sure you have only a single, InPrivate instance of Internet Explorer loaded.
+3.	Go to http://account.live.com. If it shows you are logged in, click the sign-out button, close the browser down and fire up another InPrivate Instance.
+4.	Go to http://outlook.com and create a new account…
+    
+    Use the azsecseptX@outlook.com , where X has given to you by the proctors
+
+![image of outlook](/images/outlook.png)
+
+…or you might get a box like this:
+
+![image of signin](/images/signin.png)
+
+5.	Go through the sign-up process and remember your username and password.
+6.	Click the icon in the top right corner of the page:
+
+![image of account](/images/account.png)
+
+7.	Click Sign out on the right hand pane that appears:
+
+![image of signout](/images/signout.png)
+
+8.	Shut down every browser and then open a single InPrivate browser.
+
+9.	Go to http://microsoftazurepass.com
+
+10.	Click the Start button
+
+![image or redeem](/images/redeem-your-azure-pass.PNG)
+
+11.	Enter your credentials and click the Sign in button:
+
+![image of credentials](/images/credentials.png)
+
+12.	Click the **Confirm Microsoft Account** button.
+
+![image of confirm](/images/confirm.png)
+
+13.	Enter the promo code you instructor has given you and then click **Claim Promo Code**
+
+![image of claim](/images/claim.png)
+
+14.	It takes a few minutes for the page to move on. Eventually you end up at an **ACTIVATE** button – click it:
+
+![active pass](/images/activate-azure-pass.PNG)
+
+15.	After about 30 seconds you are asked to fill in a form. Click Next after filling in section 1.
+
+![image of form](/images/form.png)
+
+16.	You are prompted for a phone number enter some data and click Next. It might take a minute or two to process…
+
+![image of phone](/images/phone.png)
+
+17.	At the agreement screen – agree to the terms and conditions. You might opt out of the marketing info – your choice, then click **Sign-Up**:
+
+![image of signup](/images/signup.png)
+
+18.	This part also takes a few minutes. There’s one point where you get a page saying “This typically takes up to 4 minutes”. **BE CAREFUL!** – experience has taught me to never click anything on this page until you see a page saying “Your subscription is ready for you”. 
+
+19.	Click the “**Or get started with your Azure subscription >”** hyperlink. **DO NOT click the green button**:
+
+![image of welcome](/images/welcome.png)
+
+20.	Eventually you end up at a button that says “manage my subscription” – go ahead. You’re ready…
+21.	You’re now in your Azure subscription. You’re offered to go on a tour of the UI – it’s probably best to save time and click **Maybe later**
+22.	To check whether you genuinely have a subscription and not just a UI that will fail to provision anything, click **Cost Management and Billing** near the bottom of the left-hand pane:
+
+23.	If the **SUBSCRIPTION** and **SUBSCRIPTION ID** columns are blank, something has gone wrong – talk to your instructor. Otherwise, you’re good to go. **Congratulations!**
+
+![image of ready](/images/ready.png)
+
 
 ## 2.  Configuration needed before starting the labs (Time to complete: 15 min)
 
-**1. Working with Visual Studio Code**
+**1.	Install [Visual Studio Code](https://code.visualstudio.com)** 
 
-- If you already have Visual Studio Code, please open it. If not:
+**2.	[PowerShell](https://azurecitadel.github.io/guides/powershell) (we need PowerShell version 6)**
 
-  - Install Visual Studio Code from the [Visual Studio Code website](https://code.visualstudio.com)
-  - Allow Visual Studio Code to launch after installation. If you already have Visual Studio Code installed, open it
+- Install the Azure PowerShell module. On your Powershell console:
 
-- In Visual Studio Code, click the **View** menu option and select **Terminal**. This will open a PowerShell terminal command prompt which is a great place to run the Azure CLI commands from in the labs.
+```/PowerShell
+Install-Module AzureRM
+```
 
-**2. Powershell AzureRM module**
+- Make sure you have installed PowerShell version 6 (or higher).
 
-- Install the AzureRM module. On your Powershell console:
+```/PowerShell
+Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
+```
 
-    ```/PowerShell
-    Install-Module AzureRM
-    ```
+**3. Install [Azure CLI 2.0](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)**
 
-    If you get an error about Administrator rights, either open Visual Studio Code with elevated privileges or run the above command with the `-Scope CurrentUser` parameter.
-
-- Make sure you have installed AzureRM version 6 (or higher).
-
-    ```/PowerShell
-    Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path
-    ```
-
-**3. Install Azure CLI 2.0**
-
-- Visit the [Azure CLI 2.0 website](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) and install the Azure CLI onto your computer.
-
-- Open a Command Prompt (or the Terminal Window in Visual Studio Code) and check that running the `az` command produces command help output (you may need to restart Windows Powershell/Visual Studio Code and re-open again for the installation to register).
+- Open a Command Prompt (or the Terminal Window in VS Code) and check that running the 'az' command produces command help output (you may need to restart Windows Powershell/Visual Studio Code and re-open again for the installation to register).
 
 - *Note: you might face an issue when you try to run an az command that says*
 
-    ```
-    az : The term 'az' is not recognized as the name of a cmdlet, function, script file, or operable program.
-    ```
+```
+az : The term 'az' is not recognized as the name of a cmdlet, function, script file, or operable program.
+```
 
-    The issue is because the Azure CLI 2.0 is installed in location - C:\Users\<username>\AppData\Local\Programs\Python\Python37-32\Scripts\ which is not added to the PATH variable.*
+    The issue is because the Azure CLI 2.0 is installed in location - C:\Users\<username>\AppData\Local\Programs\Python\Python37-32\Scripts\ which is not added to the PATH variable.* 
     1. *First make sure you have python installed in your machine. If you don’t have the original CLI (or python) at all, you need that  first. Download and install it from here: https://www.python.org/downloads/release/python-352/*
-    2. Uninstall Azure CLI earlier versions with command - pip uninstall azure-cli
-    3. Re-install Azure CLI 2.0 - pip install --user azure-cli
-    4. Add the path C:\Users\<username>\AppData\Local\Programs\Python\Python37-32\Scripts\ to PATH
-    5. Check if the az command is working:
+      
+    1.	Uninstall Azure CLI earlier versions with command - pip uninstall azure-cli
+    2.	Re-install Azure CLI 2.0 - pip install --user azure-cli
+    3.	Add the path C:\Users\<username>\AppData\Local\Programs\Python\Python37-32\Scripts\ to PATH
 
-        ```
-        az --help
-        ```
+- Check if the az command is working:
+ ```
+ az --help
+ ```
 
-**4. (Optional) Install Visual Studio Code Extensions**
-In Visual Studio Code, go to Extensions, search for **Azure CLI Tools** and install the package. Reload Visual Studio Code once installed.
+**4.	(Optional) Install Visual Studio Code Extensions**
+In Visual Studio Code, go to Extensions, search for **Azure CLI Tools** and install the package.
 
-**5. Install the [Azure building blocks npm package](https://github.com/mspnp/template-building-blocks/wiki/Install-Azure-Building-Blocks)**
+**5.	Install the [Azure building blocks npm package](https://github.com/mspnp/template-building-blocks/wiki/Install-Azure-Building-Blocks)**
 
-- Install **Node.js** from the link above. The LTS version will be fine.
-- You may need to close and re-open PowerShell/Visual Studio Code/Terminal window after the Node.js installation for the following commands to work.
+- Install **node.js** from the link above (you may need to close and re-open PowerShell/Visual Studio Code).
 - Install the Azure Building Blocks package:
 
    ```
@@ -95,15 +162,15 @@ In Visual Studio Code, go to Extensions, search for **Azure CLI Tools** and inst
    azbb
    ```
 
-**6. From a command prompt, bash prompt, or PowerShell prompt, sign into your Azure account as follows:**
+**6.	From a command prompt, bash prompt, or PowerShell prompt, sign into your Azure account as follows:**
   ```
   az login
   ```
 
-**7. Set the CLI to use the correct subscription (Enterprise or Azure Pass)**
+**7.	Set the CLI to use the correct subscription (Enterprise or Azure Pass)**
   To get your Subscription ID, run the following command to list the Subscriptions within your account:
   ```
-  az account list --query "[].{id:id,name:name}" --output tsv
+  az account list --query "[].{id:id,name:name}"
   ```
 
   Make a note of the relevant ID for your Subscription, and set the CLI to use this as the active subscription:
@@ -111,35 +178,28 @@ In Visual Studio Code, go to Extensions, search for **Azure CLI Tools** and inst
   az account set --subscription  "<subscription-ID>"
   ```
 
-## 3. Deploy the Solution (Time to complete: 35 to 40 min)
+## 3.  Deploy the Solution (Time to complete: 35 to 40 min)
 
-1. Run the following command to create a Resource Group
+1.	Run the following command to create a Resource Group (use ‘uksouth’ for location)
+  ```
+  az group create --location <location> --name <resource-group-name>
+  ```
+2.	Run the following command to create a Storage Account for your Cloud resources.
+  ```
+  az storage account create --location <location> --name <storage-account-name> --resource-group <resource-group-name>  --sku Standard_LRS
+  ```
+3.	In your browser, navigate to https://github.com/davisanc/AzureSecurityLabs 
 
-    **VERY IMPORTANT: Use location 'WestEurope' to deploy your infrastructure for all labs. This will guarantee that you won't have issues with the Azure Pass credits and availability of Virtual Machine types.**
-
-    ```
-    az group create --location <location> --name <resource-group-name>
-    ```
-
-2. Run the following command to create a Storage Account for your Cloud resources.
-    *Note: Storage account name must be between 3 and 24 characters in length and use numbers and lower-case letters only*
-
-    ```
-    az storage account create --location <location> --name <storage-account-name> --resource-group <resource-group-name> --sku Standard_LRS
-    ```
-
-3. In your browser, navigate to https://github.com/davisanc/AzureSecurityLabs 
-
-4. Open the **n-tier-windows-security-labs.json** file. This file is an Azure Resource Manager (ARM) Template which describes the infrastructure resources we need to use for this lab as code. When deployed, the template will instruct Resource Manager to create the resources as described in the text.
+4.	Open the **n-tier-windows-security-labs.json** file. This file is an Azure Resource Manager (ARM) Template which describes the infrastructure resources we need to use for this lab as code. When deployed, the template will instruct Resource Manager to create the resources as described in the text.
 
     For more on ARM Templates, please visit: 
+    
     [https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview#template-deployment](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview#template-deployment)
 
-5. Just above the main text pane on the Github page, click the **Raw** button to see the unformatted JSON.
+6.  Just above the main text pane on the Github page, click the **Raw** button to see the unformatted JSON.
 
-6. Copy and paste the text into a new file in Visual Studio Code. In the JSON text, search for all instances of **adminUsername** and **adminPassword** and replace both the property values with your own admin username and passwords, and save the file locally as **n-tier-windows-security-labs.json**. **Make sure you don't use "admin" as default adminUsername or the ARM template won't be deployed**
-
-    Example:
+7.	Copy and paste the text into a new file in Visual Studio Code. In the JSON text, search for all instances of **adminUsername** and **adminPassword** and replace both the property values with your own admin username and passwords, and save the file locally as **n-tier-windows-security-labs.json**.
+Example:
 
     Before...
     ```
@@ -152,12 +212,10 @@ In Visual Studio Code, go to Extensions, search for **Azure CLI Tools** and inst
     "adminPassword": "C4ndY*Fl0$S18",
     ```
 
-7. Run the following `azbb` command to deploy the base resources required for the lab using the ARM template modified above. This will include a Jumpbox, Web VM, Application VM and a SQL Server VM. Make sure you are on the right folder where you have saved the json file
-
+6.	Run the following `azbb` command to deploy the base resources required for the lab using the ARM template modified above. This will include a Jumpbox, Web VM, Application VM and a SQL Server VM:
     ```
     azbb -s <Subscription-ID> -g <Resource-Group-Name> -l <Location> -p .\<name-of-your-tempalte.json> --deploy
     ```
-
     *Note: this environment will need about 35 minutes to deploy. Once the last command completes, report to your proctors that you have reached this point*
 
     The Application and Database tier should have an internal Load Balancer in front of them as per the Azure Reference Architecture, so you can scale up the tier with more VMs if needed and the Load Balancer will distribute the traffic accordingly. However, to speed up the process of creating this architecture, there will be no Load Balancers at the Application and Database Tiers
@@ -166,9 +224,9 @@ In Visual Studio Code, go to Extensions, search for **Azure CLI Tools** and inst
 
     For now, the only Internet access to the environment is through the Jump Box as it is the only VM with a Public IP address.
 
-    **Test: make sure you can ping from the JB to the Web, Biz and DB virtual machines (enable PING on the firewall settings)**
+**Test: make sure you can ping from the JB to the Web, Biz and DB virtual machines (enable PING on the firewall settings)**
 
-## 4 - Lab 1 - Protecting the Network Perimeter with Network Security Groups
+## 4.  Lab 1 - Protecting the Network Perimeter with Network Security Groups
 
 Network Security Groups filter traffic to and from resources in an Azure virtual network. They can be applied at subnet or virtual machine level, and filter the traffic based on a set of rules.
 
@@ -176,19 +234,17 @@ Further information on network security groups (NSG) can be found in the Azure d
 
 [https://docs.microsoft.com/en-us/azure/virtual-network/security-overview](https://docs.microsoft.com/en-us/azure/virtual-network/security-overview)
 
-From a security point of view, the infrastructure we have deployed is very open. All traffic can flow between all subnets and all servers with only the Windows Firewall preventing access.
-
-We can use security groups as an additional tool to protect/restrict traffic between tiers. In the 3-tier architecture shown, the web tier should not communicate directly with any resource in the database tier. To enforce this, security needs to be put in place which blocks all but the necessary incoming traffic from the web tier subnet in to the database subnet. This can be done using a security group.
+You can use security groups to protect/restrict traffic between tiers. In the 3-tier architecture shown, the web tier should not communicate directly with any resource in the database tier. To enforce this, the database subnet should block all incoming traffic from the web tier subnet. This can be done using a security group.
 
 ### 4.1 - Creating the security group
-This section creates the security group and the relevant rules to protect the database tier.
+This section creates the security group to protect the database tier.
 
-1. In the VS Code terminal, enter the following CLI command to create the security group named **SQL-NSG**:
+1.  In the VS Code terminal, enter the following CLI command to create the security group **SQL-NSG**
     ```
     az network nsg create --name SQL-NSG --resource-group <resource-group-name> --location <location>
     ```
 
-    When the command completes, the terminal will output all properties of the security group, and you can also see the new NSG in the Azure console.
+    When the command completes, the terminal will show all properties of the security group, and you can also see the new NSG in the Azure console.
 
     By default, a security group will be pre-populated with three **inbound** rules (in order of execution):
     1. allow any VNet to VNet traffic
@@ -205,19 +261,19 @@ This section creates the security group and the relevant rules to protect the da
     az network nsg show --resource-group <resource-group-name> --name SQL-NSG --query "defaultSecurityRules[]" --output table
     ```
 
-    These rules cannot be deleted. What we *can* do however, is create a new series of rules in the security group with a *higher priority*, (a higher execution order) to filter the traffic before these default rules are evaluated.
+    These rules cannot be deleted. What we can do is create a new series of rules in the security group with a higher priority to filter the traffic before the default rules are evaluated.
 
-2. Allow inbound traffic from the business tier subnet.
+2.  Allow inbound traffic from the business tier subnet.
 
-    Create a new rule within your new security group. Security group rules are based on information about the source, destination, protocol, port and action (allow/deny), similar to traditional firewall rules.
+    Create a new rule within your new security group. Like typical firewall rules, security group rules are based on information about the source, destination, protocol, port and action (allow/deny).
 
-    The new rule will allow any traffic into the database tier from the business tier. This is done by specifying the CIDR of the business tier subnet (10.0.2.0/24) as the source. Any resource within this subnet can communicate with the database tier.
+    This rule will allow any traffic into the database tier from the business tier. This is done by specifying the CIDR of the business tier subnet (10.0.2.0/24) as the source. Any resource within this subnet can communicate with the database tier.
 
     ```
     az network nsg rule create --name AllowFromBiz --nsg-name SQL-NSG --priority 110 --resource-group <resource-group-name> --description "Allow all traffic from the Business Tier" --access Allow --direction Inbound --source-address-prefix 10.0.2.0/24 --source-port-ranges * --protocol * --destination-address-prefix * --destination-port-ranges *
     ```
 
-3. Allow inbound traffic from the database tier subnet itself.
+3.	Allow inbound traffic from the database tier subnet itself.
 
     This rule allows communication between the database VMs, which is needed for database replication and failover. Use the database (SQL) subnet range 10.0.3.0/24 as the source:
 
@@ -225,17 +281,17 @@ This section creates the security group and the relevant rules to protect the da
     az network nsg rule create --name AllowFromSQL --nsg-name SQL-NSG --priority 120 --resource-group <resource-group-name> --description "Allow all intra SQL traffic within the Database Tier" --access Allow --direction Inbound --source-address-prefix 10.0.3.0/24 --source-port-ranges * --protocol * --destination-address-prefix * --destination-port-ranges *
     ```
 
-4. Allow RDP access from the Jump Box.
+4.	Allow RDP access from the Jump Box.
 
-    Allowing RDP traffic on the RDP port (3389) from the Jump Box lets remote administrators connect to the database servers from the Jump Box. By only specifying the RDP port, users of the Jump Box will not be able to connect to these servers via any other method, port or protocol.
+    Allowing RDP traffic on the RDP port (3389) from the Jump Box lets remote administrators connect to the database servers from the Jump Box. By only specifying the RDP port, users of the Jump Box will not be able to connect via any other method, port or protocol.
 
     Use the management subnet range 10.0.0.128/25 as the source:
 
     ```
-    az network nsg rule create --name AllowRDPFromJB --nsg-name SQL-NSG --priority 130 --resource-group <resource-group-name> --description "Allow RDP traffic from the Jump Box" --access Allow --direction Inbound --source-address-prefix 10.0.0.128/25 --source-port-ranges * --protocol TCP --destination-address-prefix * --destination-port-ranges 3389
+    az network nsg rule create --name AllowRDPFromJB --nsg-name SQL-NSG --priority 130 --resource-group <resource-group-name> --description "Allow RDP traffic from the Jump Box" --access Allow --direction Inbound --source-address-prefix 10.0.128.0/25 --source-port-ranges * --protocol TCP --destination-address-prefix * --destination-port-ranges 3389
     ```
 
-5. Deny all other inbound traffic from the VNet.
+5.	Deny all other inbound traffic from the VNet.
 
     Now we have set up the base access requirements, we need to block all other traffic from within the VNet. Instead of a source address, we can use the **VirtualNetwork** tag in the rule:
 
@@ -243,7 +299,7 @@ This section creates the security group and the relevant rules to protect the da
     az network nsg rule create --name DenyFromVNet --nsg-name SQL-NSG --priority 140 --resource-group <resource-group-name> --description "Deny general VNet traffic" --access Deny --direction Inbound --source-address-prefix VirtualNetwork --destination-port-ranges *
     ```
 
-6. Deny all inbound traffic from the Internet.
+6.	Deny all inbound traffic from the Internet.
 
     Create the final rule yourself using the commands above as the pattern. Set your own description, and use these properties:
 
@@ -254,13 +310,13 @@ This section creates the security group and the relevant rules to protect the da
 #### Rule Priority
 Consider the following when creating security group rules...
 
-- Security group rules run in priority order, with the rule given the *lowest* priority number being evaluated *first*.
-- Leave a reasonable gap between your rule numbers. It makes for a lot of work to try and retro-fit a new rule with a higher priority in between rules with priority numbers 4,5 and 6 than it does with numbers 140, 150 and 160.
-- The first **Deny** rule encountered by the evaluation instantly denies the access.
+- Security group rules run in priority order, with the lowest priority rule being evaluated first.
+- Leave a reasonable gap between your rules. It makes for a lot of work to try and retro-fit a new rule with a higher priority in between rules priorties 4,5 and 6 than 140, 150 and 160.
+- The first **Deny** rule encountered by the evaluation instantly deny the access.
 
-### 4.2 - Attach the security group to the SQL Server Network Interface Card (NIC)
+### 4.2 - Attach the security group to the SQL Server network interface / NIC
 
-Follow these steps to attach the new NSG to the virtual network interface of the SQL VM...
+Follow these steps to attach the new NSG to the network interface of the SQL VM...
 
 ![NSG-inbound-sql](/images/attach-NSG-NIC.PNG)
 
@@ -282,17 +338,13 @@ Confirm that you can RDP from the Jump Box to the SQL server and also from the B
 
 ![RDP blocked](/images/RDP-blocked-from-web.PNG)
 
-An earlier test saw you try and ping the SQL server from the Jump Box. If you try this test again, despite the traffic being allowed on the Windows Firewall, the ping test should fail.
-
 ## 5. Lab 2 - Azure networking logs
 
 Network logging and monitoring in Azure is comprehensive and covers two broad categories:
-
 - **Network Watcher**: Scenario-based network monitoring is provided with the features in Network Watcher. This service includes packet capture, next hop, IP flow verify, security group view and NSG flow logs. Scenario level monitoring provides an end to end view of network resources in contrast to individual network resource monitoring.
 - **Resource monitoring**: Resource level monitoring comprises four features: diagnostics logs, metrics, troubleshooting, and resource health. All of these features are built at the network resource level.
 
-To troubleshoot your NSG rules, enable NSG flow logs. This will enable Network watcher.
-
+To troubleshoot your NSG rules, enable NSG flow logs. This will enable Network watcher. 
 Go to the search bar on the Portal, look for Network Watcher. Filter by your Subscription ID and Resource Group.
 
 ![network watcher](/images/Network-watcher.PNG)
@@ -322,7 +374,7 @@ Also, you may want to visualize the Network Topology. In Network Watcher, click 
 
 ![TOPOLOGY](/images/topology.PNG)
 
-## 6. Lab 3 – Control outbound security traffic with Azure Firewall
+## 6.  Lab 3 – Control outbound security traffic with Azure Firewall
 
 Azure Firewall is a stateful firewall as a service, with high availability and cloud scalability built-in. The primary use case for the Azure Firewall is to centrally create, enforce and log application and network policies. As the **first version** of the product, the firewall is focused on **securing outbound flows by FQDN whitelisting/blacklisting**. It provides source network address translation and it is integrated with Azure Monitor for logging and analytics.
 
@@ -392,8 +444,6 @@ Once the firewall object is created, view the properties of the firewall and tak
 We will work on the Web VM, and we will set the default route of the web-tier subnet to send all traffic through the firewall.
 
 1. Create a new Route Table
-
-    Go to your Resource Group, click on **Add On**, and search for **Route Table**
 
     ![route table](/images/route-table.PNG)
 
@@ -579,28 +629,39 @@ To take full advantage of Security Center, you need to complete the steps below 
 
 **Upgrade to the Standard tier**
 
-For the purpose of the Security Center quickstarts and tutorials **you must upgrade to the Standard tier**. Your first 60 days are free, and you can return to the Free tier any time.
+For the purpose of the Security Center quickstarts and tutorials you must upgrade to the Standard tier. Your first 60 days are free, and you can return to the Free tier any time.
 
-1. Under the Security Center main menu, select **Getting started**
-2. Security Center lists subscriptions eligible for onboarding. Under **Apply your trial on 1 subscription**, select yours from the list (Azure Pass or your enterprise subscription). Click on **Start Trial**
+1. Under the Security Center main menu, select **Onboarding to advanced security**
+2. Under Onboarding to advanced security, Security Center lists subscriptions and workspaces eligible for onboarding. Select a subscription from the list.
 
-    ![asc upgrade](/images/ASC-upgrade.PNG)
-    
-3. To make the most of Azure Security Center, we need to enable **data collection agents**. They must be installed on your virtual machines for data collection so we can receive security alerts and recommendations
+    ![oms advanced](/images/oms-advanced.png)
 
-We will install agents automatically. Install the **ASC agents** to your subscription
+3. Security policy provides information on the resource groups contained in the subscription. Pricing also opens.
+4. Under Pricing, select Standard to upgrade from Free to Standard and click Save.
 
-![image of agents](/images/install-agent.PNG)
-    
+![oms pricing](/images/oms-pricing.png)
+
 Now that you’ve upgraded to the Standard tier, you have access to additional Security Center features, including **adaptive application controls, just in time VM access, security alerts, threat intelligence, automation playbooks**, and more. Note that security alerts will only appear when Security Center detects malicious activity.
 
 ![oms global](/images/oms-global.png)
 
-**Recommendations**
+**Automate data collection**
+
+Security Center collects data from your Azure VMs and non-Azure computers to monitor for security vulnerabilities and threats. Data is collected using the Microsoft Monitoring Agent, which reads various security-related configurations and event logs from the machine and copies the data to your workspace for analysis. By default, Security Center will create a new workspace for you.
+When automatic provisioning is enabled, Security Center installs the Microsoft Monitoring Agent on all supported Azure VMs and any new ones that are created. Automatic provisioning is strongly recommended.
+To enable automatic provisioning of the Microsoft Monitoring Agent:
+
+1. Under the Security Center main menu, select **Security Policy**.
+2. Select the subscription.
+3. Under **Security policy**, select **Data Collection**.
+4. Under **Data Collection**, select **On** to enable automatic provisioning.
+5. Click **Save**.
+
+![oms datacollection](/images/oms-datacollection.png)
 
 With this new insight into your Azure VMs, Security Center can provide additional recommendations related to system update status, Operating System security configurations, endpoint protection, as well as generate additional security alerts.
 
-![oms recomm](/images/asc-recommendations.PNG)
+![oms recomm](/images/oms-recomm.png)
 
 ## 9. Lab 6 - Storage Security – Encryption at Rest - Apply disk encryption to a running VM
 
@@ -620,22 +681,15 @@ az keyvault create --name <your-keyvault-name> --resource-group <resource-group-
 
 ![create keyv](/images/Create-KeyVault.PNG)
 
-### 9.2 - Prerequisites to go before running encryption
+### 9.2 - Applying VM disk encryption
 
 You can enable encryption by using a template, PowerShell cmdlets, or CLI commands. The following sections explain in detail how to enable Azure Disk Encryption.
 
 *Important: It is mandatory to snapshot and/or backup a managed disk based VM instance outside of, and prior to enabling Azure Disk Encryption. A snapshot of the managed disk can be taken from the portal, or Azure Backup can be used. Backups ensure that a recovery option is possible in the case of any unexpected failure during encryption.*
 
-There are some prerequistes to check before enabling disk encryption. They can be found here:
-https://docs.microsoft.com/en-us/azure/security/azure-security-disk-encryption-prerequisites
+**Run a prerequisite script to encrypt the data disk of your VM(s)**
 
-We have summarized them for you here. Alternatively, you can run a pre-requisite script that will run all the following comamnds for you
-
-**IMPORTAN: If you prefer to do this one by one, go through the following steps. If you prefer to go with the pre-req scritpt, jumpt to 9.4 of this lab**
-
-**On Powershell**
-
-1. Make sure you have AzureRM module version 6 installed on your local machine.
+1. Make sure you have PowerShell version 6 installed on your local machine.
 2. Verify the installed versions of the AzureRM module. The AzureRM module version needs to be 6.0.0 or higher.
 
     ```
@@ -646,103 +700,48 @@ We have summarized them for you here. Alternatively, you can run a pre-requisite
     ```
     Update-Module -Name AzureRM
     ```
-4. Install the Azure Active Directory PowerShell module
 
-    ```
-    Install-Module AzureAD
-    ```
+**Enable encryption on existing or running VMs with Azure CLI**
 
-5. Verify the installed versions of the module
+There are some prerequistes to check before enabling disk encryption. They can be found here:
 
-    ```
-    Get-Module AzureAD -ListAvailable | Select-Object -Property Name,Version,Path
-    ```
-6. Set up an Azure AD app and service principal
-    
-    On Az CLI:
-    
-    ```
-    az ad sp create-for-rbac --name "ServicePrincipalName" --password "My-AAD-client-secret" --skip-assignment
-    ```
-    *Note:The appId returned is the Azure AD ClientID used in other commands. It's also the SPN you'll use for az keyvault set-policy. The password is the client secret that you should use later to enable Azure Disk Encryption. Safeguard the Azure AD client secret appropriately.*
-    
-7. Set the key vault access policy for the Azure AD app with Azure CLI
+https://docs.microsoft.com/en-us/azure/security/azure-security-disk-encryption-prerequisites
 
-    ```
-    az keyvault set-policy --name "MySecureVault" --spn "<spn created with CLI/the Azure AD ClientID>" --key-permissions wrapKey -- secret-permissions set
-    ```
-8. Set key vault advanced access policies
+We will need an Azure Active Directory (AAD) application that will be used to write secrets to KeyVault as an authentication step. Also, we need a secret of the AAD application that was created on the earlier step. Recommendation is to run through the pre-req powershell script that handles this
 
-The Azure platform needs access to the encryption keys or secrets in your key vault to make them available to the VM for booting and decrypting the volumes. Enable disk encryption on the key vault or deployments will fail.
+I will use the following names for the AAD App name and client secret. Running through the script, this App will be registered with AAD and will be authorized to use KeyVault. This client secret will be written in KeyVault
 
-Set key vault advanced access policies through the Azure portal
-Select your keyvault, go to Access Policies, and Click to show advanced access policies.
-Select the box labeled Enable access to Azure Disk Encryption for volume encryption.
-Select Enable access to Azure Virtual Machines for deployment and/or Enable Access to Azure Resource Manager for template deployment, if needed.
-Click Save.
+```
+aadAppName: keyvault-dasanc-app
+aadClientSecret: dasancsec 
+```
+On the portal go to **Azure Active Directory, App Registrations**, click **New Application Registration** and create the App that will write the secret to KeyVault
 
-![image of key vault advanced](/images/keyvault-advancedset.PNG)
-
-
-### 9.3 Enable encryption on existing or running VMs with Azure CLI**
+**Encrypt a running VM:**
 
 
 **Azure CLI**
-
-Encrypt a running VM using a client secret:
-
 ```
-az vm encryption enable --resource-group "MySecureRg" --name "MySecureVM" --aad-client-id "<my spn created with CLI/my Azure AD ClientID>"  --aad-client-secret "My-AAD-client-secret" --disk-encryption-keyvault "MySecureVault" --volume-type [All|OS|Data]
+az vm encryption enable -g Sec-Foundation-MTC --name "sql-vm1" --disk-encryption-keyvault "KeyVault-MTC-Sec" --aad-client-id "David Sanchez" --aad-client-secret "<your-secret>"--volume-type ALL
 ```
 Powershell pre-req script: you can download the 'DiskEncryption.ps' file available here
 
 **Powershell**
 ```
 $rgName = 'MySecureRg';
-$vmName = ‘MyExtraSecureVM’;
-$aadClientID = 'My-AAD-client-ID';
-$aadClientSecret = 'My-AAD-client-secret';
-$KeyVaultName = 'MySecureVault';
-$keyEncryptionKeyName = 'MyKeyEncryptionKey';
-$KeyVault = Get-AzureRmKeyVault -VaultName $KeyVaultName -ResourceGroupName $rgname;
-$diskEncryptionKeyVaultUrl = $KeyVault.VaultUri;
-$KeyVaultResourceId = $KeyVault.ResourceId;
-$keyEncryptionKeyUrl = (Get-AzureKeyVaultKey -VaultName $KeyVaultName -Name $keyEncryptionKeyName).Key.kid;
+ $vmName = 'MySecureVM';
+ $KeyVaultName = 'MySecureVault';
+ $KeyVault = Get-AzureRmKeyVault -VaultName $KeyVaultName -ResourceGroupName $rgname;
+ $diskEncryptionKeyVaultUrl = $KeyVault.VaultUri;
+ $KeyVaultResourceId = $KeyVault.ResourceId;
 
-Set-AzureRmVMDiskEncryptionExtension -ResourceGroupName $rgname -VMName $vmName -AadClientID $aadClientID -AadClientSecret $aadClientSecret -DiskEncryptionKeyVaultUrl $diskEncryptionKeyVaultUrl -DiskEncryptionKeyVaultId $KeyVaultResourceId -KeyEncryptionKeyUrl $keyEncryptionKeyUrl -KeyEncryptionKeyVaultId $KeyVaultResourceId;
+ Set-AzureRmVMDiskEncryptionExtension -ResourceGroupName $rgname -VMName $vmName -DiskEncryptionKeyVaultUrl $diskEncryptionKeyVaultUrl -DiskEncryptionKeyVaultId $KeyVaultResourceId;
 ```
 *Note: you can also run disk encryption with key encryption key (out of scope of this lab)*
 
-**Finally, verify the disks are encrypted**
-```
-az vm encryption show --name "MySecureVM" --resource-group "MySecureRg"
-```
-
-![image od disk-enc](/images/disk-enc.PNG)
-
-
-### 9.4 Use the pre-req script
-
-You can also use the pre-req script, that runs all the previous commands for you
-Use the AzureDiskEncryptionPreRequisiteSetup.ps1 on this repository, and run it on Powershell
-
-The script will require the Resource Group name, KeyVault name, Location, Subscription ID, and AAD App name and client secret
-We recommend using PowerShell ISE 
-
-Full instructions are here: https://docs.microsoft.com/en-us/azure/security/quick-encrypt-vm-powershell
-
-This shoudd be the final result of the script
+Using the pre-req script you get the final result for the SQL VM
 
 ![sql vm encrypted](/images/sql-vm-encrypted.PNG)
-
-Verify the disks are encrypted: To check on the encryption status of a IaaS VM, use the Get-AzureRmVmDiskEncryptionStatus cmdlet
-
-```
-Get-AzureRmVmDiskEncryptionStatus -ResourceGroupName <resource-group-name> -VMName <vm-name>
-
-```
-Finally, if we get back to Azure Security Center, on the recommendations panel we will no longer see the recommendation on the SQL VM to apply disk encryption (it will need some time to refresh the new status)
-
 
 ## 10. Lab 7 - Extending your Data Centre to Azure in a secure way – Site to Site VPN Access
 
@@ -818,7 +817,7 @@ Go to your RG, click ‘Add resource’ and look for ‘ Local Network Gateway�
 
 ![local nt gateway](/images/local-nt-gateway.png)
 
-Once the local gateway is created we will **define a connection to our onpremise VPN Gateway**. We will use a private shared key to enable the IPSEC VPN to come up. Remember to mark BGP to ‘enabled’ on your Connection. 
+Once the local gateway is created we will define a connection to our onpremise VPN Gateway. We will use a private shared key to enable the IPSEC VPN to come up. Remember to mark BGP to ‘enabled’ on your Connection. 
 
 **Configure the pfSense VPN Firewall**
 
@@ -838,10 +837,7 @@ On pfSense, go to Status, IPSEC, Overview and click **‘Connect VPN’**
 
 *NOTE: When using BGP over a Routed IPSEC tunnel, it wouldn’t be needed the configuration and management of P2 entries. You will me managing routes in the BGP config instead of P2 entries. Routed IPSEC is a pfSense feature available in 2.4.4, my setup runs on 2.4.3 so I will create the P2 entries manually*
 
-**VERY IMPORTANT:** On the local gateway connections, as we are using BGP, **don’t forget to enable BGP or the IPSEC tunnel won’t come up**
-
-![image of forget bgp](/images/forget-bgp.PNG)
-
+On the local gateway connections, as we are using BGP, **don’t forget to enable BGP or the IPSEC tunnel won’t come up!**
 
 **Enable IPSEC traffic on the Virtual Machine pfSense NSG**
 
@@ -856,10 +852,6 @@ Configure a Rule to allow UDP 4500 ((IPsec NAT-T) & 500 (ISAKMP) ports
 After we added the relevant rules on the NSG and pfSense WAN interface, the connection is up and running 
 
 ![pfsense connections](/images/pfsense-connections.png)
-
-On the pfSense side:
-
-![image of vpn connected](/images/pfsense-connected.PNG)
 
 **Enable BGP traffic through IPSEC interface**
 
