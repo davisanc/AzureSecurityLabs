@@ -48,7 +48,7 @@ Get-AzureRmProviderFeature -FeatureName AllowAzureFirewall -ProviderNamespace Mi
 
 After the registration is complete, run the following PowerShell command:
 
-```
+```PowerShell
 Register-AzureRmResourceProvider -ProviderNamespace Microsoft.Network
 ```
 
@@ -180,4 +180,4 @@ Try going to another site, this action should be blocked:
 
 << [Back to home page](/README.md)
 
-<< [Previous Lab](lab-02-networking-logs.md) . . . . . [Next Lab](lab-04-networking-logs.md) >>
+<< [Previous Lab](lab-02-networking-logs.md) . . . . . [Next Lab](lab-04-app-gateway.md) >>
