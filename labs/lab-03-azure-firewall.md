@@ -4,55 +4,7 @@
 
 Azure Firewall is a stateful firewall as a service, with high availability and cloud scalability built-in. The primary use case for the Azure Firewall is to centrally create, enforce and log application and network policies. As the **first version** of the product, the firewall is focused on **securing outbound flows by FQDN whitelisting/blacklisting**. It provides source network address translation and it is integrated with Azure Monitor for logging and analytics.
 
-### 3.1 - Enabling Azure Firewall preview
-
-The Azure Firewall is currently in public preview. To enable the firewall in your subscription you need use the following Azure PowerShell commands:
-
-To enable the firewall in your subscription you need use the following Azure PowerShell commands:
-
-1. Run this command from PS
-
-```PowerShell
-Register-AzureRmProviderFeature -FeatureName AllowRegionalGatewayManagerForSecureGateway -ProviderNamespace Microsoft.Network
-```
-
-*Note: If you get the following error:*
-
-```PowerShell
-Powershell error – Import-Module : File AzureRM.psm1 cannot be loaded because running scripts is disabled on this system
-```
-
-*Run this command:*
-
-```PowerShell
-Set-ExecutionPolicy RemoteSigned
-```
-
-You may need to login again to your Azure subscription with **Connect-AzureRmAccount** or **az login**. Make sure you are on the right subscription.
-
-2. Now run the following PS command needed to enable the Firewall
-
-```PowerShell
-Register-AzureRmProviderFeature -FeatureName AllowAzureFirewall -ProviderNamespace Microsoft.Network
-```
-
-**It takes up to 30 minutes for feature registration to complete**. You can check your registration status by running the following Azure PowerShell commands:
-
-```PowerShell
-Get-AzureRmProviderFeature -FeatureName AllowRegionalGatewayManagerForSecureGateway -ProviderNamespace Microsoft.Network
-```
-
-```PowerShell
-Get-AzureRmProviderFeature -FeatureName AllowAzureFirewall -ProviderNamespace Microsoft.Network
-```
-
-After the registration is complete, run the following PowerShell command:
-
-```PowerShell
-Register-AzureRmResourceProvider -ProviderNamespace Microsoft.Network
-```
-
-### 3.2 - Create a subnet for the firewall
+### 3.1 - Create a subnet for the firewall
 
 The cloud firewall needs to have a dedicated subnet within your VNet named **AzureFirewallSubnet**. 
 
@@ -64,7 +16,7 @@ Alternatively, run the following CLI command to create the subnet:
 az network vnet subnet create --address-prefix 10.0.3.0/24 --name AzureFirewallSubnet --resource-group <resource-group-name> --vnet-name ra-ntier-vnet
 ```
 
-### 3.3 - Create the firewall
+### 3.2 - Create the firewall
 
 On the Azure Portal, click **Create a resource**, **Networking**, and look for **Firewall**. Configure the firewall as per the image below...
 
@@ -72,7 +24,7 @@ On the Azure Portal, click **Create a resource**, **Networking**, and look for *
 
 Once the firewall object is created, view the properties of the firewall and take a note of the private IP address.
 
-### 3.4 Routing the web-tier traffic
+### 3.3 Routing the web-tier traffic
 We will work on the Web VM, and we will set the default route of the web-tier subnet to send all traffic through the firewall.
 
 1. Create a new Route Table
@@ -120,7 +72,7 @@ We will work on the Web VM, and we will set the default route of the web-tier su
 
     You may notice that the CLI method attaches the route table to the subnet inside the VNet using the 'network vnet' command subset, rather than setting this as a property on the route table object itself.
 
-### 3.5 - Create application rules
+### 3.4 - Create application rules
 
 We will write a simple rule to enable web traffic to *github.com* and block anything else. The rule uses the CIDR of the web subnet as the source address, allowing any resources within that tier access to *github.com*. Therefore existing *and* future VMs will be allowed to communicate via this rule.
 
@@ -148,7 +100,7 @@ After a short time the new application rule will appear in the firewall.
 
 *You can override this build-in infrastructure rule collection by creating a 'deny all' application rule collection which is processed last. It will always be processed before the infrastructure rule collection. Anything not in the infrastructure rule collection is denied by default.*
 
-### 3.6 - Configure network rules
+### 3.5 - Configure network rules
 
 The idea is to permit DNS traffic to our DNS server to go through the Firewall (from a Level3/Level4 perspective).
 
@@ -166,7 +118,7 @@ The idea is to permit DNS traffic to our DNS server to go through the Firewall (
         - **Destination Ports:** 53.
     - Click **Add**.
 
-### 3.7 - Test your firewall rules
+### 3.6 - Test your firewall rules
 
 RDP to the JumpBox and from there to the Web VM. Open a browser and try go to github.com.
 
