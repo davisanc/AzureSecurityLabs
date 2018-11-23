@@ -301,6 +301,18 @@ Click on the NSG you worked on on the previous lab, enable **Flow Logs**
 
 You will need to select an storage account within your Resource Group. The NSG flow logs will be stored within a blob container of the selected storage account. More details https://docs.microsoft.com/en-us/azure/network-watcher/network-watcher-nsg-flow-logging-portal
 
+**IMPORTANT! First thing**, in order for flow logging to work successfully, the Microsoft.Insights provider must be registered. If you are not sure if the Microsoft.Insights provider is registered, run the following script.
+
+```
+az provider register --namespace Microsoft.Insights
+```
+
+Then go ahead and enable NSG Flow logs on the portal. You may use the following command to enable NSG flow logs via AZ CLI or Visual Studio Code
+
+```
+az network watcher flow-log configure --resource-group resourceGroupName --enabled true --nsg nsgName --storage-account storageAccountName
+```
+
 ![NSG flow logs](/images/NSG-flow-logs-enabled.PNG)
 
 Also, you may want to enable **Traffic Analytics for rich analytics and visualization**. You will need to create an **OMS workspace** (select the Free Tier and put it on the same RG and location) and link it to Traffic Analytics
