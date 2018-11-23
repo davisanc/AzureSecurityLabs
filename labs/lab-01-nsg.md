@@ -62,7 +62,7 @@ This section creates the security group to protect the database tier.
     Use the management subnet range 10.0.0.128/25 as the source:
 
     ```
-    az network nsg rule create --name AllowRDPFromJB --nsg-name SQL-NSG --priority 130 --resource-group <resource-group-name> --description "Allow RDP traffic from the Jump Box" --access Allow --direction Inbound --source-address-prefix 10.0.128.0/25 --source-port-ranges * --protocol TCP --destination-address-prefix * --destination-port-ranges 3389
+    az network nsg rule create --name AllowRDPFromJB --nsg-name SQL-NSG --priority 130 --resource-group <resource-group-name> --description "Allow RDP traffic from the Jump Box" --access Allow --direction Inbound --source-address-prefix 10.0.0.128/25 --source-port-ranges * --protocol TCP --destination-address-prefix * --destination-port-ranges 3389
     ```
 
 5. Deny all other inbound traffic from the VNet.
