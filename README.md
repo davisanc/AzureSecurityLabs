@@ -629,6 +629,16 @@ We have summarized them for you here. Alternatively, you can run a script that w
     ```
 6. Set up an Azure AD app and service principal
     
+    We need an Azure Active Directory (AAD) application that will be used to write secrets to KeyVault as an authentiation step. Also, we need a secret of the AAD application that was created on the earlier step. Recommendation is to run through the powershell script that handles this
+
+As a reference, I will use the following names for the AAD App name and client secret. Running through the script, this App will be registered with AAD and will be authorized to use KeyVault. This client secret will be written in KeyVault
+
+```text
+aadAppName: keyvault-dasanc-app
+aadClientSecret: dasancsec
+```
+
+
     On Az CLI:
     
     ```
@@ -655,16 +665,6 @@ Click Save.
 
 
 ### 9.3 Enable encryption on existing or running VMs with Azure CLI**
-
-We will need an Azure Active Directory (AAD) application that will be used to write secrets to KeyVault as an authentiation step. Also, we need a secret of the AAD application that was created on the earlier step. Recommendation is to run through the powershell script that handles this
-
-As a reference, I will use the following names for the AAD App name and client secret. Running through the script, this App will be registered with AAD and will be authorized to use KeyVault. This client secret will be written in KeyVault
-
-```text
-aadAppName: keyvault-dasanc-app
-aadClientSecret: dasancsec
-```
-
 
 **Azure CLI**
 
