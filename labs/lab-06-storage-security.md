@@ -123,7 +123,7 @@ az vm encryption show --name "MySecureVM" --resource-group "MySecureRg"
 ![image od disk-enc](/images/disk-enc.PNG)
 
 
-### 6.4 Use the pre-req script
+### 6.4 Use the script
 
 You can also use the script, that runs all the previous commands for you
 Use the AzureDiskEncryptionPreRequisiteSetup.ps1 on this repository, and run it on Powershell
