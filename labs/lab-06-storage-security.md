@@ -82,7 +82,7 @@ Click Save.
 
 ![image of key vault advanced](/images/keyvault-advancedset.PNG)
 
-### 6.3 Enable encryption on existing or running VMs with Azure CLI**
+### 6.3 Enable encryption on existing or running VMs with Azure CLI
 
 We will need an Azure Active Directory (AAD) application that will be used to write secrets to KeyVault as an authentiation step. Also, we need a secret of the AAD application that was created on the earlier step. Recommendation is to run through the powershell script that handles this
 
