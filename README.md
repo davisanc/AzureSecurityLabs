@@ -599,7 +599,7 @@ You can enable encryption by using a template, PowerShell cmdlets, or CLI comman
 There are some prerequistes to check before enabling disk encryption. They can be found here:
 https://docs.microsoft.com/en-us/azure/security/azure-security-disk-encryption-prerequisites
 
-We have summarized them for you here. Alternatively, you can run a pre-requisite script that will run all the following comamnds for you
+We have summarized them for you here. Alternatively, you can run a script that will go through all the following comamnds for you
 
 **IMPORTAN: If you prefer to do this one by one, go through the following steps. If you prefer to go with the pre-req scritpt, jumpt to 9.4 of this lab**
 
@@ -656,6 +656,15 @@ Click Save.
 
 ### 9.3 Enable encryption on existing or running VMs with Azure CLI**
 
+We will need an Azure Active Directory (AAD) application that will be used to write secrets to KeyVault as an authentiation step. Also, we need a secret of the AAD application that was created on the earlier step. Recommendation is to run through the powershell script that handles this
+
+As a reference, I will use the following names for the AAD App name and client secret. Running through the script, this App will be registered with AAD and will be authorized to use KeyVault. This client secret will be written in KeyVault
+
+```text
+aadAppName: keyvault-dasanc-app
+aadClientSecret: dasancsec
+```
+
 
 **Azure CLI**
 
@@ -693,7 +702,7 @@ az vm encryption show --name "MySecureVM" --resource-group "MySecureRg"
 
 ### 9.4 Use the pre-req script
 
-You can also use the pre-req script, that runs all the previous commands for you
+You can also use the script, that runs all the previous commands for you
 Use the AzureDiskEncryptionPreRequisiteSetup.ps1 on this repository, and run it on Powershell
 
 The script will require the Resource Group name, KeyVault name, Location, Subscription ID, and AAD App name and client secret
