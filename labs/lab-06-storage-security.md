@@ -62,13 +62,12 @@ We have summarized them for you here. Alternatively, you can run a script that w
     
 As a reference, I will use the following names for the AAD App name and client secret. Running through the script, this App will be registered with AAD and will be authorized to use KeyVault. This client secret will be written in KeyVault
 
-```
+```text
 aadAppName: keyvault-dasanc-app
 aadClientSecret: dasancsec
 ```
-
-
-    On Az CLI:
+   
+   On Az CLI:
     
     ```
     az ad sp create-for-rbac --name "ServicePrincipalName" --password "My-AAD-client-secret" --skip-assignment
