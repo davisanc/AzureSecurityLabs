@@ -643,8 +643,8 @@ On Az CLI:
 ```
 az ad sp create-for-rbac --name "ServicePrincipalName" --password "My-AAD-client-secret" --skip-assignment
 ```
-    
-    Note:The appId returned is the Azure AD ClientID used in other commands. It's also the SPN you'll use for az keyvault set-policy. The password is the client secret that you should use later to enable Azure Disk Encryption. Safeguard the Azure AD client secret appropriately.
+
+Note:The appId returned is the Azure AD ClientID used in other commands. It's also the SPN you'll use for az keyvault set-policy. The password is the client secret that you should use later to enable Azure Disk Encryption. Safeguard the Azure AD client secret appropriately.
     
 7. Set the key vault access policy for the Azure AD app with Azure CLI
 
@@ -700,7 +700,7 @@ az vm encryption show --name "MySecureVM" --resource-group "MySecureRg"
 ![image od disk-enc](/images/disk-enc.PNG)
 
 
-### 9.4 Use the pre-req script
+### 9.4 Use the script
 
 You can also use the script, that runs all the previous commands for you
 Use the AzureDiskEncryptionPreRequisiteSetup.ps1 on this repository, and run it on Powershell
