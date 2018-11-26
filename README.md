@@ -638,13 +638,14 @@ aadAppName: keyvault-dasanc-app
 aadClientSecret: dasancsec
 ```
 
-
     On Az CLI:
+    
     
     ```
     az ad sp create-for-rbac --name "ServicePrincipalName" --password "My-AAD-client-secret" --skip-assignment
     ```
-    *Note:The appId returned is the Azure AD ClientID used in other commands. It's also the SPN you'll use for az keyvault set-policy. The password is the client secret that you should use later to enable Azure Disk Encryption. Safeguard the Azure AD client secret appropriately.*
+    
+    Note:The appId returned is the Azure AD ClientID used in other commands. It's also the SPN you'll use for az keyvault set-policy. The password is the client secret that you should use later to enable Azure Disk Encryption. Safeguard the Azure AD client secret appropriately.
     
 7. Set the key vault access policy for the Azure AD app with Azure CLI
 
