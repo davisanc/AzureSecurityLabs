@@ -599,9 +599,8 @@ You can enable encryption by using a template, PowerShell cmdlets, or CLI comman
 There are some prerequistes to check before enabling disk encryption. They can be found here:
 https://docs.microsoft.com/en-us/azure/security/azure-security-disk-encryption-prerequisites
 
-We have summarized them for you here. Alternatively, you can run a script that will go through all the following comamnds for you
+We have summarized them for you here. 
 
-**IMPORTAN: If you prefer to do this one by one, go through the following steps. If you prefer to go with the pre-req scritpt, jumpt to 9.4 of this lab**
 
 **On Powershell**
 
@@ -655,7 +654,7 @@ Note:The appId returned is the Azure AD ClientID used in other commands. It's al
 
 The Azure platform needs access to the encryption keys or secrets in your key vault to make them available to the VM for booting and decrypting the volumes. Enable disk encryption on the key vault or deployments will fail.
 
-Set key vault advanced access policies through the Azure portal
+You can also set key vault advanced access policies through the Azure portal
 Select your keyvault, go to Access Policies, and Click to show advanced access policies.
 Select the box labeled Enable access to Azure Disk Encryption for volume encryption.
 Select Enable access to Azure Virtual Machines for deployment and/or Enable Access to Azure Resource Manager for template deployment, if needed.
@@ -664,9 +663,11 @@ Click Save.
 ![image of key vault advanced](/images/keyvault-advancedset.PNG)
 
 
-### 9.3 Enable encryption on existing or running VMs with Azure CLI**
+### 9.3 Enable encryption on existing or running VMs with Azure CLI
 
-**Azure CLI**
+You have 3 options to enable VM encryption: Azure CLI, PowerShell commands or a script
+
+### 9.3.1 Azure CLI
 
 Encrypt a running VM using a client secret:
 
@@ -675,7 +676,7 @@ az vm encryption enable --resource-group "MySecureRg" --name "MySecureVM" --aad-
 ```
 Powershell pre-req script: you can download the 'DiskEncryption.ps' file available here
 
-**Powershell**
+### 9.3.2 Powershell
 ```
 $rgName = 'MySecureRg';
 $vmName = ‘MyExtraSecureVM’;
@@ -700,7 +701,7 @@ az vm encryption show --name "MySecureVM" --resource-group "MySecureRg"
 ![image od disk-enc](/images/disk-enc.PNG)
 
 
-### 9.4 Use the script
+### 9.3.3 Use the script
 
 You can also use the script, that runs all the previous commands for you
 Use the AzureDiskEncryptionPreRequisiteSetup.ps1 on this repository, and run it on Powershell
@@ -720,6 +721,8 @@ Verify the disks are encrypted: To check on the encryption status of a IaaS VM, 
 Get-AzureRmVmDiskEncryptionStatus -ResourceGroupName <resource-group-name> -VMName <vm-name>
 
 ```
+**Go back to Azure Security Center**
+
 Finally, if we get back to Azure Security Center, on the recommendations panel we will no longer see the recommendation on the SQL VM to apply disk encryption (it will need some time to refresh the new status)
 
 
