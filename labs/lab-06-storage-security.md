@@ -68,7 +68,6 @@ aadClientSecret: dasancsec
 ```
    
    On Az CLI:
-    
     ```
     az ad sp create-for-rbac --name "ServicePrincipalName" --password "My-AAD-client-secret" --skip-assignment
     ```
