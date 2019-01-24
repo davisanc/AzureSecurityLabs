@@ -75,7 +75,7 @@ You may select send a text to your mobile phone. After you introduce the verific
 Navigate to Azure Active Directory > Security > MFA registration policy.
 Click on ‘Get a free Premium trial to use this feature’
 
-![mfaenable](/images/mfaenable.PNG)
+![mfaenable](/images/mfa.PNG)
 
 Select ‘Enterprise Mobility and Security E5 trial’ , and click on ‘Activate’ on the following window
 
