@@ -1,4 +1,4 @@
-# Lab 8 - Azure Active Directory Role-Based Access Control
+# Lab 8 - Azure Active Directory Labs
 
 ## Lab Overview
 
