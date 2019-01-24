@@ -20,7 +20,7 @@ To simplify and speed up the process of creating this architecture we will only 
 8.	Lab 5 - Understand your application security posture in Azure - Azure Security Center for security recommendations
 9.	Lab 6 - Storage Security – Encryption at Rest - Apply disk encryption to a running VM
 10.	Lab 7 - Extending your Data Centre to Azure in a secure way – Site to Site VPN Access
-11.	Lab 8 - Azure Active Directory Role-Based Access Control
+11.	Lab 8 - Azure Active Directory Labs
 12.	Lab 9 - Enable DDoS protection for your resources
 
 ## 1. Create a Microsoft Account, redeem your Azure Passes if you will use your Personal Microsoft Account
