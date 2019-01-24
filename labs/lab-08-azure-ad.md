@@ -1,6 +1,7 @@
 # Lab 8 - Azure Active Directory Labs
 
-On the next tasks we will test Azure Identity Protection, Risk Policies, MFA and Role Base Access Control
+On the next tasks we will test **Azure Identity Protection, Risk Policies, MFA and Role Base Access Control**
+Also, we will use the **Microsoft Graph API** to look for potential risky users who have signed-in into Azure
 
 But first, we need to create a few new users in our Azure AD to have multiple identities
 
@@ -75,7 +76,7 @@ You may select send a text to your mobile phone. After you introduce the verific
 Navigate to Azure Active Directory > Security > MFA registration policy.
 Click on ‘Get a free Premium trial to use this feature’
 
-![mfaenable](/images/mfa.PNG)
+![mfaenable](/images/mfaenable.PNG)
 
 Select ‘Enterprise Mobility and Security E5 trial’ , and click on ‘Activate’ on the following window
 
