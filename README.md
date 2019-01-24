@@ -863,6 +863,8 @@ Finally, simply check that you have connectivity from the pfSense Gateway to the
 
 On the next tasks we will test Azure Identity Protection, Risk Policies, MFA and Role Base Access Control
 
+Also, we will use the **Microsoft Graph API** to look for potential risky users who have signed-in into Azure
+
 But first, we need to create a few new users in our Azure AD to have multiple identities
 
 ### Create new users in Azure AD
