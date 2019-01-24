@@ -1,6 +1,7 @@
 # Lab 8 - Azure Active Directory Labs
 
 On the next tasks we will test Azure Identity Protection, Risk Policies, MFA and Role Base Access Control
+
 But first, we need to create a few new users in our Azure AD to have multiple identities
 
 ### Create new users in Azure AD
