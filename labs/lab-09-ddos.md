@@ -65,7 +65,7 @@ We can see that most of the DDoS packets have been dropped by the mitigation pla
 
 ![tcp packets](/images/tcp-syn-flood-inbound-tcp-packets-ddos.PNG)
 
-![tcp attack summary](images/tcp-syn-flood-attack-summary.PNG)
+![tcp attack summary](/images/tcp-syn-flood-attack-summary.PNG)
 
 << [Back to home page](/README.md)
 
