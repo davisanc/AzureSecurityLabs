@@ -1066,7 +1066,88 @@ iv.	Click Create.
 
 2.	On the Keys page, perform the following steps:
 
+![keyvalue](/images/keyvalue.PNG)
 
+i.	In the Key description textbox, type a description (for example, AADIP Risk Event).
+ii.	As Duration, select in 1 year.
+iii.	Click Save.
+iv.	Copy the key value, and then paste it into a safe location.
+
+Since we will use this value later on, copy the Client Secret into the text file where you stored the client id.
+NOTE: If you lose this key, you will have to return to this section and create a new key. Keep this key a secret: anyone who has it can access your data.
+
+#### Authenticate to Microsoft Graph and query the Identity Risk Events API
+
+At this point, you should have specified the following values in your text file:
+•	The client ID
+•	The key
+
+#### Querying the API using PowerShell
+
+Now that we have configured the app registration and retrieved the values needed to authenticate, we can query the IdentityRiskEvents API using PowerShell
+
+#### See medium-risk and high-risk events
+
+First, let’s assess how many risk events we have that are medium or high risk. These are the events that have the capability to trigger the sign-in or user-risk policies. Since they have a medium or high likelihood of user compromise, remediating these events should be a priority.
+1.	Open a PowerShell ISE window and, in the script pane, type the PowerShell code below.
+2.	Insert the saved Client ID and key for the values of ClientID and ClientSecret variable and click Run.
+
+```
+##Get all your medium or high-risk risk events
+
+$ClientID       = "ClientID"        # Should be a ~36 hex character string; insert your info here
+$ClientSecret   = "ClientSecret"    # Should be a ~44 character string; insert your info here
+$tenantdomain   = "yourtenant.com"    # For example, contoso.onmicrosoft.com
+
+$loginURL       = "https://login.microsoft.com"
+$resource       = "https://graph.microsoft.com"
+$body      = @{grant_type="client_credentials";resource=$resource;client_id=$ClientID;client_secret=$ClientSecret}
+$oauth     = Invoke-RestMethod -Method Post -Uri $loginURL/$tenantdomain/oauth2/token?api-version=beta -Body $body
+Write-Output $oauth
+if ($oauth.access_token -ne $null) {
+$headerParams = @{'Authorization'="$($oauth.token_type) $($oauth.access_token)"}
+$url = "https://graph.microsoft.com/beta/identityRiskEvents?$filter=riskLevel eq 'high' or riskLevel eq 'medium'" 
+Write-Output $url
+$myReport = (Invoke-WebRequest -UseBasicParsing -Headers $headerParams -Uri $url)
+foreach ($event in ($myReport.Content | ConvertFrom-Json).value) {
+	Write-Output $event
+}
+} else {
+Write-Host "ERROR: No Access Token"
+}
+```
+#### Investigate a specific user
+
+When you believe a user may have been compromised, you can better understand the state of their risk by getting all of their risk events. Similarly, if you have users that you believe may be more likely targets of compromise, you can proactively retrieve their risky events.
+Since we know that Alan had some risky-sign ins, let’s query their risk events.
+In the PowerShell ISE, open a new file and, in the script pane, type the PowerShell code below.
+Insert the saved Client ID and key for the values of ClientID and ClientSecret variable and click Run.
+
+```
+##Get a specific user's risk events
+
+$ClientID       = "ClientID"        # Should be a ~36 hex character string; insert your info here
+$ClientSecret   = "ClientSecret"    # Should be a ~44 character string; insert your info here
+$tenantdomain   = "yourtenant.com"    # For example, contoso.onmicrosoft.com
+
+$loginURL       = "https://login.microsoft.com"
+$resource       = "https://graph.microsoft.com"
+$body      = @{grant_type="client_credentials";resource=$resource;client_id=$ClientID;client_secret=$ClientSecret}
+$oauth     = Invoke-RestMethod -Method Post -Uri $loginURL/$tenantdomain/oauth2/token?api-version=beta -Body $body
+Write-Output $oauth
+if ($oauth.access_token -ne $null) {
+$headerParams = @{'Authorization'="$($oauth.token_type) $($oauth.access_token)"}
+$url = "https://graph.microsoft.com/beta/identityRiskEvents?`$filter=userID eq '<Alan’s user ID>'"
+Write-Output $url
+$myReport = (Invoke-WebRequest -UseBasicParsing -Headers $headerParams -Uri $url)
+foreach ($event in ($myReport.Content | ConvertFrom-Json).value) {
+	Write-Output $event
+}
+} else {
+Write-Host "ERROR: No Access Token"
+}
+
+```
 
 ### Role-Based Access Control
 
