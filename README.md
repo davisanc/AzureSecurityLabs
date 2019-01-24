@@ -474,6 +474,8 @@ Internet traffic destined for the web servers should always go through a load ba
 
 ### 7.1 - Creating the Application Gateway
 
+We give you the option to create the AppGW using a pre-configured template or CLI commands
+
 #### Using ARM Templates
 
 We have included a json file to deploy the application gateway as an ARM template. The template, **app_gw-security-labs.json** is listed above in this repository. Click on **Raw** , copy the content of the file and paste it to a new file in Visual Studio Code. Save it as a json file with the same name
@@ -495,6 +497,10 @@ Click on **Purchase**
 ![image of purchase template](/images/purchase-template.PNG)
 
 The creation of the Application Gateway will take a few minutes
+
+Also, you may see that the AppGateway doesn't have a public IP address after it says 'finished'. We use dynamic IP address for the AppGW and the assignment of the address will take a few minutes so bear in mind that!
+
+NOTE: Don't do the follwing CLI commands if you just created the AppGW using the template
 
 #### Azure CLI
 
