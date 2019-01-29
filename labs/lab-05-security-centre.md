@@ -2,16 +2,34 @@
 
 ## Understand your application security posture in Azure
 
-First thing is to upgrade your subscription to the Standard Tier to get all features of Azure Security Center.
+First thing is to upgrade your subscription to the Standard Tier to get all features of Azure Security Center. But first, we need to run through a few steps and installs to get your ASC running
 
 ### 5.1 - Enable your Azure subscription
 
 1. Sign into the Azure portal.
-2. On the Microsoft Azure menu, select **Security Center**. The **Security Center - Overview** opens.
+2. Navigate to the Security Center blade
+3. Click on **Start Trial** (if you have clicked on Skip, you can click on Getting Started)
 
-![oms](/images/OMS.png)
+![ASC-trial](/images/ASC-trial.png)
 
-**Security Center – Overview** provides a unified view into the security posture of your hybrid cloud workloads, enabling you to discover and assess the security of your workloads and to identify and mitigate risk. Security Center automatically enables any of your Azure subscriptions not previously onboarded by you or another subscription user to the Free tier.
+4. Click on **Install agents**, if the button has been grayed out, then it's already set to On
+
+![ASC-agents](/images/ASC-agents.png)
+
+5. Click on **Security policy**
+6. Your subscription (Azure pass) should be listed (if it does not, close your browser session and open a new one)
+7. On the line where it lists your Azure subscription (Azure pass), click on **Edit settings**
+8. Set **Auto Provisioning** to **On** (if it's not already set to On)
+9. Under workspace configuration, click **User another workspace** and select your Log Analytics workspace created in previous labs
+10. Click on **Save**
+11.	Click on **Yes** on **Would you like to reconfigure monitored VMs?**
+12.	Switch back to **Security Policy** and ignore the message "Your unsaved edits will be discarded"
+13.	On the line where it lists your workspace, click on **Edit settings**
+14.	Click on Pricing tier, select **Standard** and click on **Save**
+15.	Click on **Data collection** and select **All Events** and click on **Save**
+
+
+Go to the **Security Center – Overview** which provides a unified view into the security posture of your hybrid cloud workloads, enabling you to discover and assess the security of your workloads and to identify and mitigate risk. Security Center automatically enables any of your Azure subscriptions not previously onboarded by you or another subscription user to the Free tier.
 
 You can view and filter the list of subscriptions by clicking the Subscriptions menu item. Security Center will now begin assessing the security of these subscriptions to identify security vulnerabilities. To customize the types of assessments, you can modify the security policy. A security policy defines the desired configuration of your workloads and helps ensure compliance with company or regulatory security requirements.
 
