@@ -194,7 +194,7 @@ iv.	Click Create.
 
 3.	On the Add API access page, click Select an API.
 
-![selectAPI](/images/selectAPI.PNG)
+![selectAPI](/images/selectapi.PNG)
 
 4.	On the Select an API page, select Microsoft Graph, and then click Select.
 
