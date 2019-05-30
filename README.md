@@ -414,7 +414,7 @@ We will work on the Web VM, and we will set the default route of the web-tier su
 
 1. Create a new Route Table
 
-    Go to your Resource Group, click on **Add On**, and search for **Route Table**
+    Go to your Resource Group, click on **Add**, and search for **Route Table**
 
     ![route table](/images/route-table.PNG)
 
