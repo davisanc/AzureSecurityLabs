@@ -216,7 +216,10 @@
           "ruleSetVersion": "[parameters('wafRuleSetVersion')]",
           "disabledRuleGroups": []
         }
-      }
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]"
+      ]
     }
   ]
 }
