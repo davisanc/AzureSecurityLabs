@@ -710,7 +710,7 @@ Note:The appId returned is the Azure AD ClientID used in other commands. It's al
 7. Set the key vault access policy for the Azure AD app with Azure CLI
 
     ```
-    az keyvault set-policy --name "MySecureVault" --spn "<spn created with CLI/the Azure AD ClientID>" --key-permissions wrapKey -- secret-permissions set
+    az keyvault set-policy --name "MySecureVault" --spn "<spn created with CLI/the Azure AD ClientID>" --key-permissions wrapKey --secret-permissions set
     ```
 8. Set key vault advanced access policies
 
