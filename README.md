@@ -121,8 +121,9 @@ In Visual Studio Code, go to Extensions, search for **Azure CLI Tools** and inst
     az group create --location <location> --name <resource-group-name>
     ```
 
-2. Run the following command to create a Storage Account for your Cloud resources.
-    *Note: Storage account name must be between 3 and 24 characters in length and use numbers and lower-case letters only*
+2. Run the following command to create a Storage Account for your Cloud resources, making sure that the Resource Group created in step 1 above is used in place of `<resource-group-name>` as the value for the `--resource-group` parameter.
+
+    *Note: Storage account name must be between 3 and 24 characters in length and use numbers and lower-case letters **only***.
 
     ```
     az storage account create --location <location> --name <storage-account-name> --resource-group <resource-group-name> --sku Standard_LRS
@@ -130,43 +131,93 @@ In Visual Studio Code, go to Extensions, search for **Azure CLI Tools** and inst
 
 3. In your browser, navigate to https://github.com/davisanc/AzureSecurityLabs 
 
-4. Open the **n-tier-windows-security-labs.json** file. This file is an Azure Resource Manager (ARM) Template which describes the infrastructure resources we need to use for this lab as code. When deployed, the template will instruct Resource Manager to create the resources as described in the text.
+4. Open the **n-tier-windows-security-labs.json** file. This file is an Azure Resource Manager (ARM) Template which describes, as code, the infrastructure resources we need to use for this lab. When deployed, the template will instruct Azure Resource Manager to create the resources as described in the text.
 
     For more on ARM Templates, please visit: 
     [https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview#template-deployment](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview#template-deployment)
 
-5. Just above the main text pane on the Github page, click the **Raw** button to see the unformatted JSON.
+5. **IMPORTANT**: Just above the main text panel on the Github page, click the **Raw** button to show the JSON file as unformatted text. Copy this text into the clipboard. It is important that the Raw version of the text is copied because Github adds additional formatting to text when displayed on the site which, when copied, creates errors in deploying the template.
 
-6. Copy and paste the text into a new file in Visual Studio Code. In the JSON text, search for all instances of **adminUsername** and **adminPassword** and replace both the property values with your own admin username and passwords, and save the file locally as **n-tier-windows-security-labs.json**. **Make sure you don't use "admin" as default adminUsername or the ARM template won't be deployed**
+6. In Visual Studio Code, create a new file and paste the text copied to the clipboard in the previous step.
 
-    Example:
+7. Find all instances of **adminUsername** and **adminPassword** within the JSON text. Each pair of these properties represent the values which will be set for the Administrator user account and password on each Virtual Machine.
 
-    Before...
+    Replace each of these property values with values of your own, following these guidlines:
+
+    **Username Guidelines**
+
+    - The user name cannot contain special characters \/"[]:¦<>+=;,?*& or end with a full stop
+    - The user name must **not** include reserved words. For example:
+        - admin 
+        - administrator
+        - guest
+        - user
+    - The value is between 1 and 32 characters long
+
+    **Password Rules**
+
+    - Password value should not be empty.
+    - Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character that is not '\' or '-'.
+    - The value must be between 12 and 72 characters long.
+    - Passwords must not include reserved words or unsupported characters.
+
+    As an example, the template may contain the following username and password combination for each Virtual Machine:
+
     ```
-    "adminUsername": "admin",
-    "adminPassword": "P4ssw0rd123$%",
-    ```
-    After...
-    ```
-    "adminUsername": "adminUserName",
-    "adminPassword": "C4ndY*Fl0$S18",
-    ```
-
-7. Run the following `azbb` command to deploy the base resources required for the lab using the ARM template modified above. This will include a Jumpbox, Web VM, Application VM and a SQL Server VM. Make sure you are on the right folder where you have saved the json file
-
-    ```
-    azbb -s <Subscription-ID> -g <Resource-Group-Name> -l <Location> -p .\<name-of-your-tempalte.json> --deploy
+    "size": "Standard_DS1_v2",
+    "computerNamePrefix": "biz",
+    "adminUsername": "adminUser",     << Administrator User Name
+    "adminPassword": "P4ssw0rd123$%", << Admin Account Password
+    "virtualNetwork": {
+        "name": "ra-ntier-vnet"
+    },                    
     ```
 
-    *Note: this environment will need about 35 minutes to deploy. Once the last command completes, report to your proctors that you have reached this point*
+    These are valid user names and passwords and the solution *could* be deployed using them. However, considering that this is a security lab, and that this content is available online, there is always risk that a malicious user has this combination and is waiting for services to be deployed. This is why usernames and passwords should never be posted as part of a template into a code repository (see **Additional Notes** below).
 
-    The Application and Database tier should have an internal Load Balancer in front of them as per the Azure Reference Architecture, so you can scale up the tier with more VMs if needed and the Load Balancer will distribute the traffic accordingly. However, to speed up the process of creating this architecture, there will be no Load Balancers at the Application and Database Tiers
+    In reality, when configuring a server, alternative usernames and passwords would be used for the local account and cloud based Virtual Machines should be treated no different. Therefore, continuing the example, the Web Server Admin Account Name could be set to **WebServerAdmin** and the password to **C4ndY*Fl0$S19** by making the changes to the property values as shown below:
 
-    The Web Tier is not currently load balanced, as we will create an external Application Gateway in front of the web tier later in the labs.
+    ```
+    "adminUsername": "WebServerAdmin",
+    "adminPassword": "C4ndY*Fl0$S19",
+    ```
 
-    For now, the only Internet access to the environment is through the Jump Box as it is the only VM with a Public IP address.
+    **Additional Thoughts**
 
-    **Test: make sure you can ping from the JB to the Web, Biz and DB virtual machines (enable PING on the firewall settings)**
+    Some additional things to consider when sending credentials into templated deployments:
+
+    1. Use parameters for each value, passing them in either by
+        - embedding the username and password as part of the command line call which deploys the templates
+        - running the template deployment alongside a parameter file which passes in the parameters.
+    2. Use Azure KeyVault for storing the username and passwords, and allow the deployment to call on KeyVault when creating the resources. This keeps the usernames and passwords secure and hidden from users running the deployment.
+    3. As mentioned above, never store user names, passwords or encryption key data in repositories. This is a prime source of data leaks.
+
+8. Save the file locally as "**n-tier-windows-security-labs.json**".
+
+9. Run the following `azbb` command to deploy the base resources required for the lab using the ARM template modified above. This will include a Jumpbox, Web VM, Application VM and a SQL Server VM. Make sure you are on the right folder where you have saved the JSON file:
+
+    ```
+    azbb -s <Subscription-ID> -g <Resource-Group-Name> -l <Location> -p .\<name-of-your-template.json> --deploy
+    ```
+
+### Deployment Notes
+
+- Note: this environment will need about 35-45 minutes to deploy. Once the last command completes, report to your proctors that you have reached this point.
+
+- The Application and Database tier should have an internal Load Balancer in front of them as per the Azure Reference Architecture, so you can scale up the tier with more VMs if needed and the Load Balancer will distribute the traffic accordingly. However, to speed up the process of creating this architecture, there will be no Load Balancers at the Application and Database Tiers.
+
+- The Web Tier is not currently load balanced, as we will create an external Application Gateway in front of the web tier later in the labs.
+
+- For now, the only Internet access to the environment is through the Jump Box as it is the only VM with a Public IP address.
+
+### Testing the deployment
+
+Make sure you can ping from the Jump Box to the Web Server (and if time permits, the Biz and DB virtual machines). To do this:
+
+1. Connect via Remote Desktop to the **Public IP Address** of the Jump Box using the security credentials passed in to the template file for that specific server
+2. Connect to the target server (in this case the Web VM) via Remote Desktop using the **Internal IP Address** of the target server, again using the username and password created for that server.
+3. Enable ICMP/Ping on the target server Windows Firewall (under File and Print Server settings)
+4. From the Jump Box, ping the **Internal IP Address** of the Web Server VM.
 
 ## 4 - Lab 1 - Protecting the Network Perimeter with Network Security Groups
 
@@ -311,7 +362,7 @@ You will need to select an storage account within your Resource Group. The NSG f
 Alternatively, you may use the following command to enable NSG flow logs via AZ CLI or Visual Studio Code
 
 ```
-az network watcher flow-log configure --resource-group resourceGroupName --enabled true --nsg nsgName --storage-account storageAccountName
+az network watcher flow-log configure --resource-group <resource-group-name> --enabled true --nsg nsgName --storage-account <storage-account-name>
 ```
 
 ![NSG flow logs](/images/NSG-flow-logs-enabled.PNG)
@@ -500,9 +551,9 @@ The creation of the Application Gateway will take a few minutes
 
 Also, you may see that the AppGateway doesn't have a public IP address after it says 'finished'. We use dynamic IP address for the AppGW and the assignment of the address will take a few minutes so bear in mind that!
 
-NOTE: Don't do the follwing CLI commands if you just created the AppGW using the template
-
 #### Azure CLI
+
+**NOTE**: **Do not** run the following CLI commands if you just created the AppGW using the template.
 
 This command creates the Application Gateway (for the purposes of this lab) into the **appgateway** subnet of our VNet. Please review the Azure CLI documentation for [creating an application gateway](https://docs.microsoft.com/en-us/cli/azure/network/application-gateway?view=azure-cli-latest#az-network-application-gateway-create) to see the full list of possible parameters.
 
@@ -516,7 +567,7 @@ az network application-gateway create --name myAppGateway --location <location> 
 az network nic show --name web-vm1-nic1 --resource-group <resource-group-name> --query "ipConfigurations[].privateIpAddress"
 ```
 
-**Please also note** that we did not specify Public IP Address resources for this application gateway. Not specifying an IP address will create a new Public IP address, however you can be more descriptive and create these first before creating the gateway.
+**Please also note** that we did not specify a Public IP Address resources for this application gateway. Not specifying an IP address will create a new Public IP address, however you can be more descriptive and create these first before creating the gateway.
 
 ### 7.2 - Test the Application Gateway
 
@@ -532,7 +583,7 @@ If you are interested to test the Azure WAF or any other 3rd party WAFs using th
 
 ![DVWA](/images/dvwa-vm.PNG)
 
-## 8. Lab 5 – Understand your application security posture in Azure -Azure Security Center for security recommendations
+## 8. Lab 5 – Understand your application security posture in Azure - Azure Security Center for security recommendations
 
 ## Understand your application security posture in Azure
 
@@ -906,7 +957,7 @@ Now, we will create a new AD group called ‘Identity Protection’ that will be
 
 ![new-azureadgroup2](/images/new-azureadgroup2.PNG)
 
-As these users have week passwords, we will configure SSPR (Self Service Password Reset) first. 
+As these users have weak passwords, we will configure SSPR (Self Service Password Reset) first. 
 Make sure you have ‘authentication contact info’ for your users. As we will test SSPR with the user Adam Smith, make sure you add his contact info under the following blade (you will use a mobile number that you have access to so you can receive your verification codes):
 
 ![auth-info](/images/auth-info.PNG)
