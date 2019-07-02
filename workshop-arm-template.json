@@ -1,0 +1,534 @@
+{
+    "$schema": "https://schema.mgmt.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Location for all workshop resources."
+            }
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2018-11-01",
+            "name": "ra-ntier-vnet",
+            "location": "[parameters('location')]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.0.0.0/16"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "web",
+                        "properties": {
+                            "addressPrefix": "10.0.1.0/24"
+                        }
+                    },
+                    {
+                        "name": "biz",
+                        "properties": {
+                            "addressPrefix": "10.0.2.0/24"
+                        }
+                    },
+                    {
+                        "name": "sql",
+                        "properties": {
+                            "addressPrefix": "10.0.3.0/24"
+                        }
+                    },
+                    {
+                        "name": "ad",
+                        "properties": {
+                            "addressPrefix": "10.0.4.0/24"
+                        }
+                    },
+                    {
+                        "name": "mgmt",
+                        "properties": {
+                            "addressPrefix": "10.0.0.128/25"
+                        }
+                    },
+                    {
+                        "name": "appgateway",
+                        "properties": {
+                            "addressPrefix": "10.0.5.0/25"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "jb-NIC",
+            "apiVersion": "2019-04-01",
+            "location": "[parameters('location')]",
+            "tags": {},
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "PublicIPConfiguration",
+                        "properties": {
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'ra-ntier-vnet', 'mgmt')]"
+                            },
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/publicIPAddresses', 'jb-IP')]"
+                            }
+                        }
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Network/publicIPAddresses/', 'jb-IP')]",
+                "[concat('Microsoft.Network/virtualNetworks/', 'ra-ntier-vnet')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "jb-IP",
+            "apiVersion": "2019-04-01",
+            "location": "[parameters('location')]",
+            "tags": {},
+            "sku": {
+                "name": "Basic"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic"
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "jb",
+            "apiVersion": "2018-10-01",
+            "location": "[parameters('location')]",
+            "tags": {},
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_B1ms"
+                },
+                "storageProfile": {
+                    "osDisk": {
+                        "createOption": "FromImage",
+                        "managedDisk": {
+                            "storageAccountType": "StandardSSD_LRS"
+                        },
+                        "name": "jb-OSDisk"
+                    },
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "2016-Datacenter",
+                        "version": "latest"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', 'jb-NIC')]"
+                        }
+                    ]
+                },
+                "osProfile": {
+                    "computerName": "jb",
+                    "adminUsername": "remoteadmin",
+                    "adminPassword": "P4ssw0rd#123",
+                    "windowsConfiguration": {
+                        "enableAutomaticUpdates": true,
+                        "provisionVmAgent": true
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Network/networkInterfaces/', 'jb-NIC')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "2019-03-01",
+            "name": "[concat('jb','/', 'jbDSC')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "publisher": "Microsoft.Powershell",
+                "type": "DSC",
+                "typeHandlerVersion": "2.77",
+                "autoUpgradeMinorVersion":true,
+                "settings": {
+                    "wmfVersion": "latest",
+                    "configuration": {
+                        "url": "https://raw.githubusercontent.com/neilhamshaw/azure-security-workshop/master/resources/enableicmp.ps1.zip",
+                        "script": "enableicmp.ps1",
+                        "function": "EnableICMP"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachines/', 'jb')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "web-NIC",
+            "apiVersion": "2019-04-01",
+            "location": "[parameters('location')]",
+            "tags": {},
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "PublicIPConfiguration",
+                        "properties": {
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'ra-ntier-vnet', 'web')]"
+                            },
+                            "privateIPAllocationMethod": "Static",
+                            "privateIPAddress": "10.0.1.5",
+                            "publicIPAddress": {
+                                "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/publicIPAddresses', 'web-IP')]"
+                            }
+                        }
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Network/publicIPAddresses/', 'web-IP')]",
+                "[concat('Microsoft.Network/virtualNetworks/', 'ra-ntier-vnet')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "web-IP",
+            "apiVersion": "2019-04-01",
+            "location": "[parameters('location')]",
+            "tags": {},
+            "sku": {
+                "name": "Basic"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic"
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "web",
+            "apiVersion": "2018-10-01",
+            "location": "[parameters('location')]",
+            "tags": {},
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_B1ms"
+                },
+                "storageProfile": {
+                    "osDisk": {
+                        "createOption": "FromImage",
+                        "managedDisk": {
+                            "storageAccountType": "StandardSSD_LRS"
+                        },
+                        "name": "web-OSDisk"
+                    },
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "2016-Datacenter",
+                        "version": "latest"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', 'web-NIC')]"
+                        }
+                    ]
+                },
+                "osProfile": {
+                    "computerName": "web",
+                    "adminUsername": "webadmin",
+                    "adminPassword": "P4ssw0rd123*",
+                    "windowsConfiguration": {
+                        "enableAutomaticUpdates": true,
+                        "provisionVmAgent": true
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Network/networkInterfaces/', 'web-NIC')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "2019-03-01",
+            "name": "[concat('web','/', 'InstallWebServer')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "publisher": "Microsoft.Powershell",
+                "type": "DSC",
+                "typeHandlerVersion": "2.77",
+                "autoUpgradeMinorVersion":true,
+                "settings": {
+                    "wmfVersion": "latest",
+                    "configuration": {
+                        "url": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/scripts/windows/dsc/iisaspnet.ps1.zip",
+                        "script": "iisaspnet.ps1",
+                        "function": "iisaspnet"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachines/', 'web')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "biz-NIC",
+            "apiVersion": "2019-04-01",
+            "location": "[parameters('location')]",
+            "tags": {},
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "BizIPConfiguration",
+                        "properties": {
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'ra-ntier-vnet', 'biz')]"
+                            },
+                            "privateIPAllocationMethod": "Dynamic"
+                        }
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Network/virtualNetworks/', 'ra-ntier-vnet')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "biz",
+            "apiVersion": "2018-10-01",
+            "location": "[parameters('location')]",
+            "tags": {},
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_DS1_v2"
+                },
+                "storageProfile": {
+                    "osDisk": {
+                        "createOption": "FromImage",
+                        "managedDisk": {
+                            "storageAccountType": "StandardSSD_LRS"
+                        },
+                        "name": "biz-OSDisk"
+                    },
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "2016-Datacenter",
+                        "version": "latest"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', 'biz-NIC')]"
+                        }
+                    ]
+                },
+                "osProfile": {
+                    "computerName": "biz",
+                    "adminUsername": "bizadmin",
+                    "adminPassword": "P4ssw0rd123*",
+                    "windowsConfiguration": {
+                        "enableAutomaticUpdates": true,
+                        "provisionVmAgent": true
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Network/networkInterfaces/', 'biz-NIC')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "2019-03-01",
+            "name": "[concat('biz','/', 'BizDSC')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "publisher": "Microsoft.Powershell",
+                "type": "DSC",
+                "typeHandlerVersion": "2.77",
+                "autoUpgradeMinorVersion":true,
+                "settings": {
+                    "wmfVersion": "latest",
+                    "configuration": {
+                        "url": "https://raw.githubusercontent.com/neilhamshaw/azure-security-workshop/master/resources/enableicmp.ps1.zip",
+                        "script": "enableicmp.ps1",
+                        "function": "EnableICMP"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachines/', 'biz')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "sql-NIC",
+            "apiVersion": "2019-04-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "PrivateIPConfiguration",
+                        "properties": {
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'ra-ntier-vnet', 'sql')]"
+                            },
+                            "privateIPAllocationMethod": "Dynamic"
+                        }
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Network/virtualNetworks/', 'ra-ntier-vnet')]"
+            ]
+        },
+        { 
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "sql",
+            "apiVersion": "2018-10-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "osProfile": {
+                    "computerName": "sql",
+                    "adminUsername": "sqladmin",
+                    "adminPassword": "P4ssw0rd1234#",
+                    "windowsConfiguration": {
+                        "provisionVmAgent": "true"
+                    }
+                },
+                "hardwareProfile": {
+                    "vmSize": "Standard_D2s_v3"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftSQLServer",
+                        "offer": "SQL2017-WS2016",
+                        "sku": "Enterprise",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "sql-OSDisk",
+                        "createOption": "FromImage",
+                        "managedDisk": {
+                            "storageAccountType": "StandardSSD_LRS"
+                        }
+                    },
+                    "dataDisks": [
+                        {
+                            "createOption": "Empty",
+                            "lun": 0,
+                            "diskSizeGB": 1023,
+                            "caching": "ReadOnly",
+                            "managedDisk": {
+                                "storageAccountType": "StandardSSD_LRS"
+                            },
+                            "name": "sql-DataDisk"
+                        }
+                    ]
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', 'sql-NIC')]"
+                        }
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Network/networkInterfaces/', 'sql-NIC')]"
+            ]
+        },
+        {
+            "name": "sql",
+            "type": "Microsoft.SqlVirtualMachine/SqlVirtualMachines",
+            "apiVersion": "2017-03-01-preview",
+            "location": "[parameters('location')]",
+            "properties": {
+                "virtualMachineResourceId": "[resourceId('Microsoft.Compute/virtualMachines', 'sql')]",
+                "AutoPatchingSettings": {
+                    "Enable": true,
+                    "DayOfWeek": "Sunday",
+                    "MaintenanceWindowStartingHour": "2",
+                    "MaintenanceWindowDuration": "60"
+                },
+                "KeyVaultCredentialSettings": {
+                    "Enable": false,
+                    "CredentialName": ""
+                },
+                "ServerConfigurationsmgmtSettings": {
+                    "SQLConnectivityUpdateSettings": {
+                        "ConnectivityType": "Private",
+                        "Port": "1433",
+                        "SQLAuthUpdateUserName": "",
+                        "SQLAuthUpdatePassword": ""
+                    },
+                    "SQLWorkloadTypeUpdateSettings": {
+                        "SQLWorkloadType": "GENERAL"
+                    },
+                    "SQLStorageUpdateSettings": {
+                        "DiskCount": "1",
+                        "DiskConfigurationType": "NEW",
+                        "StartingDeviceID": "2"
+                    },
+                    "AdditionalFeaturesServerConfigurations": {
+                        "IsRServicesEnabled": "false"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachines/', 'sql')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "2019-03-01",
+            "name": "[concat('sql','/', 'sqlDSC')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "publisher": "Microsoft.Powershell",
+                "type": "DSC",
+                "typeHandlerVersion": "2.77",
+                "autoUpgradeMinorVersion":true,
+                "settings": {
+                    "wmfVersion": "latest",
+                    "configuration": {
+                        "url": "https://raw.githubusercontent.com/neilhamshaw/azure-security-workshop/master/resources/enableicmp.ps1.zip",
+                        "script": "enableicmp.ps1",
+                        "function": "EnableICMP"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachines/', 'sql')]"
+            ]
+        }
+    ],
+    "outputs": {
+        "jbAdminUsername": {
+            "type": "string",
+            "value": "remoteadmin"
+        },
+        "WebAdminUsername": {
+            "type": "string",
+            "value": "webadmin"
+        },
+        "SQLAdminUsername": {
+            "type": "string",
+            "value": "sqladmin"
+        }
+    }
+}
