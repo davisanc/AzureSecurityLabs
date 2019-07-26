@@ -8,6 +8,9 @@ Full details about Azure Key Vault can be found here: [https://azure.microsoft.c
 
 For Azure Disk encryption to work, the Key Vault and the VMs must be co-located in the same Azure region and subscription.
 
+## IMPORTANT NOTE: The new release of Azure Disk Encryption eliminates the requirement for providing an Azure AD application parameter to enable VM disk encryption. With the new release, you are no longer required to provide Azure AD credentials during the enable encryption step. All new VMs must be encrypted without the Azure AD application parameters using the new release. To view instructions to enable VM disk encryption using the new release, see Azure Disk Encryption for Windows VMS. VMs that were already encrypted with Azure AD application parameters are still supported and should continue to be maintained with the AAD syntax.
+## More details here: https://docs.microsoft.com/en-us/azure/security/azure-security-disk-encryption-windows-aad
+
 ### 6.1 - Create the Azure Key Vault
 
 Create a new Key Vault from the portal following the steps in the image below, or create a Key Vault using this CLI command:
